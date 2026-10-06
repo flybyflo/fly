@@ -1,7 +1,6 @@
 ---
 name: fly
-description: fly's agent style for concise, detailed responses, deliberate subagents, unslopped prose, simple code, and verified work. Use for /fly or requests to work in this style.
-disable-model-invocation: true
+description: fly's agent style for concise, detailed responses, deliberate subagents, unslopped prose, simple code, and verified work. Use for any nontrivial coding task (features, bug fixes, refactors, investigations, PRs, reviews), for /fly, or requests to work in this style. Skip it for quick questions or when the user opts out.
 ---
 
 # fly mode
