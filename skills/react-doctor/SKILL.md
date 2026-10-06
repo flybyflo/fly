@@ -12,7 +12,7 @@ Scans React codebases for security, performance, correctness, and architecture i
 
 Run `npx react-doctor@latest --verbose --scope changed` and check the score did not regress.
 
-If the score dropped, fix the regressions before committing.
+Before every commit and push, fix every issue it reports for the changed code (errors first, then warnings) and re-run until it reports none and the score has not dropped. Don't disable or ignore a rule to get a clean run; if a rule looks wrong, tell the user which one.
 
 ## For general cleanup or code improvement:
 

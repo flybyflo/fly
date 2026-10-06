@@ -23,6 +23,7 @@ Remaining triggers:
 - Any prose surface → the **unslop** skill. Your reply is a prose surface. Write it per **Writing the reply**. Agent-facing prose also follows the **skill-creator** skill (the host's guide for authoring SKILL.md files) and the Authoring playbook.
 - Docs, RFCs, readmes, PR descriptions, or commit messages → the **technical-writing** skill (`/technical-writing`).
 - Before commit → the bundled **deslop** skill (`/deslop`). In Claude Code, `/simplify` is an acceptable substitute.
+- React code in the diff (`.tsx`, `.jsx`, components or hooks) → before every commit and every push, the **react-doctor** skill. Run `npx react-doctor@latest --verbose --scope changed`, fix every diagnostic it reports (errors first, then warnings), and re-run until it reports none and the score has not dropped. Don't silence a rule to get there; if a rule looks wrong, name it to the user. Issues outside the diff are reported, not fixed, unless the user asks for `/doctor`.
 - Before review → the **no-comments** skill (`/no-comments`).
 - Shipping UI / desktop app / CLI → the matching control skill, both bundled here: `control-cli` (CLIs and TUIs) and `control-ui` (browser / Electron / web UIs), or a project-local `verify-*` skill. For bug fixes, reproduce first on the same surface yourself. Hand to the user only under the narrow Bug fix step 1 exception.
 - Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → the **benchmark-checklist** skill before you report or act on the number.
