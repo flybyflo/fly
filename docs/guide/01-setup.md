@@ -1,0 +1,68 @@
+# Set up fly
+
+In this page you install the skills, pick which models fly uses, and run your first task. Setup is a clone, one script, and a short conversation.
+
+## Install the skills
+
+Clone the repository and run the installer:
+
+```sh
+git clone <your fly remote> ~/fly
+cd ~/fly
+./install.sh
+```
+
+The script links each `skills/<name>` into `~/.agents/skills/` for Codex and `~/.claude/skills/` for Claude Code, and each `agents/*.md` into `~/.claude/agents/`. One copy serves both hosts. Entries that already exist and do not point into the repo are left alone and reported. `./install.sh --uninstall` removes only the links it made.
+
+Then start a new Claude Code or Codex thread in T3 Code. Skills load when a thread starts.
+
+## Pick your models
+
+Run:
+
+```text
+/setup-fly
+```
+
+[`/setup-fly`](../../skills/setup-fly/SKILL.md) detects the providers and models you have access to, asks for a reasoning effort, shows you each role (code delegates, judgment, the review panels), and asks what you want. Answer the questions. It writes `~/.agents/fly-models.md`, a small file every fly skill reads when it picks a model.
+
+Each line is `role: <providerInstanceId>/<model>@<effort>`, for example `bug-fix: codex/gpt-6.1-sol@xhigh`. A panel role, such as `arena runners`, takes a comma-separated list, and one subagent runs per entry, so the list length sets the panel size. Mix providers on panels, because a second opinion from a different model family is worth more than two from the same one.
+
+OpenAI models run at `xhigh` and Claude models at `high` or below. A skill changes that only when you ask in the current request.
+
+You only override what you care about. A role with no line in the file keeps the skill's default, and a skill that falls back to a default says so in its reply. To restore a default, delete that role's line. When a default changes, a file written before the change still pins the old default, so delete those role lines, or delete the file, then run `/setup-fly` again.
+
+Set a role to `inherit-parent` and that role runs on the current thread's model instead of a named one. It is not a model slug. Setup also configures `swarm workers`, the default model for every `/swarm` worker unless a race names a model for each arm.
+
+## Accept the verification offer, or don't
+
+At the end of setup, `/setup-fly` looks for a way to prove app behavior in your project, either a `verify-*` skill or an existing harness. If it finds neither, it offers once to generate one with [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md).
+
+Say yes and it writes a project-local `verify-<app>` skill that teaches agents to drive your app the way a user does. It proves the skill works once before handing it over. Say no and setup moves on. You can run `/create-verification-skill` yourself any time. [Verify and ship](./06-verify-and-ship.md#create-a-project-verification-skill) covers it in depth.
+
+If you're new to fly, say yes. An agent that can check its own work keeps going until the check passes. An agent that can't hands every result back to you to check by hand. Of everything in this guide, the verification skill pays off the most.
+
+After setup, start a new thread. The model file applies to new sessions.
+
+## Keep the cost in check
+
+fly spends extra tokens on subagents and review panels. That's the price of the rigor. To spend fewer:
+
+- Rerun `/setup-fly` and pick a lower effort or cheaper models. A strong model in the main thread with cheaper, faster models in the code roles is a good split.
+- Set a role to `inherit-parent` so it runs on the thread's own model.
+- Shorten a panel list. Each entry runs one subagent.
+- Save `/fly` for work that needs rigor. A small, obvious edit doesn't.
+
+## Run your first task
+
+Pick something real but small, and describe it the way you'd describe it to a colleague:
+
+```text
+/fly add a --json flag to this command. text output stays byte-identical. verify both.
+```
+
+Watch the todo list. Its first items are the matched playbook's steps copied in, the Feature playbook for this prompt. If `/fly` skips a step, the step stays in the list with `skip: <reason>`, so you can see what it chose not to do.
+
+From here you can type normal follow-ups. Typing `/fly` attaches the skill to one message, and it fades as the thread moves on. To keep it on, start each prompt with `/fly`, or add one line to the repository's `AGENTS.md` or `CLAUDE.md`: `Apply the fly skill to every multi-step task.` Repository instructions load on every turn in both hosts.
+
+Next: [Route work through `/fly`](./02-fly.md).

@@ -1,0 +1,40 @@
+# fly
+
+A personal agent skill stack for T3 Code. One copy of each skill serves both Claude Code and Codex threads.
+
+## Install
+
+```bash
+./install.sh              # link skills into ~/.agents/skills and ~/.claude/skills, agents into ~/.claude/agents
+./install.sh --uninstall  # remove only the links this repo created
+```
+
+Existing entries that don't point at this repo are skipped and reported. Start a new thread, then run `/setup-fly` to pick models per role. The choices land in `~/.agents/fly-models.md`.
+
+## Start here
+
+- `/fly <task>`: the working style. Routes the task to a playbook (feature, bug fix, refactoring, investigation, PR, babysit, shipping, autopilot, and more) and applies the principles.
+- `/fly-help <question>`: which skill, playbook or principle fits a task.
+- `docs/guide/`: the long-form guide.
+
+## Skills
+
+| Group | Skills |
+|---|---|
+| Mode and setup | `fly`, `fly-help`, `setup-fly`, `automate-me` |
+| Understand | `how`, `why`, `teach`, `recall`, `blast-radius`, `bro` |
+| Design and review | `architect`, `arena`, `interrogate`, `swarm`, `no-comments`, `deslop`, `benchmark-checklist` |
+| Verify | `control-ui`, `control-cli`, `create-verification-skill`, `maintain-verification-skill`, `tdd` |
+| Long-running work | `figure-it-out`, `show-me-your-work`, `correct`, `reflect` |
+| Writing | `unslop`, `technical-writing`, `typescript-best-practices` |
+| Principles | `principle-*` (24) |
+
+Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used by `no-comments`).
+
+## Rules
+
+`CONVENTIONS.md` is the spec every skill follows: host tool mapping for Claude Code, Codex and T3, the model config format and defaults, and the approval gates. Commits, pushes, PRs, merges and deploys always need explicit approval in the current request. Auto-merge is never armed, merges happen only for PRs you name, and nothing is pushed straight to `main` or `development` without your approval.
+
+## License
+
+MIT. See `LICENSE` for the original copyright notices this stack is derived from.
