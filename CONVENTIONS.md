@@ -35,7 +35,7 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 
 ## Models
 
-- Role-to-model choices live in `~/.agents/fly-models.md`, written by `setup-fly`. Each line is `role: <providerInstanceId>/<model>@<effort>` or a comma-separated list for panels. `inherit-parent` runs the role on the current thread's model.
+- Role-to-model choices live in `~/.agents/fly-models.md`, written by `setup-fly`. It is a link to `fly-models.md` in this repo, so the choices are versioned. Each line is `role: <providerInstanceId>/<model>@<effort>` or a comma-separated list for panels. `inherit-parent` runs the role on the current thread's model.
 - Skills read that file when they pick a model. If the file or the role line is missing, they use the defaults below and say so.
 - Effort follows the role line: OpenAI models (provider `codex`) run at `xhigh`, Claude models at `high` or below, unless the user asks for different effort in this request.
 - Never use a Fable model. Normal work runs on `codex/gpt-6.1-sol`, tricky work on `codex/gpt-6-astra`, frontend work and anything that explains or communicates to the user on `claudeAgent/claude-opus-5-5`.

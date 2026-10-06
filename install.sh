@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Links fly skills into the Codex and Claude Code skill folders and its
-# agents into Claude Code. Existing entries that do not point at this repo are
-# left alone and reported. Run with --uninstall to remove only this repo's links.
+# Links fly skills into the Codex and Claude Code skill folders, its agents
+# into Claude Code, and fly-models.md to ~/.agents/fly-models.md. Existing
+# entries that do not point at this repo are left alone and reported. Run with
+# --uninstall to remove only this repo's links.
 set -euo pipefail
 
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -44,6 +45,13 @@ for target in "${skill_targets[@]}"; do
     fi
   done
 done
+
+models_link="$HOME/.agents/fly-models.md"
+if [[ "$mode" == "--uninstall" ]]; then
+  unlink_managed "$models_link"
+else
+  link "$repo/fly-models.md" "$models_link"
+fi
 
 mkdir -p "$agent_target"
 for agent in "$repo"/agents/*.md; do

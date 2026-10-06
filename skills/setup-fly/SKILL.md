@@ -39,7 +39,7 @@ Every entry written must name a provider kept in step 1, a model that provider l
 
 ### 5. Write the file
 
-Create `~/.agents/` if it is missing. Write `~/.agents/fly-models.md` as plain text with no frontmatter: a `# budget` line with the chosen label and its target effort, and one line per role, using the same labels fly uses. Each line is `role: <providerInstanceId>/<model>@<effort>`, or a comma-separated list for panels. Overwrite the whole file so re-runs stay idempotent. Shape, shown with the defaults:
+`~/.agents/fly-models.md` is normally a link that `install.sh` points at `fly-models.md` in the fly repo. Resolve it (`readlink`) and write the file it points to, so the change lands in the repo; never replace the link with a plain file. If it is missing or already a plain file, create `~/.agents/` if needed and write it in place. Write it as plain text with no frontmatter: a `# budget` line with the chosen label and its target effort, and one line per role, using the same labels fly uses. Each line is `role: <providerInstanceId>/<model>@<effort>`, or a comma-separated list for panels. Overwrite the whole file so re-runs stay idempotent. Shape, shown with the defaults:
 
 ```
 # fly model configuration. One line per role. Delete a line to fall back to the skill default.

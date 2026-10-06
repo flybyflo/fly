@@ -9,7 +9,7 @@ A personal agent skill stack for T3 Code. One copy of each skill serves both Cla
 ./install.sh --uninstall  # remove only the links this repo created
 ```
 
-Existing entries that don't point at this repo are skipped and reported. Start a new thread, then run `/setup-fly` to pick models per role. The choices land in `~/.agents/fly-models.md`.
+Existing entries that don't point at this repo are skipped and reported. Start a new thread, then run `/setup-fly` to pick models per role. The choices land in `fly-models.md` in this repo, which `install.sh` links to `~/.agents/fly-models.md`.
 
 ## Start here
 
