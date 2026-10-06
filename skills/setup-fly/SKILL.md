@@ -63,6 +63,7 @@ reflect tooling: codex/gpt-6.1-sol@xhigh
 reflect judgment, divergent: codex/gpt-6-astra@xhigh
 reflect synthesizer: claudeAgent/claude-opus-5-5@high
 swarm workers: codex/gpt-6.1-sol@xhigh
+ui driver: codex/gpt-6.1-sol@xhigh
 arena runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
 arena cross-judge pool: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
 architect runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high

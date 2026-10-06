@@ -27,7 +27,7 @@ Write host-neutral instructions. Where a host-specific tool is needed, name the 
 | Recurring or triggered work | `/loop`, `ScheduleWakeup` | — | `schedule_task` (interval, fixed time, webhook) |
 | Watch a PR until checks or reviews change | — | — | `watch_pull_request` / `unwatch_pull_request`; `link_pull_request` for every PR created or worked on |
 | Past chats | `~/.claude/projects/<slug>/*.jsonl` | `~/.codex/sessions/**/*.jsonl` | `t3_thread_search`, `t3_thread_read`, `t3_thread_list` (preferred: covers both) |
-| Drive a web UI | the user's real Chrome via Claude in Chrome (`mcp__claude-in-chrome__*`) | — | `preview_*` tools for app previews |
+| Drive a web or desktop UI | fallback: Claude in Chrome (`mcp__claude-in-chrome__*`) | preferred: a `gpt-6.1-sol` worker using `control-chrome` (real Chrome) or `computer-use` (desktop apps) | `delegate_task` to start that worker; `preview_*` tools as fallback. Order lives in `control-ui` |
 | Write or improve a skill | `skill-creator` | `skill-creator` (`.system`) | — |
 | Multi-agent orchestration script | `Workflow` tool, only when the user opts in | — | — |
 
@@ -62,6 +62,7 @@ reflect tooling: codex/gpt-6.1-sol@xhigh
 reflect judgment, divergent: codex/gpt-6-astra@xhigh
 reflect synthesizer: claudeAgent/claude-opus-5-5@high
 swarm workers: codex/gpt-6.1-sol@xhigh
+ui driver: codex/gpt-6.1-sol@xhigh
 arena runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
 arena cross-judge pool: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
 architect runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high

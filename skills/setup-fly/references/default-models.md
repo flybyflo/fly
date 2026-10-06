@@ -22,6 +22,7 @@ reflect tooling: codex/gpt-6.1-sol@xhigh
 reflect judgment, divergent: codex/gpt-6-astra@xhigh
 reflect synthesizer: claudeAgent/claude-opus-5-5@high
 swarm workers: codex/gpt-6.1-sol@xhigh
+ui driver: codex/gpt-6.1-sol@xhigh
 arena runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
 arena cross-judge pool: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
 architect runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
@@ -32,5 +33,6 @@ Role meanings:
 
 - `frontend`: any code delegate whose change is UI (components, styling, layout, browser-facing behaviour). It takes precedence over the playbook's line and over `hardest tasks`.
 - `hardest tasks`: cross-cutting design, gnarly concurrency, subtle algorithms, outside frontend.
+- `ui driver`: the worker that drives a UI for `control-ui`, using Codex's `control-chrome` (real Chrome) or `computer-use` (desktop apps).
 - `judgment`: plans, reviews and decisions that the user does not read directly.
 - `explanations and prose`: anything written for the user: explanations, summaries, docs, PR descriptions.

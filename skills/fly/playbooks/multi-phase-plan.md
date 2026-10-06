@@ -12,7 +12,7 @@
 
 **Verification.** Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked (the **prove-it-works** principle skill). That sentence is the verification rule. Every verification block opens with it. The live block is mandatory. Ten lanes at the PR head drive the real surface through its control skill, per the **swarm** skill, on the `swarm workers` role from `~/.agents/fly-models.md` (default `codex/gpt-6.1-sol@xhigh`). Each lane is one box with a concrete scenario, the screenshot it saves, and its pass predicate. One lane is the **Regression lane against trunk.** It runs the same load-bearing scenario on trunk and head. If trunk does not have the feature, the lane records that fact and gates the behavior the diff adds plus the end state the user waits for instead of inventing a trunk result. The perf gate is dual-sided. Trunk and head must both produce the named metric. If trunk lacks the feature, also isolate the work the diff adds and set an absolute budget for that work plus the end-to-end state the user waits for. Do not claim a ratio between unlike scenarios. The perf block names the metric, the interleaved probe, the trunk baseline measured first, and the rule with the number that fails. A PR that changes an interaction is review-gated. The operator reviews it in chat with screenshots and a video before merge. A PR that changes no interaction writes `**Review gate.** None. <PR id> is not review-gated.` and no boxes under it.
 
-**Control skill.** Pick it by surface. Browser, Electron, and web UIs use the bundled `control-ui` skill (the user's real Chrome via Claude in Chrome, or the T3 `preview_*` tools). CLIs and TUIs use the bundled `control-cli` skill. A project-local `verify-*` skill from `create-verification-skill` takes precedence when the repo has one. Native mobile uses whatever simulator-driving skill the repo has. A PR that touches two surfaces gets lanes on both. A surface with no control skill is a risk in Appendix C, and its live block still names how each lane drives it.
+**Control skill.** Pick it by surface. Browser, Electron, and web UIs use the bundled `control-ui` skill and its driver order (a `gpt-6.1-sol` worker on the user's real Chrome or Computer Use first). CLIs and TUIs use the bundled `control-cli` skill. A project-local `verify-*` skill from `create-verification-skill` takes precedence when the repo has one. Native mobile uses whatever simulator-driving skill the repo has. A PR that touches two surfaces gets lanes on both. A surface with no control skill is a risk in Appendix C, and its live block still names how each lane drives it.
 
 ````markdown
 # <Program> plan
@@ -120,7 +120,7 @@ Each live lane runs in its own local git worktree at the PR head. Drive through 
 **Review gate.** The operator reviews before merge.
 
 - [ ] Copy lane <n> screenshots into `<media path>/<pr-id>-review-<slug>.png`.
-- [ ] Record a 30 to 60 second video of the change from a lane worktree (T3 `preview_recording_start` and `preview_recording_stop`, or a Claude in Chrome recording). Save it as `<media path>/<pr-id>-review.mp4`.
+- [ ] Record a 30 to 60 second video of the change from a lane worktree (through the `control-ui` driver: the `gpt-6.1-sol` worker's recording, T3 `preview_recording_start` and `preview_recording_stop`, or a Claude in Chrome recording). Save it as `<media path>/<pr-id>-review.mp4`.
 - [ ] Post the screenshots and the video in chat. Stop at merge-ready. Wait for the operator's click.
 
 **Merge.**
