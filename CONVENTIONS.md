@@ -38,7 +38,7 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 - Role-to-model choices live in `~/.agents/fly-models.md`, written by `setup-fly`. It is a link to `fly-models.md` in this repo, so the choices are versioned. Each line is `role: <providerInstanceId>/<model>@<effort>` or a comma-separated list for panels. `inherit-parent` runs the role on the current thread's model.
 - Skills read that file when they pick a model. If the file or the role line is missing, they use the defaults below and say so.
 - Effort follows the role line: OpenAI models (provider `codex`) run at `xhigh`, Claude models at `high` or below, unless the user asks for different effort in this request.
-- Never use a Fable model. Normal work runs on `codex/gpt-6.1-sol`, tricky work on `codex/gpt-6-astra`, frontend work and anything that explains or communicates to the user on `claudeAgent/claude-opus-5-5`.
+- Never use a Fable model. OpenAI work runs on `codex/gpt-6.1-sol`. Frontend work and anything that explains or communicates to the user run on `claudeAgent/claude-opus-5-5`.
 - The defaults table lives once, in `skills/setup-fly/references/default-models.md`; skills point to it instead of repeating values. The copy below mirrors it for reading.
 - Mix providers and model families on the `review panel`. A second opinion is the same brief against a different family.
 
@@ -47,9 +47,9 @@ Defaults:
 ```
 implement: codex/gpt-6.1-sol@xhigh
 frontend: claudeAgent/claude-opus-5-5@high
-review panel: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
+review panel: codex/gpt-6.1-sol@xhigh, claudeAgent/claude-opus-5-5@high
 team review: claudeAgent/claude-opus-5-5@high
-verification: codex/gpt-6-astra@xhigh
+verification: codex/gpt-6.1-sol@xhigh
 explanations and prose: claudeAgent/claude-opus-5-5@high
 how explorer: codex/gpt-6.1-sol@xhigh
 how explainer: claudeAgent/claude-opus-5-5@high
@@ -57,7 +57,7 @@ why investigators: codex/gpt-6.1-sol@xhigh
 why synthesizer: claudeAgent/claude-opus-5-5@high
 recall scanners: codex/gpt-6.1-sol@xhigh
 reflect tooling: codex/gpt-6.1-sol@xhigh
-reflect judgment, divergent: codex/gpt-6-astra@xhigh
+reflect judgment, divergent: codex/gpt-6.1-sol@xhigh
 reflect synthesizer: claudeAgent/claude-opus-5-5@high
 ui driver: codex/gpt-6.1-sol@xhigh
 ```

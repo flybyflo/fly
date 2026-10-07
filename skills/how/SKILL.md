@@ -38,7 +38,7 @@ Each explorer gets the prompt in `references/explorer-prompt.md` with its angle 
 
 Spawn one subagent that explores and explains in one pass:
 
-- Role line: `how explainer`, default `claudeAgent/claude-opus-5-5@high`, when the user asked the question directly. When another skill or playbook runs `how` for grounding, verification, or evidence, use the `verification` role instead (default `codex/gpt-6-astra@xhigh`): its answer goes back to the caller, not to the user.
+- Role line: `how explainer`, default `claudeAgent/claude-opus-5-5@high`, when the user asked the question directly. When another skill or playbook runs `how` for grounding, verification, or evidence, use the `verification` role instead (default `codex/gpt-6.1-sol@xhigh`): its answer goes back to the caller, not to the user.
 
 Build its prompt from `references/explainer-prompt.md` without the explorer-findings section. Go to Step 4.
 

@@ -43,9 +43,9 @@ Each reviewer and the synthesizer name a role line in `~/.agents/fly-models.md` 
 
 | Lens | Role line | Default | Prompt template |
 |---|---|---|---|
-| Judgment | `reflect judgment, divergent` | `codex/gpt-6-astra@xhigh` | `references/judgment-reviewer.md` |
+| Judgment | `reflect judgment, divergent` | `codex/gpt-6.1-sol@xhigh` | `references/judgment-reviewer.md` |
 | Tooling | `reflect tooling` | `codex/gpt-6.1-sol@xhigh` | `references/tooling-reviewer.md` |
-| Divergent | `reflect judgment, divergent` | `codex/gpt-6-astra@xhigh` | `references/divergent-reviewer.md` |
+| Divergent | `reflect judgment, divergent` | `codex/gpt-6.1-sol@xhigh` | `references/divergent-reviewer.md` |
 
 Pass each template verbatim, substituting the transcript pointer (thread id, file path, or digest) where marked. Reviewers return findings in their response body.
 
