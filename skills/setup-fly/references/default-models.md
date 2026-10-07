@@ -12,6 +12,7 @@ hillclimb: codex/gpt-6.1-sol@xhigh
 frontend: claudeAgent/claude-opus-5-5@high
 hardest tasks: codex/gpt-6-astra@xhigh
 judgment: codex/gpt-6-astra@xhigh
+verification: codex/gpt-6-astra@xhigh
 explanations and prose: claudeAgent/claude-opus-5-5@high
 how explorer: codex/gpt-6.1-sol@xhigh
 how explainer: claudeAgent/claude-opus-5-5@high
@@ -34,5 +35,6 @@ Role meanings:
 - `frontend`: any code delegate whose change is UI (components, styling, layout, browser-facing behaviour). It takes precedence over the playbook's line and over `hardest tasks`.
 - `hardest tasks`: cross-cutting design, gnarly concurrency, subtle algorithms, outside frontend.
 - `ui driver`: the worker that drives a UI for `control-ui`, using Codex's `control-chrome` (real Chrome) or `computer-use` (desktop apps).
-- `judgment`: plans, reviews and decisions that the user does not read directly.
+- `judgment`: plans and decisions that the user does not read directly.
+- `verification`: verifiers, reviewers, live checks and evidence-gathering sub-tasks whose result goes back to the parent. Never an explainer role, even when the brief says "explain".
 - `explanations and prose`: anything written for the user: explanations, summaries, docs, PR descriptions.

@@ -53,6 +53,7 @@ hillclimb: codex/gpt-6.1-sol@xhigh
 frontend: claudeAgent/claude-opus-5-5@high
 hardest tasks: codex/gpt-6-astra@xhigh
 judgment: codex/gpt-6-astra@xhigh
+verification: codex/gpt-6-astra@xhigh
 explanations and prose: claudeAgent/claude-opus-5-5@high
 how explorer: codex/gpt-6.1-sol@xhigh
 how explainer: claudeAgent/claude-opus-5-5@high
