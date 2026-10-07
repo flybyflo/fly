@@ -38,7 +38,7 @@ When the model file is missing and it matters, ask whether the user wants to pic
 2. Run [`/setup-fly`](../setup-fly/SKILL.md) in a T3 Code thread. It reads the models T3 Code offers, asks for a reasoning budget, maps a model to each role, and writes `~/.agents/fly-models.md`. Skills read that file each time they pick a model.
 3. Start a real task with `/fly`, a goal, and a check that can pass or fail.
 
-Installing changes nothing until the user invokes a skill. Most fly skills, `/fly` included, load only when typed or when `/fly` runs them. A few, `/setup-fly` among them, can also load from the user's words. The [guide](../../docs/guide/README.md) and [guide page 1](../../docs/guide/01-setup.md) have the details. Offer to word their first prompt with them, per [`references/prompting.md`](references/prompting.md).
+Most fly skills load when typed or when `/fly` runs them. `fly` can also load for nontrivial coding tasks, and repository instructions can require it. The [guide](../../docs/guide/README.md) and [guide page 1](../../docs/guide/01-setup.md) have the details. Offer to word their first prompt with them, per [`references/prompting.md`](references/prompting.md).
 
 If cost is the worry, say where the tokens go and how to spend fewer. fly spends extra tokens on subagents and review panels. Rerun `/setup-fly` and pick a smaller budget or cheaper models. A role set to `inherit-parent` runs on the thread's model, which saves tokens when the thread runs a cheaper model. A shorter panel list runs fewer subagents, one for each entry. Save `/fly` for work that needs rigor.
 
@@ -46,13 +46,13 @@ fly is built for T3 Code threads running Claude Code or Codex. One copy of each 
 
 ## Start a task with `/fly`
 
-`/fly` matches the task to a playbook, copies the playbook's steps into the todo list, and runs the other skills as the steps need them. A step it skips stays in the list as `skip: <reason>`. A good prompt states the goal and how to tell it's done. It doesn't list skills, because a hand-written sequence tends to drop or reorder steps the playbook would keep. Read [`references/prompting.md`](references/prompting.md) before you help word one. [Guide page 2](../../docs/guide/02-fly.md) has examples.
+`/fly` uses Build for code changes and the remaining playbooks for authoring, eval, PRs, and shipping. It copies the playbook's steps into the todo list and runs the other skills as the steps need them. A step it skips stays in the list as `skip: <reason>`. A good prompt states the goal and how to tell it's done. It doesn't list skills, because a hand-written sequence tends to drop or reorder steps the playbook would keep. Read [`references/prompting.md`](references/prompting.md) before you help word one. [Guide page 2](../../docs/guide/02-fly.md) has examples.
 
 `/fly` attaches the skill to the message that starts a task. It fades as the thread moves on, so start each new task with `/fly`. Mid-thread, "new task" makes the mode match a fresh playbook.
 
 `/fly` already uses `fly-agent` for the subagents its playbook steps spawn in Claude Code. To get the same style from a subagent of your own, spawn it with `subagent_type: "fly-agent"`. In Codex or through `delegate_task`, tell the child to read the `fly` SKILL.md in full before any work.
 
-`/fly` never commits, pushes, opens or updates a PR, merges, or deploys without the user's explicit approval for that action in the current request. It never arms auto-merge, merges only PRs the user names, and never pushes directly to `main` or `development` without explicit approval for that push. A user who wants the agent to go further says so in the prompt, as in "commit as you go" or "push and open a draft PR when it's green".
+`/fly` never commits, pushes, opens or updates a PR, merges, or deploys without the user's explicit approval for that action in the current request. It never arms auto-merge, merges only PRs the user names, and never pushes directly to `main` or `development` without explicit approval for that push. A user who wants the agent to go further says so in the prompt, as in "commit as you go" or "commit, push, and open the PR when it's green".
 
 ## Pick a skill
 
@@ -66,10 +66,7 @@ The default answer is `/fly`, which runs most of the others when its steps need 
 | Understand a change or subsystem, explained plainly | [`/teach`](../teach/SKILL.md) |
 | Catch up on their own recent work on a topic | [`/recall`](../recall/SKILL.md) |
 | Know what a small diff could break outside itself | [`/blast-radius`](../blast-radius/SKILL.md) |
-| Settle types and module shape before code that crosses a function boundary | [`/architect`](../architect/SKILL.md) |
-| Get several attempts at one brief, merged into the best one | [`/arena`](../arena/SKILL.md) |
-| Run parallel checks over slices, or race workers, as parallel subagents | [`/swarm`](../swarm/SKILL.md) |
-| Have different models review a diff and try to break it | [`/interrogate`](../interrogate/SKILL.md) |
+| Frame, implement, review, and verify a code change | [Build](../fly/playbooks/build.md) through `/fly` |
 | Fix a bug test-first when a cheap local test exists | [`/tdd`](../tdd/SKILL.md) |
 | Apply TypeScript rules to `.ts` or `.tsx` work | [`/typescript-best-practices`](../typescript-best-practices/SKILL.md) |
 | Clean AI-generated slop out of a diff before commit | [`/deslop`](../deslop/SKILL.md) |
@@ -82,7 +79,7 @@ The default answer is `/fly`, which runs most of the others when its steps need 
 | Give agents a scripted way to drive the app and prove behavior | [`/create-verification-skill`](../create-verification-skill/SKILL.md) |
 | Bring a verification skill and its feature map back in line with the app | [`/maintain-verification-skill`](../maintain-verification-skill/SKILL.md) |
 | Vet a performance number before reporting or acting on it | [`/benchmark-checklist`](../benchmark-checklist/SKILL.md) |
-| Run a large or cross-cutting change, or one to review after stepping away | [`/figure-it-out`](../figure-it-out/SKILL.md) |
+| Run a large or long code change in verifiable units | [Build](../fly/playbooks/build.md) through `/fly` |
 | Keep a decision log during a run, and review it afterward | [`/show-me-your-work`](../show-me-your-work/SKILL.md) |
 | Pick a model for each role and a reasoning budget | [`/setup-fly`](../setup-fly/SKILL.md) |
 | Turn their own working habits into a personal mode skill | [`/automate-me`](../automate-me/SKILL.md) |
@@ -95,18 +92,14 @@ If a skill directory next to this one is missing from the table, read its frontm
 Close calls:
 
 - `/how` explains what the code does. `/why` explains the reasons. `/teach` runs one or both and explains the result plainly.
-- `/arena` gives every worker the same brief and merges the best parts. `/swarm` splits work into slices or a race and returns one report.
-- `/architect` implements right after it settles the design. Add "with checkpoint" to review the design before it writes code.
-- `/interrogate` reviews the diff. `/blast-radius` looks for breakage outside the diff and proves the one fact that makes the change safe.
+- Build's `review panel` reviews the diff. `/blast-radius` looks for breakage outside the diff and proves the one fact that makes the change safe.
 - `/deslop` cleans code before commit. `/unslop` cleans prose. In Claude Code, `/simplify` can stand in for `/deslop`.
-- `/recall` rebuilds context across recent threads. Resuming one specific thread or branch is the Session pickup playbook.
-- `/figure-it-out` designs one rigorous run. The Orchestrate playbook runs a program that spans days and many PRs. The Autonomous run playbook drives one task to a finish condition.
+- `/recall` rebuilds prior context. Build frames the next verifiable unit of code work.
 
 Not in fly:
 
 - `/loop` is a Claude Code built-in. In T3 Code, `schedule_task` runs work on an interval, at a fixed time, or from a webhook.
 - `skill-creator` is the host's built-in for writing a skill, in both Claude Code and Codex.
-- fly has no `/orchestrate` skill. Orchestrate is a `/fly` playbook. If the slash menu shows `/orchestrate`, something else provides it.
 
 ## Playbooks and principles
 
@@ -114,14 +107,12 @@ Playbooks are step lists inside `/fly`, not skills, so they have no slash comman
 
 - "babysit this pr" or "check on pr 123" runs Babysit. It drives the PR to merge-ready and stops there. It doesn't merge; name the PRs to merge, land, or ship in a separate request.
 - "land the stack" runs Shipping.
-- "take over this branch" runs Session pickup.
-- "pause safely" runs Pause safely.
-- "full autopilot on this queue" runs Autopilot-full. "stack them, don't ship" runs Autopilot-stack.
+- Code changes, including long tasks and migrations, run [Build](../fly/playbooks/build.md).
 - "run the eval playbook" runs Eval.
 
 Without `/fly`, a phrase such as "babysit this pr" can start another installed skill for the same job instead. The Playbooks section of [`fly`](../fly/SKILL.md) lists every playbook and when it applies. [Guide page 6](../../docs/guide/06-verify-and-ship.md) covers opening, babysitting, and landing a PR.
 
-fly has no planning skill. The host's plan mode works alongside it. For work that spans phases or stacked PRs, asking `/fly` for a plan runs the [Multi-phase plan playbook](../fly/playbooks/multi-phase-plan.md), which writes the plan and doesn't implement it. For a design question, the Prototype playbook or `/architect` settles it in code first.
+fly has no planning skill. The host's plan mode works alongside it. Build frames the done predicate and data shape, then splits large work into units that each end in a verifiable state. Ask for a plan or prototype explicitly when that is the deliverable.
 
 Principles are one-rule skills that `/fly` reads and cites in its replies. The user rarely invokes one. They steer with the names instead, as in "apply prove it works. show me the real output." Typing `/principle-<name>` still loads one on demand. [Guide page 8](../../docs/guide/08-principles.md) lists them.
 

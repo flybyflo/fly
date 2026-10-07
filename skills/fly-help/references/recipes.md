@@ -23,16 +23,15 @@ Swap in the real paths, skills, and done checks. Informal wording works.
 ## Design and plan
 
 - `/fly prototype a few options for <feature>. take screenshots or videos for me to compare.`
-- `/fly we need <feature>. /architect it first, and answer open questions with prototypes. let me review before proceeding.`
+- `/fly we need <feature>. frame the data shape and answer open questions with prototypes. let me review before implementation.`
 - `/fly write a tutorial for how i would use <new package> first. then /teach me why it beats the current one.`
-- `ask /arena for a second opinion on this thread and our approach.`
 - `/fly turn this design into a plan. small verifiable PRs, each with its own verification steps.`
 - `/fly plan the migration of <library> to <target>. small verifiable PRs. the result must match the original exactly, bugs included.`
 
 ## Review and ship
 
-- `/interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` Read the dismissals too.
-- `/swarm check every package under <dir> against its check script. one worker per package. one report.`
+- `/fly review the whole branch with the review panel. don't change anything yet. focus on real bugs and regressions.` Read the rejected findings too.
+- `/fly check every package under <dir> against its check script. use parallel verification subagents, one per package. one report.`
 - `/fly open the pr. small ordered commits, evidence in the description.`
 - `/fly babysit this pr. get it green.` For status only: `/fly check on pr <number>. anything outstanding?`
 - `/fly land the stack.`
@@ -41,7 +40,6 @@ Swap in the real paths, skills, and done checks. Informal wording works.
 
 - `/fly im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. /loop until done. if you're truly stuck after a few hours, stop and write up why.`
 - `/show-me-your-work catch me up on what you did last night.` Read its Attention section first.
-- `/fly full autopilot on this queue. each item is independent.`
-- `/fly autopilot these changes but stack them, don't ship. i'll land the stack.`
+- `/fly build these changes in small verifiable units. keep a decision log. leave the branch ready for my review.`
 - `/reflect capture what we learned so the next run doesn't repeat it.` Approve only edits that change a future decision.
 - `/bro` restates the last reply in plain words.

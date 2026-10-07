@@ -32,31 +32,23 @@ You pick from things that run, not from descriptions. The agent answers its own 
 /fly turn this design into a plan. small verifiable PRs, each with its own proof.
 ```
 
-Ask only after the design settles. The plan is the deliverable, and it names the playbook that will execute it.
-
-## Get a second opinion on a design
-
-```text
-ask /arena for a second opinion on this thread and our approach
-```
-
-Your current design becomes one candidate among several, and the synthesis tells you whether the panel found something better or confirmed what you had. Cheap insurance before a costly commitment.
+Ask only after the design settles. The plan is the deliverable. Code work follows Build once you approve proceeding.
 
 ## Check independent slices in parallel
 
 ```text
-/swarm check every package under packages/ against its check.sh. one worker per package. one report.
+/fly check every package under packages/ against its check.sh. use parallel verification subagents, one per package. one report.
 ```
 
-Each worker owns one package. The parent waits for every slice and returns one `PASS`, `ISSUES`, or `BLOCKED` report instead of raw worker dumps.
+Each worker owns one package and its own worktree. The parent waits for every slice and reports the evidence and gaps.
 
 ## Review a branch skeptically
 
 ```text
-/interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's an actual bug or regression in behavior.
+/fly review the whole branch with the review panel. don't change anything yet. focus on actual bugs and regressions.
 ```
 
-The qualifiers do real work. "don't change anything yet" keeps it read-only, and the nitpick rule pre-filters the noise so `Act on` findings are worth your time.
+The qualifiers do real work. "don't change anything yet" keeps it read-only, and the parent judges each finding before accepting it.
 
 ## Fix a bug through a failing test
 
@@ -134,17 +126,16 @@ That's the whole prompt. [`/bro`](../../skills/bro/SKILL.md) restates the last m
 
 ## The pitfalls
 
-- **Enumerating skills in the prompt.** "use /how then /architect then /arena" reorders steps the playbook already sequences. State the goal and constraints. Name a skill only to override a default.
+- **Enumerating skills in the prompt.** "use /how then /deslop then /no-comments" reorders steps the playbook already sequences. State the goal and constraints. Name a skill only to override a default.
 - **A vague finish condition.** "make it better" gives `/loop` nothing to check. Give a command or artifact that can pass or fail.
 - **Leading with your theory of the cause.** The agent searches wherever you pointed. Ask it to restate the problem first, then share your hunch.
-- **Taking the first design.** One attempt locks in the first shape the model thought of. Ask for prototypes or `/architect` and pick from evidence.
+- **Taking the first design.** One attempt locks in the first shape the model thought of. Ask for prototypes and pick from evidence.
 - **Polishing an abstract plan.** Adversarial review of a plan with no code behind it invents risks that will never happen. Settle the open questions with prototypes, then review what got built.
 - **Parallel agents in one worktree.** They overwrite each other and the diff becomes archaeology. Say "own worktree per attempt", or launch each as its own T3 thread with a worktree strategy.
 - **Looping before you trust the loop.** A loop that can't verify its own work only makes unchecked work faster. Get the verification skill working first.
 - **Trusting an unvetted number.** A warm cache or a skipped code path can fake a speedup. Run `/benchmark-checklist` before the number goes anywhere.
 - **Correcting the same mistake by hand.** A correction in chat helps one run. `/correct` fixes the repo so no later run repeats it.
-- **Using `/arena` for coverage.** `/arena` repeats one design or code brief, then picks a base and grafts the best parts. `/swarm` partitions slices or declared race arms and aggregates one report.
-- **Accepting every review comment.** Bots and humans both file real catches and noise in one list. `/interrogate` sorts findings into act-on and dismissed buckets with reasons, and you can override either way.
+- **Accepting every review comment.** Bots and humans both file real catches and noise in one list. Build's parent judges each finding and rejects wrong ones with a reason.
 - **Treating `inherit-parent` as a model slug.** It means "run this role on the current thread's model." [Setup](./01-setup.md) covers the roles.
 - **Expecting a run to commit, push, or merge on its own.** Those are approval gates. Name each one you grant in the request, or the run stops there with a ready summary.
 - **Reporting success off a green build.** A build proves it compiles. Ask for the real command, flow, stored value, or profile, and expect the evidence in the reply.

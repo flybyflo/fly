@@ -10,7 +10,7 @@ Every skill in this repo follows the rules below. When a rule and a skill disagr
 - No references to pstack, poteto, Lauren Tan, Cursor, Cursor plugins, Bugbot, Composer, Grok-by-default or `cursor-team-kit` remain in skill text. The only attribution lives in `LICENSE`.
 - Skill names are lowercase-hyphen and match their directory. Frontmatter keys are limited to `name`, `description` and, where the skill should only run when the user invokes it, `disable-model-invocation: true`. Drop Cursor-only keys (`mode`, `icon`, `color`, `reminder`, `alwaysApply`, `is_background`).
 - Skills refer to each other by name (`the how skill`, `/how`). They never assume an install path; a skill locates its own bundled files relative to its own `SKILL.md`.
-- Most skills set `disable-model-invocation: true`, which stops Claude Code's Skill tool from loading them (Codex ignores the key). `fly` itself does not: the model may start it for any nontrivial coding task, and the global AGENTS.md/CLAUDE.md tells it to. A skill that uses another fly skill reads `../<name>/SKILL.md` beside its own directory; `fly`, `fly-agent`, `teach`, `architect` and `comment-sicko` say so explicitly.
+- Most skills set `disable-model-invocation: true`, which stops Claude Code's Skill tool from loading them (Codex ignores the key). `fly` itself does not: the model may start it for any nontrivial coding task, and the global AGENTS.md/CLAUDE.md tells it to. A skill that uses another fly skill reads `../<name>/SKILL.md` beside its own directory; `fly`, `fly-agent`, `teach` and `comment-sicko` say so explicitly.
 
 ## Hosts
 
@@ -40,18 +40,15 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 - Effort follows the role line: OpenAI models (provider `codex`) run at `xhigh`, Claude models at `high` or below, unless the user asks for different effort in this request.
 - Never use a Fable model. Normal work runs on `codex/gpt-6.1-sol`, tricky work on `codex/gpt-6-astra`, frontend work and anything that explains or communicates to the user on `claudeAgent/claude-opus-5-5`.
 - The defaults table lives once, in `skills/setup-fly/references/default-models.md`; skills point to it instead of repeating values. The copy below mirrors it for reading.
-- Mix providers and model families on panels (architect, arena, interrogate, cross-judging): a second opinion is the same brief against a different family.
+- Mix providers and model families on the `review panel`. A second opinion is the same brief against a different family.
 
 Defaults:
 
 ```
-feature, refactoring: codex/gpt-6.1-sol@xhigh
-bug-fix: codex/gpt-6.1-sol@xhigh
-perf-issue: codex/gpt-6-astra@xhigh
-hillclimb: codex/gpt-6.1-sol@xhigh
+implement: codex/gpt-6.1-sol@xhigh
 frontend: claudeAgent/claude-opus-5-5@high
-hardest tasks: codex/gpt-6-astra@xhigh
-judgment: codex/gpt-6-astra@xhigh
+review panel: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
+team review: claudeAgent/claude-opus-5-5@high
 verification: codex/gpt-6-astra@xhigh
 explanations and prose: claudeAgent/claude-opus-5-5@high
 how explorer: codex/gpt-6.1-sol@xhigh
@@ -62,12 +59,7 @@ recall scanners: codex/gpt-6.1-sol@xhigh
 reflect tooling: codex/gpt-6.1-sol@xhigh
 reflect judgment, divergent: codex/gpt-6-astra@xhigh
 reflect synthesizer: claudeAgent/claude-opus-5-5@high
-swarm workers: codex/gpt-6.1-sol@xhigh
 ui driver: codex/gpt-6.1-sol@xhigh
-arena runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
-arena cross-judge pool: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
-architect runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
-interrogate reviewers: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
 ```
 
 When the parent and the chosen role share a provider, prefer the host's native subagent tool when it can run that model; otherwise use `delegate_task`.
@@ -79,7 +71,7 @@ These override any autonomy wording in a skill or playbook, including "never blo
 - **Never arm auto-merge.** No `gh pr merge --auto`, no merge-queue enqueue, and no auto-merge in any other form, even when asked to "merge when ready". For a PR the user named, watch it and run the merge yourself once it is mergeable.
 - **Merge a PR** only when the user names it in the current request ("merge #123", "land #12 through #15", "land this stack") and it is merge-ready when you run the merge. A standing or blanket grant ("owners may merge after a clean verdict", "full autonomy", a brief or `preferences.md` line) never covers a merge.
 - **Never push directly to `main` or `development`**, force-push included, unless the user explicitly approves that push to that branch in the current request. Blanket grants never cover it. Work goes on a feature branch and reaches `main` or `development` through a PR the user merges or names for merging.
-- **Commit, push other branches, open or update a PR, force-push a feature branch, deploy:** only after the user explicitly approves that action in the current request. Approval for one PR or one push does not carry to the next. Autopilot and shipping flows prepare everything, run every check, then stop at the gate with a ready summary unless the current request already grants that exact action.
+- **Commit, push other branches, open or update a PR, force-push a feature branch, deploy:** only after the user explicitly approves that action in the current request. Approval for one PR or one push does not carry to the next. Build and shipping flows prepare everything, run every check, then stop at the gate with a ready summary unless the current request already grants that exact action.
 - **Always ask first** for: Next.js proxy/middleware behaviour, `next.config.*`, authentication or authorization, new CI checks or workflows, image or video files added to version control, data deletion, customer-facing messages, anything outward-facing that publishes content.
 - **Proceed without asking** on reversible local work: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts.
 - Branches stay clean and based on their intended base (usually `main`). Never merge unrelated branches in to resolve conflicts.

@@ -1,6 +1,6 @@
 # Route work through `/fly`
 
-`/fly` is the front door. You give it a goal, it matches one of twenty-three playbooks, copies that playbook's steps into the todo list, and calls the other skills as the steps need them. In this page you learn what a good prompt looks like, and how little of one you actually need.
+`/fly` is the front door. Give it a goal. It uses Build for code changes and a focused playbook for authoring, eval, PRs, or shipping. It copies the playbook's steps into the todo list and calls other skills as needed. In this page you learn what a good prompt looks like, and how little of one you actually need.
 
 ## What happens to your prompt
 
@@ -9,21 +9,21 @@ flowchart TD
     A[Your prompt] --> B[fly]
     B --> C[Read the Principles section]
     C --> D{Match the task}
-    D -->|Read-only question| E[Investigation]
-    D -->|Defect| F[Bug fix]
-    D -->|New behavior| G[Feature]
-    D -->|Structure only| H[Refactoring]
-    D -->|Measured slowness| I[Perf issue]
-    D -->|Large work or no match| J[figure-it-out]
-    E --> K[Verify and report]
-    F --> K
-    G --> K
-    H --> K
-    I --> K
-    J --> K
+    D -->|Code change| E[Build]
+    E --> F[Frame]
+    F --> G[Implement]
+    G --> H[Review loop]
+    H --> I[Verification loop]
+    I --> J[Report and approval gate]
+    D -->|Skill work| K[Authoring or eval]
+    D -->|PR work| L[Opening a PR, Babysit, or Shipping]
+    K --> J
+    L --> J
 ```
 
-The diagram shows the common routes. There are also playbooks for hillclimbing a metric, diagnosing runtime symptoms and captured traces, prototypes, visual parity, authoring and evaluating skills, autonomous runs, babysitting a PR or stack to merge-ready, shipping a verified stack, running a PR queue on autopilot, orchestrating project-scale programs, session pickup, pausing safely, multi-phase plans, and worktree cleanup. The [playbook directory](../../skills/fly/playbooks/) has the full set.
+Build covers features, bug fixes, refactors, performance changes, UI work, migrations, and long tasks. Its review and verification loops each stop after three rounds if findings remain open. The [playbook directory](../../skills/fly/playbooks/) also contains authoring-a-skill, eval, babysit, shipping, and opening-a-pr.
+
+Read-only questions use the relevant skill, such as `/how`, `/why`, or `/recall`, and respect a request to leave code untouched.
 
 ## Say the goal, not the ceremony
 
@@ -33,7 +33,7 @@ You don't write a spec. You say what's wrong or what you want, plus anything you
 /fly users get two notifications after a retry. repro first, then fix and verify.
 ```
 
-That's a Bug fix prompt. "repro first" is a real constraint, not politeness, and the playbook honors it. Watch the todo list fill with the Bug fix steps. A skipped step stays visible with `skip: <reason>`.
+That's a Build prompt. "repro first" is a real constraint, and framing a bug requires a reproduction on the real surface. Watch the todo list fill with Build's steps. A skipped step stays visible with `skip: <reason>`.
 
 ## What goes in a prompt
 
@@ -90,7 +90,7 @@ A long chat accumulates context from the last task. When you change subjects, sa
 /fly new task. figure out why the cache entry survives logout. don't change any code yet.
 ```
 
-"new task" tells `/fly` to re-match rather than continue the prior playbook. "don't change any code yet" pins this one to Investigation. Without those two phrases, a mode mid-Feature tends to treat your question as the next feature step.
+"new task" tells `/fly` to re-match rather than continue the prior task. "don't change any code yet" keeps this one read-only. Without those two phrases, an agent building a feature may treat your question as the next implementation step.
 
 ## Give parallel work its own worktree
 
@@ -104,14 +104,6 @@ Ask for the worktree up front when the base matters:
 
 Each task in its own branch and worktree means no agent stomps another's files. Worktrees cost disk and machine resources, so a laptop runs only a handful at once. The [Opening a PR playbook](../../skills/fly/playbooks/opening-a-pr.md) already works from a worktree for code changes, so mostly you only say this when a specific base or location matters.
 
-Worktrees accumulate. When disk gets tight, ask:
-
-```text
-/fly what's eating my disk? prune the worktrees that are safe to prune.
-```
-
-The [Worktree cleanup playbook](../../skills/fly/playbooks/worktree-cleanup.md) classifies every worktree by merge state, uncommitted work, and which threads still touch it. It deletes only what that evidence clears and pauses for your call on anything holding uncommitted work.
-
 ## Leave it running
 
 When you step away, say what done means and go:
@@ -120,9 +112,9 @@ When you step away, say what done means and go:
 /fly im stepping away. keep going until the migration check reports zero old callers. log your decisions.
 ```
 
-Work you'll review later routes through [`/figure-it-out`](../../skills/figure-it-out/SKILL.md), which designs the run's phases and keeps a [`/show-me-your-work`](../../skills/show-me-your-work/SKILL.md) decision log. [Run work while you sleep](./07-overnight.md) covers the full overnight contract.
+Long code work stays in [Build](../../skills/fly/playbooks/build.md). It splits the task into verifiable units and keeps a [`/show-me-your-work`](../../skills/show-me-your-work/SKILL.md) decision log. [Run work while you sleep](./07-overnight.md) covers the full overnight contract.
 
-**Pitfall:** don't enumerate skills in your prompt ("use /how, then /architect, then /arena..."). The playbook already sequences them, and a hand-written sequence usually reorders or drops steps the playbook would have kept. Name a skill only when you want to override a specific choice.
+**Pitfall:** don't enumerate skills in your prompt ("use /how, then /deslop, then /no-comments..."). The playbook already sequences them, and a hand-written sequence usually reorders or drops steps the playbook would have kept. Name a skill only when you want to override a specific choice.
 
 Read [`fly`](../../skills/fly/SKILL.md) itself for the full routing rules.
 

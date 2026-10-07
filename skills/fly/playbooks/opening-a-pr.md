@@ -1,6 +1,6 @@
 ### Opening a PR
 
-Invoked at the end of every other playbook.
+Use after the Build review and verification loops pass, and when other playbooks prepare a PR.
 
 **Gate.** Commit, push, `gh pr create`, `gh pr edit`, `gh stack submit`, and force-push run only when the user's current request explicitly grants that exact action. Approval for one PR does not carry to the next. Without the grant, do everything below up to the first gated command, then stop with a ready summary: the branch and its base, the commit list, the drafted title and body, the verification you ran, and the exact commands that would publish it. Before opening or updating a PR, run the repo's review skill (for example `team-review`) on the branch when the repo provides one.
 
@@ -21,9 +21,9 @@ Put each section under a `##` heading, not a bold lead-in, so the sections stand
 - `## Scope` always names what the PR covers and what it deliberately leaves out, for example a related follow-up or a known gap. Use one to three short items. Do not list symbols or paths, and do not write a file-by-file essay.
 - `## Tradeoffs` names only rejected alternatives that a reviewer would otherwise ask about. Skip this section when there was no real choice.
 - `## Blast Radius` gives one or two sentences on who or what the change touches and why that is safe or risky. If main is red, state the cost of leaving it red.
-- `## Verification` has one to three bullets. Each bullet names a real run path and its outcome. For a performance change, report one primary number with its unit in `before → after` form. Link the arena or swarm directory for the remaining evidence. Do not include sample-size methodology, swarm recitals, or metric tables.
+- `## Verification` has one to three bullets. Each bullet names a real run path and its outcome. For a performance change, report one primary number with its unit in `before → after` form. Link an evidence artifact for the remaining details. Do not include sample-size methodology, worker logs, or metric tables.
 
-After these sections, attach videos or screenshots when they prove a claim. Do not paste full SHAs, swarm or arena lane recitals, lever-correction essays, file-by-file checklists, or "CLEAN" verdicts. Put these details in a linked artifact. A commit body does not restate its subject.
+After these sections, attach videos or screenshots when they prove a claim. Do not paste full SHAs, worker-by-worker recitals, lever-correction essays, file-by-file checklists, or "CLEAN" verdicts. Put these details in a linked artifact. A commit body does not restate its subject.
 
 **Forge.** Use the GitHub CLI (`gh`) for every PR operation: create, edit, view, watch, and merge. Use `gh stack` per the `gh-stack` skill for stacks. Do not require Graphite (`gt`).
 
@@ -35,4 +35,4 @@ After these sections, attach videos or screenshots when they prove a claim. Do n
 
 **Babysit.** Opening a PR does not start a babysit. Post the URL and keep building. Finish the phase or stack first. Run a separate babysit pass only when the user asks for one after the whole stack exists. A babysit for each new PR stalls the build and spends checks on commits that later waves restart. Push back when feedback drifts from intent.
 
-A subagent that opens a PR runs `interrogate`, `/deslop`, react-doctor for React diffs, and `/no-comments`, and posts the URL. Then it returns to the parent without babysitting, unless it is an Autopilot-full or Autopilot-stack owner. That owner's brief assigns the babysit loop and is the ask `playbooks/babysit.md` waits for. The owner starts the loop after its code-ready report and reports merge-ready or STACK-READY as its playbook says. The rules here and in `playbooks/babysit.md` that hold babysitting until a whole stack is built do not apply to that owner.
+A subagent that opens a PR first completes Build's review and verification loops and runs `/no-comments` before review. It posts the URL and returns to the parent. Babysitting starts only when the user asks for it.

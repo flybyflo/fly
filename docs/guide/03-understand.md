@@ -12,7 +12,7 @@ When the cause is unclear, ask for findings, not a fix:
 /fly investigate why background jobs time out every few hours. give me what we know, what data you used, and your best hypotheses. don't change any code yet.
 ```
 
-"don't change any code yet" routes this to the [Investigation playbook](../../skills/fly/playbooks/investigation.md). It runs `/how`, adds `/why` for questions about motivation, and returns a cited explanation. For a choice between options, it returns a recommendation with a trade-offs table. Asking "what data you used" makes the agent separate its evidence from its guesses. When the findings point at a fix, start the fix as a new task.
+"don't change any code yet" keeps the work read-only. Use `/how` to trace behavior and `/why` for the reasons and history. Asking "what data you used" makes the agent separate its evidence from its guesses. When the findings point at a fix, start the fix as a new task.
 
 ## Trace behavior with `/how`
 
@@ -60,9 +60,9 @@ Teaching helps the agent as much as you. An agent that has to explain its work m
 /recall my work on the virtualized list from yesterday, then read this bug report.
 ```
 
-If you want to resume one specific thread, that's the Session pickup playbook below, not `/recall`.
+For a named prior thread, give `/recall` that thread and use its brief to frame the next unit of work.
 
-## Take over prior work with Session pickup
+## Continue prior work with Build
 
 When another agent (or you, last week) left a branch mid-flight:
 
@@ -70,7 +70,7 @@ When another agent (or you, last week) left a branch mid-flight:
 /fly take over this branch. read the decision log, figure out what's done, and continue from there. don't redo finished work.
 ```
 
-The [Session pickup playbook](../../skills/fly/playbooks/session-pickup.md) treats the prior trail as authoritative. It reconstructs the branch state and decisions, names the resume point, and verifies inherited claims against the original goal instead of re-deriving everything from scratch.
+Read the branch state and decision log, then frame the next unit with [Build](../../skills/fly/playbooks/build.md). Check inherited claims against the original goal before continuing.
 
 **Pitfall:** don't skip this page's skills because "the agent will read the code anyway." An agent that starts editing without a traced model tends to fix the symptom at the first plausible spot. `/how` first is cheaper than the second bug.
 

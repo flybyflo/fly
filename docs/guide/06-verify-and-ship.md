@@ -17,7 +17,7 @@ Now the agent has three checks it can run, not a mood to satisfy. When the reply
 Match the check to the change:
 
 - A CLI change runs the real command.
-- A UI change walks the changed flow in the running app. When it must match a reference pixel for pixel, the [Visual parity playbook](../../skills/fly/playbooks/visual-parity.md) diffs screenshots against a frozen baseline instead of judging by eye.
+- A UI change walks the changed flow in the running app. When it must match a reference pixel for pixel, compare screenshots against a frozen baseline.
 - A parser or migration replays a saved input.
 - A perf change compares before and after profiles.
 - A storage change reads back the written value.
@@ -44,7 +44,7 @@ A before-and-after number is the easiest evidence to get wrong by accident. A wa
 6. Does it matter end to end, on the path a user waits on?
 7. Did the work actually happen inside the timed region?
 
-The verdict comes back as faster, slower, no measurable difference, or inconclusive, with the run count, range, and limiter. It says inconclusive when it can't name the limiter or a side ran untuned. `/fly` already runs the checklist inside the Perf issue and Hillclimb playbooks, so you type it yourself when you measured something outside them, or when someone else's number looks too good. It's the working form of the [Explain the Number principle](../../skills/principle-explain-the-number/SKILL.md).
+The verdict comes back as faster, slower, no measurable difference, or inconclusive, with the run count, range, and limiter. It says inconclusive when it can't name the limiter or a side ran untuned. Build runs the checklist before a performance baseline. `/fly` also requires it before reporting or acting on a measured number, so type it yourself when checking someone else's claim. It's the working form of the [Explain the Number principle](../../skills/principle-explain-the-number/SKILL.md).
 
 ## Create a project verification skill
 
@@ -68,7 +68,7 @@ From then on, "verify it in the app" is a step any agent can execute, in this re
 /fly repro this with /verify-<app>. if it repros on main, fix it and show me a video as proof.
 ```
 
-Once the verify skill works, a [`/swarm`](../../skills/swarm/SKILL.md) can split a full pass by feature-map entry and aggregate the results. A swarm of verifiers also confirms a perf win over a big enough sample, or fuzzes the app for regressions before a PR ships.
+Once the verify skill works, parallel subagents on the `verification` role can split a full pass by feature-map entry. Give each one its own worktree and aggregate the evidence and gaps in one report.
 
 Treat the verification skill as infrastructure, not a one-off. Commit it, so every person and every agent on the team drives the app the same way. Then [build the lever](../../skills/principle-build-the-lever/SKILL.md). When agents keep writing throwaway scripts to click through the app, ask for a small control CLI that the skill calls instead. Agents spend fewer tokens, and every run becomes repeatable. A CLI that agents use well has these traits:
 
@@ -94,12 +94,12 @@ Apps change and feature maps rot. Run this at least once a day, ideally on a sch
 ## Open the PR
 
 ```text
-/fly open the pr. small ordered commits, evidence in the description.
+/fly commit, push, and open the pr. small ordered commits, evidence in the description.
 ```
 
 The [Opening a PR playbook](../../skills/fly/playbooks/opening-a-pr.md) works from a worktree, rebases the work into small ordered commits, cleans the diff, unslops the prose, creates the PR with `gh`, and returns the PR link. Five narrow PRs beat one fat one, and stacked follow-ups beat a growing branch.
 
-Committing, pushing, and opening the PR are approval gates. "open the pr" in the prompt above grants all three for this PR. Leave it out and the playbook prepares the commits, runs every check, and stops with a ready summary. Approval for one PR does not carry to the next.
+Committing, pushing, and opening the PR are approval gates. Name each action in the request, such as "commit, push, and open the PR". Leave it out and the playbook prepares the commits, runs every check, and stops with a ready summary. Approval for one PR does not carry to the next.
 
 ## Drive the PR to merge-ready with Babysit
 
@@ -109,7 +109,7 @@ An open PR starts collecting blockers immediately. Checks fail, reviewers commen
 /fly babysit this pr. get it green.
 ```
 
-Babysit watches the PR (`watch_pull_request` in T3 Code, polling `gh` elsewhere) and takes blockers in order: conflicts, then review threads, then CI. Every known fix batches into one push, so the checks restart once instead of after every fix. Each push is a gate; "get it green" grants the pushes for this PR. The comment triage is skeptical, because humans and bots file real catches and noise in the same list. A real finding gets a fix, and noise gets dismissed with the disproof posted on the thread. When all you want is status, ask smaller and Babysit answers without starting the loop:
+Babysit watches the PR (`watch_pull_request` in T3 Code, polling `gh` elsewhere) and takes blockers in order: conflicts, then review threads, then CI. Every known fix batches into one push, so the checks restart once instead of after every fix. Commit, push, PR updates, and published replies each need explicit approval. "get it green" grants none of them. The comment triage is skeptical, because humans and bots file real catches and noise in the same list. A real finding gets a local fix, and noise gets dismissed with evidence. Posting a reply waits for approval. When all you want is status, ask smaller and Babysit answers without starting the loop:
 
 ```text
 /fly check on pr 123. anything outstanding?

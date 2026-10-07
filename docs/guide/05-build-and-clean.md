@@ -1,8 +1,8 @@
 # Build the change and clean the diff
 
-The build playbooks share one discipline. Say what you observed, let the playbook demand the evidence. This page shows what to put in the prompt for each common build task, then the cleanup habit that keeps diffs reviewable.
+The [Build playbook](../../skills/fly/playbooks/build.md) covers every code change. Say what you observed and how you will prove the result. This page shows what to put in the prompt for each common build task, then the cleanup habit that keeps diffs reviewable.
 
-## Prompt each build playbook with what you know
+## Prompt Build with what you know
 
 A bug prompt states the symptom and asks for a reproduction first:
 
@@ -28,17 +28,21 @@ A perf prompt states the measurement, not a vibe:
 /fly startup takes 1.8s on this fixture. trace it, fix the measured cause, show me before and after.
 ```
 
-Each of these routes to its playbook ([Bug fix](../../skills/fly/playbooks/bug-fix.md), [Feature](../../skills/fly/playbooks/feature.md), [Refactoring](../../skills/fly/playbooks/refactoring.md), [Perf issue](../../skills/fly/playbooks/perf-issue.md)), and the playbook supplies the steps you didn't type: reproduce before fixing, name the data shape before implementing, pin behavior before restructuring, profile before optimizing.
+Each of these uses Build. Frame the done predicate and data shape first. Reproduce a bug on the real surface before fixing it, and measure a performance baseline with [`/benchmark-checklist`](../../skills/benchmark-checklist/SKILL.md) before optimizing. Large work splits into units that each end in a verifiable state.
 
-For sustained improvement of one number, there's the [Hillclimb playbook](../../skills/fly/playbooks/hillclimb.md). Give it the metric, a target, and a floor on attempts, and it loops one hypothesis at a time with a frozen measurement harness. It keeps wins and reverts everything else.
-
-Both perf playbooks run [`/benchmark-checklist`](../../skills/benchmark-checklist/SKILL.md) on their numbers. Perf issue vets its baseline and every number after it, and Hillclimb vets its harness before freezing it. [Verify and ship](./06-verify-and-ship.md#vet-a-measured-number-with-benchmark-checklist) shows when to type it yourself.
-
-Sometimes you want the cause before any fix. For a live symptom, such as a leak, an idle CPU spin, or a visual glitch, the [Runtime forensics playbook](../../skills/fly/playbooks/runtime-forensics.md) instruments the running process. For a profile you already captured, the [Trace forensics playbook](../../skills/fly/playbooks/trace-forensics.md) reads the artifact and maps the hot frame to source. Both return a diagnosis, not a fix:
+Sometimes you want the cause before any fix. Say so and give the agent the live symptom or captured profile:
 
 ```text
 /fly here's a cpuprofile from the slow startup. tell me where the time goes and which source lines own it. no fix yet.
 ```
+
+## Review and verify each unit
+
+Build delegates non-UI code to `implement` and UI code to `frontend`. The `review panel` checks the diff and brief in parallel. The parent judges each finding and sends accepted blocking findings to a fresh implementation agent. The loop ends when no blocking findings remain, or stops after three rounds with the open findings reported.
+
+The verification loop runs `/deslop` and `/react-doctor` for React changes. A `verification` agent checks the applicable `AGENTS.md` and `CLAUDE.md` rules while a `team review` agent runs the repo's review workflow. Then the agent runs the typecheck, lint, affected tests, and proof on the real surface. Accepted findings trigger another pass through the whole block, with the same three-round limit.
+
+The report states what changed, what the loops found and fixed, what remains open, and the proof. Commit, push, and PR actions wait for explicit approval.
 
 ## Write the failing test first with `/tdd`
 

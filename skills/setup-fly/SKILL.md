@@ -31,7 +31,7 @@ Claude effort above `high` is off the menu by default. Offer `unlimited (max rea
 
 **(b) Apply it.** Build the working table from `references/default-models.md`, and on a re-run keep any role you changed by model, list, or alias (`inherit-parent`). The budget sets the effort of every entry, panel entries included: `large` sets OpenAI entries (provider `codex`) to `xhigh` and Claude entries to `high`, `medium` sets them to `high` and `medium`, `small` to `medium` and `low`, and an explicitly requested `unlimited` budget sets every entry to `max`. The ladder is `max` > `xhigh` > `high` > `medium` > `low`, with a provider's `extra-high` value standing for `xhigh`. Write the effort as the value id the model's reasoning option uses. If the model does not offer the target effort, use the highest value it offers at or below the target, else mark the role as needing a choice. `inherit-parent` does not change. So `small` turns `claudeAgent/claude-opus-5-5@high` into `claudeAgent/claude-opus-5-5@low`, and `large` keeps every default as it is.
 
-**(c) Show the roles and confirm.** Show every role with its value, marking any entry whose provider or model is not in the detected set as needing a choice. Also list each line step 2 dropped. Ask whether to accept as-is or change specific roles, offering the detected models grouped by provider, plus `inherit-parent` (the role runs on the current thread's model). Use `AskUserQuestion` in Claude Code, a plain question in Codex. Any detected model is a valid pick, including models outside the defaults such as a Grok model the user has enabled. For panel roles (arena runners, architect runners, interrogate reviewers) the value is a list, and one subagent runs per entry, alias entries included, so the list length sets the count. Recommend mixing providers and model families on panels, since a second opinion is the same brief against a different family. `arena cross-judge pool` is also a list, but Arena selects one value from it whose model family differs from the parent's when possible. `swarm workers` is the default model for every worker unless a race or comparison assigns another model per arm.
+**(c) Show the roles and confirm.** Show every role with its value, marking any entry whose provider or model is not in the detected set as needing a choice. Also list each line step 2 dropped. Ask whether to accept as-is or change specific roles, offering the detected models grouped by provider, plus `inherit-parent` (the role runs on the current thread's model). Use `AskUserQuestion` in Claude Code, a plain question in Codex. Any detected model is a valid pick, including models outside the defaults such as a Grok model the user has enabled. The only panel role is `review panel`. Its value is a list, and one reviewer runs per entry, alias entries included, so the list length sets the count. Recommend mixing providers and model families. Role meanings live in `references/default-models.md`.
 
 ### 4. Validate
 
@@ -46,13 +46,10 @@ Every entry written must name a provider kept in step 1, a model that provider l
 # Format: role: <providerInstanceId>/<model>@<effort>, or a comma-separated list for panels.
 # `inherit-parent` as a value: the role runs on the current thread's model. Alias entries in a panel list still count toward its fan-out.
 # budget: large (OpenAI xhigh, Claude high)
-feature, refactoring: codex/gpt-6.1-sol@xhigh
-bug-fix: codex/gpt-6.1-sol@xhigh
-perf-issue: codex/gpt-6-astra@xhigh
-hillclimb: codex/gpt-6.1-sol@xhigh
+implement: codex/gpt-6.1-sol@xhigh
 frontend: claudeAgent/claude-opus-5-5@high
-hardest tasks: codex/gpt-6-astra@xhigh
-judgment: codex/gpt-6-astra@xhigh
+review panel: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
+team review: claudeAgent/claude-opus-5-5@high
 verification: codex/gpt-6-astra@xhigh
 explanations and prose: claudeAgent/claude-opus-5-5@high
 how explorer: codex/gpt-6.1-sol@xhigh
@@ -63,12 +60,7 @@ recall scanners: codex/gpt-6.1-sol@xhigh
 reflect tooling: codex/gpt-6.1-sol@xhigh
 reflect judgment, divergent: codex/gpt-6-astra@xhigh
 reflect synthesizer: claudeAgent/claude-opus-5-5@high
-swarm workers: codex/gpt-6.1-sol@xhigh
 ui driver: codex/gpt-6.1-sol@xhigh
-arena runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
-arena cross-judge pool: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
-architect runners: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
-interrogate reviewers: codex/gpt-6-astra@xhigh, claudeAgent/claude-opus-5-5@high
 ```
 
 ### 6. Confirm

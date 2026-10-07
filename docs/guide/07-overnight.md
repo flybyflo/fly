@@ -30,28 +30,31 @@ Walk through what each line buys you:
 - "done means..." turns the goal into checks every iteration can run.
 - "fresh worktree off `<base>`" keeps the run from colliding with anything else you have open.
 - "you may commit ... without asking" is the approval for one gated action. Commits, pushes, PRs, and merges each need their own words in the request. Name the ones you grant, and the run stops at any gate you left out with a ready summary.
-- `/loop` is Claude Code's built-in recurring prompt, not an fly skill. In T3 Code, `schedule_task` re-runs a prompt on an interval, at a fixed time, or on a webhook, and works for Codex threads too. The [Autonomous run playbook](../../skills/fly/playbooks/autonomous-run.md) uses whichever the host offers to re-check the finish condition on events or a heartbeat.
+- `/loop` is Claude Code's built-in recurring prompt, not an fly skill. In T3 Code, `schedule_task` re-runs a prompt on an interval, at a fixed time, or on a webhook, and works for Codex threads too. Each run keeps the same finish condition and respects the approval gates.
 - The escape hatch lets it stop at a genuine dead end and write up why, which beats eight hours of creative goal reinterpretation.
 
-Because you'll review this work after stepping away, `/fly` routes it through [`/figure-it-out`](../../skills/figure-it-out/SKILL.md), which designs the run's phases before any code and wires in the decision log.
+Long code work uses [Build](../../skills/fly/playbooks/build.md). It frames the task, splits it into verifiable units, and keeps a decision log. Each unit runs the implementation, review, and verification steps. Each loop stops after three rounds if findings remain open.
 
-To stop a run on purpose, tell the agent to pause, or that you're about to go offline or restart T3 Code. The [Pause safely playbook](../../skills/fly/playbooks/pause-safely.md) finishes or backs out of the current step, commits a work-in-progress checkpoint if the request allowed commits, and writes a resume note. A fresh thread picks the work up from that note through the Session pickup playbook. Saying "keep going" never triggers a pause.
+To stop a run, tell the agent to pause and record the current state and open work. A fresh thread can read that note and the decision log, then frame the next unit. A checkpoint commit still needs approval.
 
 ## What the loop does all night
 
 ```mermaid
 flowchart TD
-    A[Check the finish condition] --> B[Make the smallest justified change]
-    B --> C[Verify against the real artifact]
-    C --> D{Progress?}
-    D -->|Yes| E[Commit]
-    D -->|No| F[Discard]
-    E --> G[Log one decision row]
-    F --> G
-    G --> A
+    A[Frame the task and verifiable units] --> B[Implement one unit]
+    B --> C[Review loop, at most 3 rounds]
+    C --> D{Blocking findings remain?}
+    D -->|Yes| E[Report open work and stop]
+    D -->|No| F[Verification loop, at most 3 rounds]
+    F --> G{Checks and proof pass?}
+    G -->|No| E
+    G -->|Yes| H[Log the result]
+    H --> I{Another unit?}
+    I -->|Yes| B
+    I -->|No| J[Report and approval gate]
 ```
 
-One change, one check, one log row, every iteration. Changes that didn't help get discarded, not left to ride. A plateau means pivot, not stop, and the finish condition never quietly relaxes to declare victory.
+The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. Commit, push, PR, merge, and deploy each wait for explicit approval.
 
 ## The morning audit
 
@@ -65,52 +68,9 @@ When you're back, ask for the run in review form:
 
 Before the skill hands back its summary, it spawns a reviewer on a different model family to read the trail and the transcript, and the reply ends with an Attention section listing what deserves your scrutiny. Read that section first, then the log rows it points at. You're auditing decisions, not re-reading the whole night.
 
-## When the night holds a queue, not a task
-
-The contract above drives one task to one finish condition. Some nights hold more, a queue of independent changes or a whole program. Three playbooks scale the same trust up.
-
-[Autopilot-full](../../skills/fly/playbooks/autopilot-full.md) runs a queue of independent PRs to merge-ready. Each PR gets one owner agent that carries it from build to merge-ready. A swarm of fresh verifiers starts a round at the owner's code-ready head and again at every later push that changes the patch. Only a clean verdict on the current patch makes a PR merge-ready. You decide every merge in the morning:
-
-```text
-/fly full autopilot on this queue. each item is independent. commit, push and open a pr for each one. i want them merge-ready by morning.
-```
-
-The prompt names every gated action it grants: commit, push, PR. Merging is never granted up front; name the PRs to land once you've seen the verdicts. Leave one out and each owner prepares its PR, runs every check, and stops at that gate with a ready summary.
-
-[Autopilot-stack](../../skills/fly/playbooks/autopilot-stack.md) runs the same owner loop but ships nothing. You wake up to one linear base-branch stack with a verifier's verdict on every link, and you review and land it yourself. Pick it over Autopilot-full when the changes are coupled, or when you want your own eyes on the work before anything merges:
-
-```text
-/fly autopilot these five changes but stack them, don't ship. commit and push the stack. i'll land it in the morning.
-```
-
-[Orchestrate](../../skills/fly/playbooks/orchestrate.md) is for a program that outlives any single agent: multi-day, many stacked PRs, fleets of subagents under one standing coordinator thread. The coordinator authors briefs, collects what its subagents finish, keeps the lowest unmerged PR green, and never writes code itself. It's deliberately heavy machinery. If one agent could finish the work in a session, the playbook itself routes you back to the overnight contract above:
-
-```text
-/fly orchestrate the store migration. own it until every package is converted and merged. i'll check in twice a day.
-```
-
-## Run many threads in parallel
-
-T3 Code gives one coordinator agent a persistent thread. The coordinator doesn't write code. It launches worker threads with `t3_thread_launch`, each in its own worktree, and the workers can be Claude Code or Codex threads. That's the shape the Orchestrate playbook expects. Start your prompts to the coordinator with `/fly`, and the threads it launches follow the playbooks.
-
-Everything runs on your machine. Nothing runs elsewhere, so the laptop stays on and awake for the night, and the number of parallel worktrees is bounded by its disk and CPU.
-
-A few habits help:
-
-- Give each body of work its own thread, such as a feature, a migration, a perf push, or a tech-debt cleanup. Several can run side by side.
-- Point the coordinator at related threads, finished ones included. `t3_thread_search` and `t3_thread_read` let it pull their history into a brief.
-- Give each PR a verification swarm before it merges, and let Autopilot-stack or Autopilot-full carry the queue.
-- Ask the coordinator for a plan backed by data, and have it answer open questions with prototypes before it asks you.
-
-One prompt can carry a whole program, from research through execution:
-
-```text
-/fly refactor this repo so its architecture is more agent friendly. use /correct and /architect on past commits and review comments to find the mistakes agents make most here. use /recall for context from past threads. answer open questions with prototypes instead of asking me. come back with a plan backed by real data. once i approve it, run it with autopilot-stack or autopilot-full, and ask me which.
-```
-
 ## Let loops start themselves
 
-Every loop above still waits for you to start it. A scheduled or event-driven task removes that step. Software maintenance splits into stages that suit this well: triage a report, reproduce it, fix it, verify the fix. Two rules keep such a line trustworthy:
+An unattended Build run still waits for you to start it. A scheduled or event-driven task removes that step. Software maintenance splits into stages that suit this well: triage a report, reproduce it, fix it, verify the fix. Two rules keep such a line trustworthy:
 
 - Every stage can stop the line. Triage can decide the report is expected behavior, repro can fail to reproduce it, and the fixer can judge the change too risky. Each of those outcomes is useful, because it keeps bad work from reaching the next stage, where it costs more to undo.
 - Every stage hands over evidence. Repro attaches screenshots and video of the broken state, and the fix attaches before-and-after proof. A human can then check that the agent fixed the right thing before reading a line of code.

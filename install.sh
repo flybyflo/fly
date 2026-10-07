@@ -34,8 +34,19 @@ unlink_managed() {
   fi
 }
 
+prune_stale() {
+  local entry
+  for entry in "$1"/*; do
+    if points_into_repo "$entry" && [[ ! -e "$entry" ]]; then
+      rm "$entry"
+      echo "prune $entry"
+    fi
+  done
+}
+
 for target in "${skill_targets[@]}"; do
   mkdir -p "$target"
+  prune_stale "$target"
   for skill in "$repo"/skills/*/; do
     name="$(basename "$skill")"
     if [[ "$mode" == "--uninstall" ]]; then
@@ -54,6 +65,7 @@ else
 fi
 
 mkdir -p "$agent_target"
+prune_stale "$agent_target"
 for agent in "$repo"/agents/*.md; do
   name="$(basename "$agent")"
   if [[ "$mode" == "--uninstall" ]]; then

@@ -24,15 +24,15 @@ Run:
 /setup-fly
 ```
 
-[`/setup-fly`](../../skills/setup-fly/SKILL.md) detects the providers and models you have access to, asks for a reasoning effort, shows you each role (code delegates, judgment, the review panels), and asks what you want. Answer the questions. It writes `~/.agents/fly-models.md`, a small file every fly skill reads when it picks a model.
+[`/setup-fly`](../../skills/setup-fly/SKILL.md) detects the providers and models you have access to, asks for a reasoning effort, shows you each role (implementation, frontend, the review panel, team review, verification, and prose), and asks what you want. Answer the questions. It writes `~/.agents/fly-models.md`, a small file every fly skill reads when it picks a model.
 
-Each line is `role: <providerInstanceId>/<model>@<effort>`, for example `bug-fix: codex/gpt-6.1-sol@xhigh`. A panel role, such as `arena runners`, takes a comma-separated list, and one subagent runs per entry, so the list length sets the panel size. Mix providers on panels, because a second opinion from a different model family is worth more than two from the same one.
+Each line is `role: <providerInstanceId>/<model>@<effort>`, for example `implement: codex/gpt-6.1-sol@xhigh`. The only panel role, `review panel`, takes a comma-separated list, and one reviewer runs per entry, so the list length sets the panel size. Mix providers on the panel, because a second opinion from a different model family is worth more than two from the same one.
 
 OpenAI models run at `xhigh` and Claude models at `high` or below. A skill changes that only when you ask in the current request.
 
 You only override what you care about. A role with no line in the file keeps the skill's default, and a skill that falls back to a default says so in its reply. To restore a default, delete that role's line. When a default changes, a file written before the change still pins the old default, so delete those role lines, or delete the file, then run `/setup-fly` again.
 
-Set a role to `inherit-parent` and that role runs on the current thread's model instead of a named one. It is not a model slug. Setup also configures `swarm workers`, the default model for every `/swarm` worker unless a race names a model for each arm.
+Set a role to `inherit-parent` and that role runs on the current thread's model instead of a named one. It is not a model slug.
 
 ## Accept the verification offer, or don't
 
@@ -61,7 +61,7 @@ Pick something real but small, and describe it the way you'd describe it to a co
 /fly add a --json flag to this command. text output stays byte-identical. verify both.
 ```
 
-Watch the todo list. Its first items are the matched playbook's steps copied in, the Feature playbook for this prompt. If `/fly` skips a step, the step stays in the list with `skip: <reason>`, so you can see what it chose not to do.
+Watch the todo list. Its first items are the matched playbook's steps copied in, the Build playbook for this prompt. If `/fly` skips a step, the step stays in the list with `skip: <reason>`, so you can see what it chose not to do.
 
 From here you can type normal follow-ups. Typing `/fly` attaches the skill to one message, and it fades as the thread moves on. To keep it on, start each prompt with `/fly`, or add one line to the repository's `AGENTS.md` or `CLAUDE.md`: `Apply the fly skill to every multi-step task.` Repository instructions load on every turn in both hosts.
 

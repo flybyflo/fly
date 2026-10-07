@@ -13,7 +13,7 @@ Existing entries that don't point at this repo are skipped and reported. Start a
 
 ## Start here
 
-- `/fly <task>`: the working style. Routes the task to a playbook (feature, bug fix, refactoring, investigation, PR, babysit, shipping, autopilot, and more) and applies the principles.
+- `/fly <task>`: the working style. Uses Build for code changes and the authoring, eval, babysit, shipping, and opening-a-PR playbooks for their tasks. Applies the principles.
 - `/fly-help <question>`: which skill, playbook or principle fits a task.
 - `docs/guide/`: the long-form guide.
 
@@ -23,9 +23,9 @@ Existing entries that don't point at this repo are skipped and reported. Start a
 |---|---|
 | Mode and setup | `fly`, `fly-help`, `setup-fly`, `automate-me` |
 | Understand | `how`, `why`, `teach`, `recall`, `blast-radius`, `bro` |
-| Design and review | `architect`, `arena`, `interrogate`, `swarm`, `no-comments`, `deslop`, `benchmark-checklist` |
+| Review and cleanup | `no-comments`, `deslop`, `react-doctor`, `benchmark-checklist` |
 | Verify | `control-ui`, `control-cli`, `create-verification-skill`, `maintain-verification-skill`, `tdd` |
-| Long-running work | `figure-it-out`, `show-me-your-work`, `correct`, `reflect` |
+| Long-running work | `show-me-your-work`, `correct`, `reflect` |
 | Writing | `unslop`, `technical-writing`, `typescript-best-practices` |
 | Principles | `principle-*` (24) |
 
