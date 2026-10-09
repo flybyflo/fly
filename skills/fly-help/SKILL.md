@@ -27,7 +27,7 @@ Check the state that changes the answer, and mention it only when it does:
 - No `~/.agents/fly-models.md` means `/setup-fly` hasn't run for this user, so every role uses its default model.
 - No `verify-*` skill or other app harness in the project means agents have no scripted way to drive the app. Mention `/create-verification-skill` when the question is about proving a change works.
 
-When the model file is missing and it matters, ask whether the user wants to pick a model for each role and a reasoning budget now. It matters when the user is new, the question is about setup or cost, or the answer depends on which models run. Ask at most once per thread. If the need is also unclear, ask both questions together. Offer two choices:
+When the model file is missing and it matters, ask whether the user wants to pick a model for each role and an effort preset now. It matters when the user is new, the question is about setup or cost, or the answer depends on which models run. Ask at most once per thread. If the need is also unclear, ask both questions together. Offer two choices:
 
 - Now: give them `/setup-fly` to type, and answer their question too.
 - Later: answer their question, and add one line saying every role keeps its default model until they run `/setup-fly`.
@@ -35,12 +35,12 @@ When the model file is missing and it matters, ask whether the user wants to pic
 ## Get set up
 
 1. Run [`install.sh`](../../install.sh) from the fly checkout. It links each skill into `~/.agents/skills/` (Codex) and `~/.claude/skills/` (Claude Code), and the agents into `~/.claude/agents/`.
-2. Run [`/setup-fly`](../setup-fly/SKILL.md) in a T3 Code thread. It reads the models T3 Code offers, asks for a reasoning budget, maps a model to each role, and writes `~/.agents/fly-models.md`. Skills read that file each time they pick a model.
+2. Run [`/setup-fly`](../setup-fly/SKILL.md) in a T3 Code thread. It reads the models T3 Code offers, asks for an effort preset, maps a model to each role, and writes `~/.agents/fly-models.md`. Skills read that file each time they pick a model.
 3. Start a real task with `/fly`, a goal, and a check that can pass or fail.
 
 Most fly skills load when typed or when `/fly` runs them. `fly` can also load for nontrivial coding tasks, and repository instructions can require it. The [guide](../../docs/guide/README.md) and [guide page 1](../../docs/guide/01-setup.md) have the details. Offer to word their first prompt with them, per [`references/prompting.md`](references/prompting.md).
 
-If cost is the worry, say where the tokens go and how to spend fewer. fly spends extra tokens on subagents and review panels. Rerun `/setup-fly` and pick a smaller budget or cheaper models. A role set to `inherit-parent` runs on the thread's model, which saves tokens when the thread runs a cheaper model. A shorter panel list runs fewer subagents, one for each entry. Save `/fly` for work that needs rigor.
+If cost is the worry, say where the tokens go and how to spend fewer. fly spends extra tokens on subagents and their review and verification loops. Rerun `/setup-fly` and pick a lower preset or cheaper models. A role set to `inherit-parent` runs on the thread's model, which saves tokens when the thread runs a cheaper model. Save `/fly` for work that needs rigor.
 
 fly is built for T3 Code threads running Claude Code or Codex. One copy of each skill serves both hosts. Per-role models on other providers, PR watching, and scheduled runs use T3 Code's tools (`delegate_task`, `watch_pull_request`, `schedule_task`). Outside T3 Code those parts fall back to the host's native subagent tool and the thread's own model.
 
@@ -81,7 +81,7 @@ The default answer is `/fly`, which runs most of the others when its steps need 
 | Vet a performance number before reporting or acting on it | [`/benchmark-checklist`](../benchmark-checklist/SKILL.md) |
 | Run a large or long code change in verifiable units | [Build](../fly/playbooks/build.md) through `/fly` |
 | Keep a decision log during a run, and review it afterward | [`/show-me-your-work`](../show-me-your-work/SKILL.md) |
-| Pick a model for each role and a reasoning budget | [`/setup-fly`](../setup-fly/SKILL.md) |
+| Pick a model for each role and an effort preset | [`/setup-fly`](../setup-fly/SKILL.md) |
 | Turn their own working habits into a personal mode skill | [`/automate-me`](../automate-me/SKILL.md) |
 | Turn what a finished task taught into skill edits | [`/reflect`](../reflect/SKILL.md) |
 | Stop agents from repeating the same mistakes in this repo | [`/correct`](../correct/SKILL.md) |
@@ -92,7 +92,7 @@ If a skill directory next to this one is missing from the table, read its frontm
 Close calls:
 
 - `/how` explains what the code does. `/why` explains the reasons. `/teach` runs one or both and explains the result plainly.
-- Build's `review panel` reviews the diff. `/blast-radius` looks for breakage outside the diff and proves the one fact that makes the change safe.
+- Build's `check` reviewer reviews the diff. `/blast-radius` looks for breakage outside the diff and proves the one fact that makes the change safe.
 - `/deslop` cleans code before commit. `/unslop` cleans prose. In Claude Code, `/simplify` can stand in for `/deslop`.
 - `/recall` rebuilds prior context. Build frames the next verifiable unit of code work.
 

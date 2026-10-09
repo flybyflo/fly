@@ -8,9 +8,7 @@ disable-model-invocation: true
 
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
-Each spawn below names a role line in `~/.agents/fly-models.md` and a default. An entry reads `<providerInstanceId>/<model>@<effort>`. Use that line's value. If the file or the line is missing, use the default and say so. Leave the model unset for `inherit-parent`. Effort follows the role line: OpenAI models (provider `codex`) run at `xhigh`, Claude models at `high` or below, unless the user asks for different effort in this request.
-
-Spawn on the host's native subagent tool when the entry's provider is the current thread's provider and the tool can run that model. In Claude Code, that is `Agent` with `subagent_type: "general-purpose"` and `model` set to the family alias (`opus`, `sonnet`, `haiku`; never Fable). In Codex, it is its native subagent tool. Otherwise use T3 `delegate_task` with `role: "research"`, `target.providerInstanceId`, `target.model`, and the effort in `target.options`, all as listed by `orchestrator_capabilities`, plus `mode: "async"` and a distinct `clientRequestId` per spawn. Track each `taskId` with `task_status`. If `orchestrator_capabilities` does not list the configured model, use the default and say so. If it lacks the default too, use the closest model from the same provider and say so.
+Each spawn below names a fly role. Resolve it to a model and a tool as `../setup-fly/references/default-models.md` says. A `delegate_task` spawn adds `role: "research"`.
 
 Every spawn is read-only. Its brief says it writes nothing.
 
@@ -29,7 +27,7 @@ When in doubt, take the simple path.
 
 Decompose the question into 2 to 4 exploration angles, each a distinct slice of the subsystem. Spawn all explorers in a single message:
 
-- Role line: `how explorer`, default `codex/gpt-6.1-sol@xhigh`
+- Role: `search`
 - In Claude Code, `run_in_background: true`
 
 Each explorer gets the prompt in `references/explorer-prompt.md` with its angle filled in. Then go to Step 3.
@@ -38,7 +36,7 @@ Each explorer gets the prompt in `references/explorer-prompt.md` with its angle 
 
 Spawn one subagent that explores and explains in one pass:
 
-- Role line: `how explainer`, default `claudeAgent/claude-opus-5-5@high`, when the user asked the question directly. When another skill or playbook runs `how` for grounding, verification, or evidence, use the `verification` role instead (default `codex/gpt-6.1-sol@xhigh`): its answer goes back to the caller, not to the user.
+- Role: `prose` when the user asked the question directly. When another skill or playbook runs `how` for grounding, verification, or evidence, use `check` instead: its answer goes back to the caller, not to the user.
 
 Build its prompt from `references/explainer-prompt.md` without the explorer-findings section. Go to Step 4.
 
@@ -46,7 +44,7 @@ Build its prompt from `references/explainer-prompt.md` without the explorer-find
 
 Once all explorers have returned, spawn one subagent to synthesize their findings into one explanation:
 
-- Role line: `how explainer`, default `claudeAgent/claude-opus-5-5@high`, or the `verification` role when another skill or playbook is the caller (see Step 2b).
+- Role: `prose`, or `check` when another skill or playbook is the caller (see Step 2b).
 
 Build its prompt from `references/explainer-prompt.md` with every explorer's findings filled in.
 

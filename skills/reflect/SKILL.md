@@ -35,23 +35,19 @@ For each candidate, read its first `user` record and check that it holds this co
 
 One message, three subagent calls. Reviewers need MCP access for context lookups (tickets, chat threads, observability traces referenced in the transcript), so do not use a read-only agent type.
 
-Each reviewer and the synthesizer name a role line in `~/.agents/fly-models.md` (`role: <providerInstanceId>/<model>@<effort>`) and a default. Use that line's value, or the default if the file or the line is missing, and say so. Effort follows the role line: OpenAI models (provider `codex`) run at `xhigh`, Claude models at `high` or below, unless the user asks for different effort in this request. Pick the tool from the value:
+Every reviewer runs on the `check` role and the synthesizer on `prose`. Resolve each as `../setup-fly/references/default-models.md` says.
 
-- `inherit-parent`: the host's native subagent tool with no model set (`Agent` in Claude Code, Codex's native subagent tool if present, else `delegate_task`).
-- The parent's own provider, and the native tool can run that model: the native tool (`Agent` with `model` set to the family, for example `opus`; never Fable).
-- Anything else: `delegate_task` with `providerInstanceId` and `model` as listed by `orchestrator_capabilities`, effort via the model options it advertises. Track each by `taskId` with `task_status`.
-
-| Lens | Role line | Default | Prompt template |
-|---|---|---|---|
-| Judgment | `reflect judgment, divergent` | `codex/gpt-6.1-sol@xhigh` | `references/judgment-reviewer.md` |
-| Tooling | `reflect tooling` | `codex/gpt-6.1-sol@xhigh` | `references/tooling-reviewer.md` |
-| Divergent | `reflect judgment, divergent` | `codex/gpt-6.1-sol@xhigh` | `references/divergent-reviewer.md` |
+| Lens | Prompt template |
+|---|---|
+| Judgment | `references/judgment-reviewer.md` |
+| Tooling | `references/tooling-reviewer.md` |
+| Divergent | `references/divergent-reviewer.md` |
 
 Pass each template verbatim, substituting the transcript pointer (thread id, file path, or digest) where marked. Reviewers return findings in their response body.
 
 ### 3. Synthesize
 
-One subagent call, model from the `reflect synthesizer` line (default `claudeAgent/claude-opus-5-5@high`), with MCP access: the synthesizer's quality check includes spot-verifying citations. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
+One subagent call on the `prose` role, with MCP access: the synthesizer's quality check includes spot-verifying citations. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
 
 ### 4. Structural enforcement check
 

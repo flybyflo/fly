@@ -35,7 +35,7 @@ Step 4 is usually one small script that imports the same library the app ships a
 3. Look where grep stops. Read the source of the library you call, and check its pinned version and any local patch. Work out when things run: microtasks, unmount and teardown, Solid versus React. Follow what a symbol search misses: the JSON an API returns, a DB column, a wire format, another language reading the same bytes, a feature flag, code three hops downstream.
 4. Be honest about each risk. Give it a real chance of happening and a real cost if it does. Keep the risks you confirmed. List the ones you checked and cleared separately. Same rules as `why`. Cite a real `file:line`, a search that finds nothing is still an answer, and never make up a caller or an API.
 5. Prove the one fact. Write a script or test that runs the real code, run it, and paste what happened.
-6. For a big or wide change, ask each model on the `review panel` the same question and judge the findings yourself. Read the role from `~/.agents/fly-models.md`, with defaults in `../setup-fly/references/default-models.md`.
+6. For a big or wide change, ask a `check` agent the same question and judge its findings yourself. Roles resolve as `../setup-fly/references/default-models.md` says.
 
 ## What to hand back
 

@@ -1,6 +1,6 @@
 # Design before you write code
 
-[Build](../../skills/fly/playbooks/build.md) starts by framing the done predicate and data shape. A novel design may need prototypes before implementation. The review panel then checks the code that gets built.
+[Build](../../skills/fly/playbooks/build.md) starts by framing the done predicate and data shape on the `architecture` role. A novel design may need prototypes before implementation. A `check` reviewer then checks the code that gets built.
 
 The two most common design mistakes are taking the agent's first design and polishing a plan that no code has tested. This page fixes both. Prototypes answer the open questions, a README or tutorial sets the target, and the written plan comes last.
 
@@ -14,9 +14,9 @@ Name the result and the proof before choosing types and boundaries. Use [`/how`]
 
 ## Review the diff
 
-Build's `review panel` sends the diff and brief to reviewers in parallel. The parent judges each finding, rejects wrong ones with a reason, and sends accepted blocking findings to a fresh agent on the implementation role. Review repeats until no blocking findings remain, with a maximum of three rounds.
+Build sends the diff and brief to a `check` reviewer. The parent judges each finding, rejects wrong ones with a reason, and sends accepted blocking findings to a fresh agent on the role that wrote the code. Review repeats until no blocking findings remain, with a maximum of three rounds.
 
-The panel comes from your [`/setup-fly`](../../skills/setup-fly/SKILL.md) configuration. Keep different model families so the same brief gets independent scrutiny. Read the rejected findings too. You can challenge the parent's judgment.
+The `check` model comes from your [`/setup-fly`](../../skills/setup-fly/SKILL.md) configuration. Keep it on a different model family from `implement` and `design`, so the same brief gets independent scrutiny. Read the rejected findings too. You can challenge the parent's judgment.
 
 ## Prototype instead of debating
 

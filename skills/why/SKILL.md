@@ -10,9 +10,7 @@ Investigate the motivation and intent behind code.
 
 Companion to the `how` skill. `how` answers what the code does and how it works. `why` answers what forces led to its shape.
 
-Each spawn below names a role line in `~/.agents/fly-models.md` and a default. An entry reads `<providerInstanceId>/<model>@<effort>`. Use that line's value. If the file or the line is missing, use the default and say so. Leave the model unset for `inherit-parent`. Effort follows the role line: OpenAI models (provider `codex`) run at `xhigh`, Claude models at `high` or below, unless the user asks for different effort in this request.
-
-Spawn on the host's native subagent tool when the entry's provider is the current thread's provider and the tool can run that model. In Claude Code, that is `Agent` with `subagent_type: "general-purpose"` and `model` set to the family alias (`opus`, `sonnet`, `haiku`; never Fable). In Codex, it is its native subagent tool. Otherwise use T3 `delegate_task` with `role: "research"`, `target.providerInstanceId`, `target.model`, and the effort in `target.options`, all as listed by `orchestrator_capabilities`, plus `mode: "async"` and a distinct `clientRequestId` per spawn. Track each `taskId` with `task_status`. If `orchestrator_capabilities` does not list the configured model, use the default and say so. If it lacks the default too, use the closest model from the same provider and say so.
+Each spawn below names a fly role. Resolve it to a model and a tool as `../setup-fly/references/default-models.md` says. A `delegate_task` spawn adds `role: "research"`. In Claude Code, use `subagent_type: "general-purpose"` so the spawn keeps MCP access.
 
 ## Operating Posture
 
@@ -82,7 +80,7 @@ Aim for a complete **coverage map**, not a minimal one. Document the null, don't
 Launch all matching investigators in a single message so they run concurrently. Don't ask one agent to cover multiple MCPs.
 
 Subagent config (each):
-- Role line: `why investigators`, default `codex/gpt-6.1-sol@xhigh`
+- Role: `check`
 - In Claude Code, `run_in_background: true`
 - **The investigator needs its MCP.** Use a subagent type and mode that keep MCP access (`general-purpose` in Claude Code, not a read-only mode that drops tools). A `delegate_task` child starts a fresh provider session, so give it an investigator only when that provider has the same MCP configured. Otherwise run that investigator on the native tool. Investigators still write nothing.
 
@@ -126,7 +124,7 @@ If your scope assessment suggests a single-commit trivial target where the PR de
 
 Spawn one synthesizer subagent:
 
-- Role line: `why synthesizer`, default `claudeAgent/claude-opus-5-5@high`
+- Role: `prose`
 - Keep MCP access, as for the investigators. The synthesizer's quality check spot-verifies citations, which can require MCP access. It still writes nothing.
 
 The synthesizer gets:

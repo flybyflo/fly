@@ -45,7 +45,7 @@ Each worker owns one package and its own worktree. The parent waits for every sl
 ## Review a branch skeptically
 
 ```text
-/fly review the whole branch with the review panel. don't change anything yet. focus on actual bugs and regressions.
+/fly review the whole branch with a check reviewer. don't change anything yet. focus on actual bugs and regressions.
 ```
 
 The qualifiers do real work. "don't change anything yet" keeps it read-only, and the parent judges each finding before accepting it.

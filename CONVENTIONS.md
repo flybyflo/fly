@@ -27,7 +27,7 @@ Write host-neutral instructions. Where a host-specific tool is needed, name the 
 | Recurring or triggered work | `/loop`, `ScheduleWakeup` | — | `schedule_task` (interval, fixed time, webhook) |
 | Watch a PR until checks or reviews change | — | — | `watch_pull_request` / `unwatch_pull_request`; `link_pull_request` for every PR created or worked on |
 | Past chats | `~/.claude/projects/<slug>/*.jsonl` | `~/.codex/sessions/**/*.jsonl` | `t3_thread_search`, `t3_thread_read`, `t3_thread_list` (preferred: covers both) |
-| Drive a web or desktop UI | fallback: Claude in Chrome (`mcp__claude-in-chrome__*`) | preferred: a `gpt-6.1-sol` worker using `control-chrome` (real Chrome) or `computer-use` (desktop apps) | `delegate_task` to start that worker; `preview_*` tools as fallback. Order lives in `control-ui` |
+| Drive a web or desktop UI | fallback: Claude in Chrome (`mcp__claude-in-chrome__*`) | preferred: a Codex `check` worker using `control-chrome` (real Chrome) or `computer-use` (desktop apps) | `delegate_task` to start that worker; `preview_*` tools as fallback. Order lives in `control-ui` |
 | Write or improve a skill | `skill-creator` | `skill-creator` (`.system`) | — |
 | Multi-agent orchestration script | `Workflow` tool, only when the user opts in | — | — |
 
@@ -35,34 +35,9 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 
 ## Models
 
-- Role-to-model choices live in `~/.agents/fly-models.md`, written by `setup-fly`. It is a link to `fly-models.md` in this repo, so the choices are versioned. Each line is `role: <providerInstanceId>/<model>@<effort>` or a comma-separated list for panels. `inherit-parent` runs the role on the current thread's model.
-- Skills read that file when they pick a model. If the file or the role line is missing, they use the defaults below and say so.
-- Effort follows the role line: OpenAI models (provider `codex`) run at `xhigh`, Claude models at `high` or below, unless the user asks for different effort in this request.
-- Never use a Fable model. OpenAI work runs on `codex/gpt-6.1-sol`. Frontend work and anything that explains or communicates to the user run on `claudeAgent/claude-opus-5-5`.
-- The defaults table lives once, in `skills/setup-fly/references/default-models.md`; skills point to it instead of repeating values. The copy below mirrors it for reading.
-- Mix providers and model families on the `review panel`. A second opinion is the same brief against a different family.
-
-Defaults:
-
-```
-implement: codex/gpt-6.1-sol@xhigh
-frontend: claudeAgent/claude-opus-5-5@high
-review panel: codex/gpt-6.1-sol@xhigh, claudeAgent/claude-opus-5-5@high
-team review: claudeAgent/claude-opus-5-5@high
-verification: codex/gpt-6.1-sol@xhigh
-explanations and prose: claudeAgent/claude-opus-5-5@high
-how explorer: codex/gpt-6.1-sol@xhigh
-how explainer: claudeAgent/claude-opus-5-5@high
-why investigators: codex/gpt-6.1-sol@xhigh
-why synthesizer: claudeAgent/claude-opus-5-5@high
-recall scanners: codex/gpt-6.1-sol@xhigh
-reflect tooling: codex/gpt-6.1-sol@xhigh
-reflect judgment, divergent: codex/gpt-6.1-sol@xhigh
-reflect synthesizer: claudeAgent/claude-opus-5-5@high
-ui driver: codex/gpt-6.1-sol@xhigh
-```
-
-When the parent and the chosen role share a provider, prefer the host's native subagent tool when it can run that model; otherwise use `delegate_task`.
+- fly has six roles: `architecture`, `design`, `implement`, `check`, `prose`, `search`. Opus 5.5 builds, GPT-6.1-Sol checks, Haiku 5.5 or GPT-6-Luna fetches. Never use a Fable or Astra model.
+- The roles, their defaults, and how a role resolves to a model and a tool live once, in `skills/setup-fly/references/default-models.md`. Skills name a role and point there. They never repeat a model id or the resolution rules.
+- The user's choices live in `~/.agents/fly-models.md`, written by `setup-fly`. It is a link to `fly-models.md` in this repo, so the choices are versioned.
 
 ## Approval gates (non-negotiable)
 

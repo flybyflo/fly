@@ -1,33 +1,32 @@
-# fly default models
+# fly models
 
-The single source for role defaults. Every skill that picks a model reads its role line from `~/.agents/fly-models.md` first and falls back to this table, saying so. Never use a Fable model. OpenAI models (provider `codex`) run at `xhigh`; Claude models stay at `high` or below unless the user asks for more in the current request.
+The single source for fly's roles, their defaults, and how a role turns into a subagent. Skills name a role and point here. They don't restate these rules.
 
-OpenAI work runs on `codex/gpt-6.1-sol`. Frontend work and anything that explains or communicates to the user run on `claudeAgent/claude-opus-5-5`. Panels keep one Claude seat so a second model family checks the work.
+Opus builds, Sol checks, Haiku or Luna fetches. Architecture, design, implementation, and anything the user reads run on `claudeAgent/claude-opus-5-5`. Every double-check runs on `codex/gpt-6.1-sol`, so code is always checked by a different model family than the one that wrote it. Simple lookups run on `claudeAgent/claude-haiku-5-5` or `codex/gpt-6-luna`. Never use a Fable or Astra model.
 
 ```
-implement: codex/gpt-6.1-sol@xhigh
-frontend: claudeAgent/claude-opus-5-5@high
-review panel: codex/gpt-6.1-sol@xhigh, claudeAgent/claude-opus-5-5@high
-team review: claudeAgent/claude-opus-5-5@high
-verification: codex/gpt-6.1-sol@xhigh
-explanations and prose: claudeAgent/claude-opus-5-5@high
-how explorer: codex/gpt-6.1-sol@xhigh
-how explainer: claudeAgent/claude-opus-5-5@high
-why investigators: codex/gpt-6.1-sol@xhigh
-why synthesizer: claudeAgent/claude-opus-5-5@high
-recall scanners: codex/gpt-6.1-sol@xhigh
-reflect tooling: codex/gpt-6.1-sol@xhigh
-reflect judgment, divergent: codex/gpt-6.1-sol@xhigh
-reflect synthesizer: claudeAgent/claude-opus-5-5@high
-ui driver: codex/gpt-6.1-sol@xhigh
+architecture: claudeAgent/claude-opus-5-5@xhigh
+design: claudeAgent/claude-opus-5-5@xhigh
+implement: claudeAgent/claude-opus-5-5@xhigh
+check: codex/gpt-6.1-sol@xhigh
+prose: claudeAgent/claude-opus-5-5@xhigh
+search: claudeAgent/claude-haiku-5-5@medium, codex/gpt-6-luna@medium
 ```
 
-Role meanings:
+## Roles
 
-- `implement`: every code-writing agent in the Build playbook except UI work, including fixes from the review and verification loops.
-- `frontend`: code-writing agents whose change is UI (components, styling, layout, browser-facing behaviour), and their fixes.
-- `review panel`: the parallel code reviewers in Build's review loop. Keep two model families.
-- `team review`: runs the repo's own review workflow (a `team-review` skill or `code-reviewer` agent) in Build's verification loop.
-- `verification`: verifiers, the rules review against AGENTS.md / CLAUDE.md, live checks and evidence-gathering sub-tasks whose result goes back to the parent. Never an explainer role, even when the brief says "explain".
-- `explanations and prose`: anything written for the user: explanations, summaries, docs, PR descriptions.
-- `ui driver`: the worker that drives a UI for `control-ui`, using Codex's `control-chrome` (real Chrome) or `computer-use` (desktop apps).
+- `architecture`: Build's Frame step (done predicate, data shape, splitting work into units), system, API, type and data-model design, and comparing prototypes for a novel design.
+- `design`: UI code and visual or interaction design. Components, styling, layout, browser-facing behaviour, and their fixes.
+- `implement`: every other code-writing agent, including fixes from the review and verification loops.
+- `check`: anything that double-checks. Code review, rules review, the repo's team review, verifiers, live checks, UI driving for proof, eval judges, `why` investigators, `reflect` reviewers, and evidence-gathering sub-tasks whose result goes back to the parent. A sub-task whose result comes back to the parent is never `prose`, even when its brief says "explain".
+- `prose`: text the user reads directly. Explanations, summaries, docs, PR descriptions, and the final answer of `how`, `why` and `reflect`.
+- `search`: simple read-only lookups. Find files, grep, map where code lives, read chat transcripts, `how` explorers, `recall` scanners. It returns what it found and gives no verdicts. Anything that judges correctness goes to `check`.
+
+## Resolve a role
+
+1. Read the role's line in `~/.agents/fly-models.md`. If the file or the line is missing, use the default above and say so.
+2. A line is `role: <providerInstanceId>/<model>@<effort>`. Run at that effort. `search` lists one entry per provider: use the entry on the current thread's provider, else the first one.
+3. `inherit-parent` runs the role on the current thread's model. Omit `model` on `Agent`, or omit `target` on `delegate_task`.
+4. If the entry's provider is the current thread's provider and the host's native subagent tool can run that model at that effort, use the native tool. In Claude Code that is `Agent` with `model` set to the family alias (`opus`, `haiku`), and `subagent_type: "Explore"` for `search`. In Codex it is its native subagent tool.
+5. Otherwise use T3 `delegate_task` with `target.providerInstanceId`, `target.model` and the effort option, all as listed by `orchestrator_capabilities`, plus `mode: "async"` and a distinct `clientRequestId` per spawn. Track each `taskId` with `task_status`.
+6. If `orchestrator_capabilities` does not list the model, use the default and say so. If it lacks the default too, use the closest model from the same provider and say so.

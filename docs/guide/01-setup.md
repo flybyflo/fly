@@ -24,11 +24,15 @@ Run:
 /setup-fly
 ```
 
-[`/setup-fly`](../../skills/setup-fly/SKILL.md) detects the providers and models you have access to, asks for a reasoning effort, shows you each role (implementation, frontend, the review panel, team review, verification, and prose), and asks what you want. Answer the questions. It writes `~/.agents/fly-models.md`, a small file every fly skill reads when it picks a model.
+[`/setup-fly`](../../skills/setup-fly/SKILL.md) detects the providers and models you have access to, asks for an effort preset, shows you each role, and asks what you want. Answer the questions. It writes `~/.agents/fly-models.md`, a small file every fly skill reads when it picks a model.
 
-Each line is `role: <providerInstanceId>/<model>@<effort>`, for example `implement: codex/gpt-6.1-sol@xhigh`. The only panel role, `review panel`, takes a comma-separated list, and one reviewer runs per entry, so the list length sets the panel size. Mix providers on the panel, because a second opinion from a different model family is worth more than two from the same one.
+fly has six roles. By default Opus 5.5 builds, GPT-6.1-Sol checks, and Haiku 5.5 or GPT-6-Luna fetches:
 
-OpenAI models run at `xhigh` and Claude models at `high` or below. A skill changes that only when you ask in the current request.
+- `architecture`, `design`, `implement` and `prose` run on `claudeAgent/claude-opus-5-5`. They cover planning and design decisions, UI code, other code, and text you read.
+- `check` runs on `codex/gpt-6.1-sol`. It covers every review, verifier and live check, so code is always checked by a different model family than the one that wrote it.
+- `search` runs on `claudeAgent/claude-haiku-5-5` in Claude Code threads and `codex/gpt-6-luna` in Codex threads. It covers file searches and other simple lookups.
+
+Each line is `role: <providerInstanceId>/<model>@<effort>`, for example `check: codex/gpt-6.1-sol@xhigh`. `search` lists one entry per provider, and the entry on the current thread's provider wins. The preset sets the effort of every role except `search`. The default preset is `xhigh`. [`default-models.md`](../../skills/setup-fly/references/default-models.md) holds the defaults and what each role covers.
 
 You only override what you care about. A role with no line in the file keeps the skill's default, and a skill that falls back to a default says so in its reply. To restore a default, delete that role's line. When a default changes, a file written before the change still pins the old default, so delete those role lines, or delete the file, then run `/setup-fly` again.
 
@@ -46,11 +50,10 @@ After setup, start a new thread. The model file applies to new sessions.
 
 ## Keep the cost in check
 
-fly spends extra tokens on subagents and review panels. That's the price of the rigor. To spend fewer:
+fly spends extra tokens on subagents and their review loops. That's the price of the rigor. To spend fewer:
 
-- Rerun `/setup-fly` and pick a lower effort or cheaper models. A strong model in the main thread with cheaper, faster models in the code roles is a good split.
+- Rerun `/setup-fly` and pick a lower preset or cheaper models. A strong model in the main thread with cheaper, faster models in the code roles is a good split.
 - Set a role to `inherit-parent` so it runs on the thread's own model.
-- Shorten a panel list. Each entry runs one subagent.
 - Save `/fly` for work that needs rigor. A small, obvious edit doesn't.
 
 ## Run your first task

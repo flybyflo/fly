@@ -30,7 +30,7 @@ Swap in the real paths, skills, and done checks. Informal wording works.
 
 ## Review and ship
 
-- `/fly review the whole branch with the review panel. don't change anything yet. focus on real bugs and regressions.` Read the rejected findings too.
+- `/fly review the whole branch with a check reviewer. don't change anything yet. focus on real bugs and regressions.` Read the rejected findings too.
 - `/fly check every package under <dir> against its check script. use parallel verification subagents, one per package. one report.`
 - `/fly open the pr. small ordered commits, evidence in the description.`
 - `/fly babysit this pr. get it green.` For status only: `/fly check on pr <number>. anything outstanding?`

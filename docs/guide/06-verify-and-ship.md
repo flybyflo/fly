@@ -68,7 +68,7 @@ From then on, "verify it in the app" is a step any agent can execute, in this re
 /fly repro this with /verify-<app>. if it repros on main, fix it and show me a video as proof.
 ```
 
-Once the verify skill works, parallel subagents on the `verification` role can split a full pass by feature-map entry. Give each one its own worktree and aggregate the evidence and gaps in one report.
+Once the verify skill works, parallel subagents on the `check` role can split a full pass by feature-map entry. Give each one its own worktree and aggregate the evidence and gaps in one report.
 
 Treat the verification skill as infrastructure, not a one-off. Commit it, so every person and every agent on the team drives the app the same way. Then [build the lever](../../skills/principle-build-the-lever/SKILL.md). When agents keep writing throwaway scripts to click through the app, ask for a small control CLI that the skill calls instead. Agents spend fewer tokens, and every run becomes repeatable. A CLI that agents use well has these traits:
 

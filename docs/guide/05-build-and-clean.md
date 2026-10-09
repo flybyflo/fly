@@ -38,9 +38,9 @@ Sometimes you want the cause before any fix. Say so and give the agent the live 
 
 ## Review and verify each unit
 
-Build delegates non-UI code to `implement` and UI code to `frontend`. The `review panel` checks the diff and brief in parallel. The parent judges each finding and sends accepted blocking findings to a fresh implementation agent. The loop ends when no blocking findings remain, or stops after three rounds with the open findings reported.
+Build delegates non-UI code to `implement` and UI code to `design`. A `check` reviewer checks the diff and brief. The parent judges each finding and sends accepted blocking findings to a fresh implementation agent. The loop ends when no blocking findings remain, or stops after three rounds with the open findings reported.
 
-The verification loop runs `/deslop` and `/react-doctor` for React changes. A `verification` agent checks the applicable `AGENTS.md` and `CLAUDE.md` rules while a `team review` agent runs the repo's review workflow. Then the agent runs the typecheck, lint, affected tests, and proof on the real surface. Accepted findings trigger another pass through the whole block, with the same three-round limit.
+The verification loop runs `/deslop` and `/react-doctor` for React changes. One `check` agent checks the applicable `AGENTS.md` and `CLAUDE.md` rules while a second runs the repo's review workflow. Then the agent runs the typecheck, lint, affected tests, and proof on the real surface. Accepted findings trigger another pass through the whole block, with the same three-round limit.
 
 The report states what changed, what the loops found and fixed, what remains open, and the proof. Commit, push, and PR actions wait for explicit approval.
 
