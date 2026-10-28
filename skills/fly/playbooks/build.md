@@ -33,4 +33,4 @@ Delegate each unit to a fresh agent. UI changes (components, styling, layout, br
 
 ## 4. Report
 
-State what changed, what the loops found and fixed, what is still open, and the proof. Then stop at the gate. Commit, push, and the PR (`playbooks/opening-a-pr.md`) happen only once the user approves.
+State what changed, what the loops found and fixed, what is still open, and the proof. Then commit, push, and open the PR per `playbooks/opening-a-pr.md`, unless the user asked to keep the work local.

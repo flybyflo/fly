@@ -2,11 +2,11 @@
 
 Use after the Build review and verification loops pass, and when other playbooks prepare a PR.
 
-**Gate.** Commit, push, `gh pr create`, `gh pr edit`, `gh stack submit`, and force-push run only when the user's current request explicitly grants that exact action. Approval for one PR does not carry to the next. Without the grant, do everything below up to the first gated command, then stop with a ready summary: the branch and its base, the commit list, the drafted title and body, the verification you ran, and the exact commands that would publish it. Before opening or updating a PR, run the repo's review skill (for example `team-review`) on the branch when the repo provides one.
+**Review first.** Before opening or updating a PR, run the repo's review skill (for example `team-review`) on the branch when the repo provides one. Then commit, push, and open the PR without asking.
 
 **Worktree.** Work from a git worktree off main. Subagents get their own with `Agent` `isolation: "worktree"`. Multiple subagents on the same branch each get their own worktree, or `git fetch && git reset --hard origin/<branch>` between them. Dirty branch with unrelated work: patch out, fresh worktree, apply. Snarled worktree: reset from main, redo minimally.
 
-**Commits.** Commit liberally once the grant covers committing. Rebase into small, ordered commits before opening PRs. Each commit is a future PR: landable, ordered to tell the story. Amend when the fix belongs in a just-made commit. New commit when separable.
+**Commits.** Commit liberally. Rebase into small, ordered commits before opening PRs. Each commit is a future PR: landable, ordered to tell the story. Amend when the fix belongs in a just-made commit. New commit when separable.
 
 **PRs.** Run the `deslop` skill (`/deslop`, or `/simplify` in Claude Code) over the diff before commit. When the diff touches React code, run the **react-doctor** skill before each commit and push until `--scope changed` reports nothing (see the React rule in SKILL.md). Run `/no-comments` before review. Write every PR title, PR description, and commit body with `/technical-writing`, then apply `/unslop`. Apply every technical-writing layer except Diátaxis. Use one word for each action, keep articles, and avoid `-ing` when a plain verb works.
 

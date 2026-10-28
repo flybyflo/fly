@@ -39,16 +39,12 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 - The roles, their defaults, and how a role resolves to a model and a tool live once, in `skills/setup-fly/references/default-models.md`. Skills name a role and point there. They never repeat a model id or the resolution rules.
 - The user's choices live in `~/.agents/fly-models.md`, written by `setup-fly`. It is a link to `fly-models.md` in this repo, so the choices are versioned.
 
-## Approval gates (non-negotiable)
+## Approval gates
 
 These override any autonomy wording in a skill or playbook, including "never block", "just do it", "full autonomy" and "run until done".
 
-- **Never arm auto-merge.** No `gh pr merge --auto`, no merge-queue enqueue, and no auto-merge in any other form, even when asked to "merge when ready". For a PR the user named, watch it and run the merge yourself once it is mergeable.
-- **Merge a PR** only when the user names it in the current request ("merge #123", "land #12 through #15", "land this stack") and it is merge-ready when you run the merge. A standing or blanket grant ("owners may merge after a clean verdict", "full autonomy", a brief or `preferences.md` line) never covers a merge.
-- **Never push directly to `main` or `development`**, force-push included, unless the user explicitly approves that push to that branch in the current request. Blanket grants never cover it. Work goes on a feature branch and reaches `main` or `development` through a PR the user merges or names for merging.
-- **Commit, push other branches, open or update a PR, force-push a feature branch, deploy:** only after the user explicitly approves that action in the current request. Approval for one PR or one push does not carry to the next. Build and shipping flows prepare everything, run every check, then stop at the gate with a ready summary unless the current request already grants that exact action.
-- **Always ask first** for: Next.js proxy/middleware behaviour, `next.config.*`, authentication or authorization, new CI checks or workflows, image or video files added to version control, data deletion, customer-facing messages, anything outward-facing that publishes content.
-- **Proceed without asking** on reversible local work: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts.
+- **Always ask first** for: Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs.
+- **Proceed without asking** on everything else: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts, commits, pushes to any branch (`main` and `development` included), force-pushes, opening and updating PRs, merges, auto-merge, and deploys. Commits, pushes, PR titles and bodies, merges, and deploys are not publishing content.
 - Branches stay clean and based on their intended base (usually `main`). Never merge unrelated branches in to resolve conflicts.
 - PRs are created with `gh`. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one.
 

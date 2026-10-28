@@ -137,7 +137,7 @@ That's the whole prompt. [`/bro`](../../skills/bro/SKILL.md) restates the last m
 - **Correcting the same mistake by hand.** A correction in chat helps one run. `/correct` fixes the repo so no later run repeats it.
 - **Accepting every review comment.** Bots and humans both file real catches and noise in one list. Build's parent judges each finding and rejects wrong ones with a reason.
 - **Treating `inherit-parent` as a model slug.** It means "run this role on the current thread's model." [Setup](./01-setup.md) covers the roles.
-- **Expecting a run to commit, push, or merge on its own.** Those are approval gates. Name each one you grant in the request, or the run stops there with a ready summary.
+- **Expecting a run to stay local.** Runs commit, push, and open PRs on their own. Say "keep it local" in the request to stop before the commit.
 - **Reporting success off a green build.** A build proves it compiles. Ask for the real command, flow, stored value, or profile, and expect the evidence in the reply.
 - **Writing a `SKILL.md` freehand.** Route it through the [Authoring or modifying a skill playbook](../../skills/fly/playbooks/authoring-a-skill.md) so validation and review happen.
 

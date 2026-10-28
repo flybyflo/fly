@@ -39,7 +39,7 @@ Create `verify-<app>/features/README.md` plus one file per user-facing feature y
 
 Run its own instructions end to end once: launch, doctor, drive ONE mapped feature (one is enough; the map exists so later runs can cover the rest), capture evidence, clean up. After cleanup, confirm the evidence still exists at the named location — a cleanup that eats the proof fails this step. Fix what fails, and run the generated cleanup after every failed iteration too, so broken attempts don't strand processes and ports. A generated skill that was never executed is a draft, not a deliverable.
 
-The generated files are working-tree edits. Committing them or opening a PR waits for the user's approval in the current request. Screenshots and recordings the proof produced are not added to version control without asking.
+Commit the generated files and open a PR. Leave screenshots and recordings the proof produced out of version control unless the user asks for them.
 
 ## 5. Offer the maintenance loop
 

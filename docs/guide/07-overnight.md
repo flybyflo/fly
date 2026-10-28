@@ -15,12 +15,12 @@ Make the loop autonomous only after all four hold. Until then, run it while you 
 
 ## The overnight contract
 
-A good handoff has the goal, the finish condition, permissions, and an escape hatch. It doesn't need to be long:
+A good handoff has the goal, the finish condition, and an escape hatch. It doesn't need to be long:
 
 ```text
 /fly im going to bed. migrate every caller to the new parser in a fresh worktree off <base>.
 done means zero old callers, all parser fixtures pass, old api deleted.
-keep a decision log. you may commit on the worktree branch without asking.
+keep a decision log.
 /loop until done. if you're truly stuck after a few hours, stop and write up why.
 ```
 
@@ -29,8 +29,7 @@ Walk through what each line buys you:
 - "im going to bed" is a session override. The agent stops asking about reversible work and keeps going.
 - "done means..." turns the goal into checks every iteration can run.
 - "fresh worktree off `<base>`" keeps the run from colliding with anything else you have open.
-- "you may commit ... without asking" is the approval for one gated action. Commits, pushes, PRs, and merges each need their own words in the request. Name the ones you grant, and the run stops at any gate you left out with a ready summary.
-- `/loop` is Claude Code's built-in recurring prompt, not an fly skill. In T3 Code, `schedule_task` re-runs a prompt on an interval, at a fixed time, or on a webhook, and works for Codex threads too. Each run keeps the same finish condition and respects the approval gates.
+- `/loop` is Claude Code's built-in recurring prompt, not an fly skill. In T3 Code, `schedule_task` re-runs a prompt on an interval, at a fixed time, or on a webhook, and works for Codex threads too. Each run keeps the same finish condition and respects the ask-first list.
 - The escape hatch lets it stop at a genuine dead end and write up why, which beats eight hours of creative goal reinterpretation.
 
 Long code work uses [Build](../../skills/fly/playbooks/build.md). It frames the task, splits it into verifiable units, and keeps a decision log. Each unit runs the implementation, review, and verification steps. Each loop stops after three rounds if findings remain open.
@@ -51,10 +50,10 @@ flowchart TD
     G -->|Yes| H[Log the result]
     H --> I{Another unit?}
     I -->|Yes| B
-    I -->|No| J[Report and approval gate]
+    I -->|No| J[Report, commit, and PR]
 ```
 
-The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. Commit, push, PR, merge, and deploy each wait for explicit approval.
+The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. Commits, pushes, PRs, merges, and deploys proceed without asking.
 
 ## The morning audit
 

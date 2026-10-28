@@ -99,7 +99,7 @@ Apps change and feature maps rot. Run this at least once a day, ideally on a sch
 
 The [Opening a PR playbook](../../skills/fly/playbooks/opening-a-pr.md) works from a worktree, rebases the work into small ordered commits, cleans the diff, unslops the prose, creates the PR with `gh`, and returns the PR link. Five narrow PRs beat one fat one, and stacked follow-ups beat a growing branch.
 
-Committing, pushing, and opening the PR are approval gates. Name each action in the request, such as "commit, push, and open the PR". Leave it out and the playbook prepares the commits, runs every check, and stops with a ready summary. Approval for one PR does not carry to the next.
+The playbook commits, pushes, and opens the PR without asking. Say "keep it local" in the request to stop before the commit.
 
 ## Drive the PR to merge-ready with Babysit
 
@@ -109,7 +109,7 @@ An open PR starts collecting blockers immediately. Checks fail, reviewers commen
 /fly babysit this pr. get it green.
 ```
 
-Babysit watches the PR (`watch_pull_request` in T3 Code, polling `gh` elsewhere) and takes blockers in order: conflicts, then review threads, then CI. Every known fix batches into one push, so the checks restart once instead of after every fix. Commit, push, PR updates, and published replies each need explicit approval. "get it green" grants none of them. The comment triage is skeptical, because humans and bots file real catches and noise in the same list. A real finding gets a local fix, and noise gets dismissed with evidence. Posting a reply waits for approval. When all you want is status, ask smaller and Babysit answers without starting the loop:
+Babysit watches the PR (`watch_pull_request` in T3 Code, polling `gh` elsewhere) and takes blockers in order: conflicts, then review threads, then CI. Every known fix batches into one push, so the checks restart once instead of after every fix. Commits, pushes, and PR updates proceed without asking. The comment triage is skeptical, because humans and bots file real catches and noise in the same list. A real finding gets a local fix, and noise gets dismissed with evidence. Posting a reply waits for approval. When all you want is status, ask smaller and Babysit answers without starting the loop:
 
 ```text
 /fly check on pr 123. anything outstanding?
@@ -125,6 +125,6 @@ Green is not the same as safe. When you're ready to land, say so:
 /fly land the stack.
 ```
 
-The [Shipping playbook](../../skills/fly/playbooks/shipping.md) verifies each PR independently before it merges anything. One fresh agent per PR proves the behavior live, and the agent that judges a change is never the one that wrote it. Then Shipping lands only the contiguous verified run from the bottom, one PR at a time with `gh`, and reports the first PR that breaks the chain. A verified PR sitting above an unverified one waits, because merging it would pull the gap in underneath. "land the stack" is the merge approval for that stack. Without it, Shipping verifies every PR and stops at the gate. Shipping never arms auto-merge; it merges each PR itself once it is mergeable.
+The [Shipping playbook](../../skills/fly/playbooks/shipping.md) verifies each PR independently before it merges anything. One fresh agent per PR proves the behavior live, and the agent that judges a change is never the one that wrote it. Then Shipping lands only the contiguous verified run from the bottom, one PR at a time with `gh`, and reports the first PR that breaks the chain. A verified PR sitting above an unverified one waits, because merging it would pull the gap in underneath. Shipping merges each PR itself once it is mergeable.
 
 Next: [Run work while you sleep](./07-overnight.md).

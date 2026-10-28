@@ -80,7 +80,7 @@ Show the draft to the user and take feedback. Expect multiple iterations. Cut ru
 
 ### 6. Land it
 
-Run the install script (or link the new directory into `~/.claude/skills/` and `~/.agents/skills/`) so both hosts load it, and confirm it appears in the skill list. The file edit is local work. Committing it or opening a PR happens only when the user approves that step in the current request; until then, stop with a ready summary.
+Run the install script (or link the new directory into `~/.claude/skills/` and `~/.agents/skills/`) so both hosts load it, and confirm it appears in the skill list. Then commit it and open a PR.
 
 ## Guardrails
 

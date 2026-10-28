@@ -33,7 +33,7 @@ Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used
 
 ## Rules
 
-`CONVENTIONS.md` is the spec every skill follows: host tool mapping for Claude Code, Codex and T3, the model config format and defaults, and the approval gates. Commits, pushes, PRs, merges and deploys always need explicit approval in the current request. Auto-merge is never armed, merges happen only for PRs you name, and nothing is pushed straight to `main` or `development` without your approval.
+`CONVENTIONS.md` is the spec every skill follows: host tool mapping for Claude Code, Codex and T3, the model config format and defaults, and the approval gates. Commits, pushes, PRs, merges and deploys need no approval. The agent asks first only for Next.js proxy or middleware behaviour, `next.config.*`, and outward-facing publishing.
 
 ## License
 

@@ -42,7 +42,7 @@ Build delegates non-UI code to `implement` and UI code to `design`. A `check` re
 
 The verification loop runs `/deslop` and `/react-doctor` for React changes. One `check` agent checks the applicable `AGENTS.md` and `CLAUDE.md` rules while a second runs the repo's review workflow. Then the agent runs the typecheck, lint, affected tests, and proof on the real surface. Accepted findings trigger another pass through the whole block, with the same three-round limit.
 
-The report states what changed, what the loops found and fixed, what remains open, and the proof. Commit, push, and PR actions wait for explicit approval.
+The report states what changed, what the loops found and fixed, what remains open, and the proof. Then the agent commits, pushes, and opens the PR.
 
 ## Write the failing test first with `/tdd`
 

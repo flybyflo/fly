@@ -1,6 +1,6 @@
 ---
 name: principle-never-block-on-the-human
-description: "Apply when tempted to ask 'should I do X?' on reversible local work. Proceed, present the result, let the human course-correct after the fact. The approval gates (commit, push, PR, merge, deploy, and the always-ask list) are the exceptions and stay in force."
+description: "Apply when tempted to ask 'should I do X?' on reversible local work. Proceed, present the result, let the human course-correct after the fact. The ask-first list (Next.js proxy or middleware, `next.config.*`, outward-facing publishing) is the exception and stays in force."
 disable-model-invocation: true
 ---
 
@@ -16,8 +16,6 @@ The human supervises asynchronously. Agents must stay unblocked. Make reasonable
 
 **Boundaries:**
 - **Reversible local work** proceeds without asking: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts.
+- **Commits, pushes, PRs, merges, and deploys** proceed without asking too. Report each one.
 - **Product direction** comes from the human. *Execution* should not block.
-- **The approval gates are not reversible work.** This principle never overrides them, and neither does "just do it", "full autonomy" or "run until done":
-  - Never arm auto-merge. Merge only a PR the user names in the current request. Never push directly to `main` or `development` without the user's explicit approval for that push. No blanket grant covers either.
-  - Commit, push other branches, open or update a PR, force-push a feature branch, deploy: only after the user approves that action in the current request. Approval for one PR or one push does not carry to the next. Prepare everything, run every check, then stop at the gate with a ready summary.
-  - Always ask first for: Next.js proxy or middleware behaviour, `next.config.*`, authentication or authorization, new CI checks or workflows, image or video files added to version control, data deletion, customer-facing messages, anything outward-facing that publishes content.
+- **Always ask first** for Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs. This principle never overrides that list, and neither does "just do it", "full autonomy" or "run until done".

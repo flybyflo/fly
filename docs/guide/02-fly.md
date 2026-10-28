@@ -14,7 +14,7 @@ flowchart TD
     F --> G[Implement]
     G --> H[Review loop]
     H --> I[Verification loop]
-    I --> J[Report and approval gate]
+    I --> J[Report, commit, and PR]
     D -->|Skill work| K[Authoring or eval]
     D -->|PR work| L[Opening a PR, Babysit, or Shipping]
     K --> J

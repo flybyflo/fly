@@ -52,7 +52,7 @@ fly is built for T3 Code threads running Claude Code or Codex. One copy of each 
 
 `/fly` already uses `fly-agent` for the subagents its playbook steps spawn in Claude Code. To get the same style from a subagent of your own, spawn it with `subagent_type: "fly-agent"`. In Codex or through `delegate_task`, tell the child to read the `fly` SKILL.md in full before any work.
 
-`/fly` never commits, pushes, opens or updates a PR, merges, or deploys without the user's explicit approval for that action in the current request. It never arms auto-merge, merges only PRs the user names, and never pushes directly to `main` or `development` without explicit approval for that push. A user who wants the agent to go further says so in the prompt, as in "commit as you go" or "commit, push, and open the PR when it's green".
+`/fly` commits, pushes, opens and updates PRs, merges, and deploys without asking. It asks first only for Next.js proxy or middleware behaviour, `next.config.*`, and outward-facing publishing, such as posts, messages, and PR comments. A user who wants a run to stay local says so in the prompt, as in "don't commit".
 
 ## Pick a skill
 
@@ -125,7 +125,7 @@ Principles are one-rule skills that `/fly` reads and cites in its replies. The u
 | A new model choice had no effect | Skills read `~/.agents/fly-models.md` when they pick a model. Check that the role's line exists and names a model `orchestrator_capabilities` lists, or rerun `/setup-fly`. |
 | Runs cost more than expected | See the cost paragraph under Get set up. |
 | A skill didn't load on its own | Most fly skills load only when the user types them or when `/fly` runs them, and it doesn't run every skill. |
-| The run stopped before committing, pushing, or opening the PR | That is the approval gate. Approve the action in a message, or pre-approve it in the next prompt. |
+| The run stopped and asked before a change | It hit the ask-first list: Next.js proxy or middleware, `next.config.*`, or outward-facing publishing. Answer in a message, or pre-approve it in the next prompt. |
 | Parallel agents overwrote each other | Give each agent its own git worktree: `isolation: "worktree"` on the Claude Code `Agent` tool, or a T3 thread launched with a worktree strategy. |
 | An overnight run moved but finished nothing | `/loop` or a scheduled task needs a check that can pass or fail, not a duration. See [guide page 7](../../docs/guide/07-overnight.md). |
 | The reply claims success from a green build | Ask for the real command, flow, stored value, or profile. That's the prove-it-works principle. |
