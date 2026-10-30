@@ -7,7 +7,7 @@ In this page you install the skills, pick which models fly uses, and run your fi
 Clone the repository and run the installer:
 
 ```sh
-git clone <your fly remote> ~/fly
+git clone https://github.com/flybyflo/fly ~/fly
 cd ~/fly
 ./install.sh
 ```
