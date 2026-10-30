@@ -2,6 +2,9 @@
 
 A personal agent skill stack for T3 Code. One copy of each skill serves both Claude Code and Codex threads.
 
+> [!WARNING]
+> fly lets the agent commit, push to any branch including `main`, force-push, merge, turn on auto-merge, and deploy without asking you. It asks first only before it publishes content, such as posts, messages, and PR comments, and before it changes Next.js proxy, middleware, or `next.config.*`. To keep approval gates, edit the Autonomy section of `skills/fly/SKILL.md` before you install. Its ask-first list overrides the playbooks.
+
 ## Install
 
 ```bash
@@ -35,6 +38,10 @@ Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used
 
 `CONVENTIONS.md` is the spec every skill follows: host tool mapping for Claude Code, Codex and T3, the model config format and defaults, and the approval gates. Commits, pushes, PRs, merges and deploys need no approval. The agent asks first only for Next.js proxy or middleware behaviour, `next.config.*`, and outward-facing publishing.
 
+## Credits
+
+Both agents, the principles, and most skills come from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack). `deslop`, `control-ui`, and `control-cli` come from Cursor's [cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit). `react-doctor` comes from Million Software's [react-doctor](https://github.com/millionco/react-doctor). fly adapts them for Claude Code and Codex in T3 Code.
+
 ## License
 
-MIT. See `LICENSE` for the original copyright notices this stack is derived from.
+fly is MIT licensed. The exception is `skills/react-doctor`, which keeps Million Software's modified MIT license. That license requires written permission to use the skill as AI training or evaluation data, or to sell it as a hosted product. `LICENSE` has the full text of every notice.

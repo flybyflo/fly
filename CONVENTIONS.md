@@ -7,7 +7,7 @@ Every skill in this repo follows the rules below. When a rule and a skill disagr
 ## Identity
 
 - The stack is `fly`. The mode skill is `fly`, its help skill is `fly-help`, its routing subagent is `fly-agent`, and its model setup skill is `setup-fly`.
-- No references to pstack, poteto, Lauren Tan, Cursor, Cursor plugins, Bugbot, Composer, Grok-by-default or `cursor-team-kit` remain in skill text. The only attribution lives in `LICENSE`.
+- Skill text uses fly's own names. It doesn't name the upstream stacks, such as pstack and `cursor-team-kit`, or Cursor-only products such as Cursor plugins, Bugbot, Composer, and Grok-by-default. Credit for the upstream sources lives in `README.md` and `LICENSE`.
 - Skill names are lowercase-hyphen and match their directory. Frontmatter keys are limited to `name`, `description` and, where the skill should only run when the user invokes it, `disable-model-invocation: true`. Drop Cursor-only keys (`mode`, `icon`, `color`, `reminder`, `alwaysApply`, `is_background`).
 - Skills refer to each other by name (`the how skill`, `/how`). They never assume an install path; a skill locates its own bundled files relative to its own `SKILL.md`.
 - Most skills set `disable-model-invocation: true`, which stops Claude Code's Skill tool from loading them (Codex ignores the key). `fly` itself does not: the model may start it for any nontrivial coding task, and the global AGENTS.md/CLAUDE.md tells it to. A skill that uses another fly skill reads `../<name>/SKILL.md` beside its own directory; `fly`, `fly-agent`, `teach` and `comment-sicko` say so explicitly.
