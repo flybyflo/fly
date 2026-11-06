@@ -26,7 +26,7 @@ Existing entries that don't point at this repo are skipped and reported. Start a
 |---|---|
 | Mode and setup | `fly`, `fly-help`, `setup-fly`, `automate-me` |
 | Understand | `how`, `why`, `teach`, `recall`, `blast-radius`, `bro` |
-| Review and cleanup | `no-comments`, `deslop`, `react-doctor`, `benchmark-checklist` |
+| Review and cleanup | `no-comments`, `deslop`, `react-doctor`, `benchmark-checklist`, `council` |
 | Verify | `control-ui`, `control-cli`, `create-verification-skill`, `maintain-verification-skill`, `tdd` |
 | Long-running work | `show-me-your-work`, `correct`, `reflect` |
 | Writing | `unslop`, `technical-writing`, `typescript-best-practices` |
@@ -40,7 +40,7 @@ Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used
 
 ## Credits
 
-Both agents, the principles, and most skills come from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack). `deslop`, `control-ui`, and `control-cli` come from Cursor's [cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit). `react-doctor` comes from Million Software's [react-doctor](https://github.com/millionco/react-doctor). fly adapts them for Claude Code and Codex in T3 Code.
+Both agents, the principles, and most skills come from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack). `deslop`, `control-ui`, and `control-cli` come from Cursor's [cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit). `react-doctor` comes from Million Software's [react-doctor](https://github.com/millionco/react-doctor). fly adapts them for Claude Code and Codex in T3 Code. `council` comes unchanged from Theo Browne's [tstack](https://github.com/t3dotgg/tstack).
 
 ## License
 
