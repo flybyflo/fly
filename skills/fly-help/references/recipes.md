@@ -35,10 +35,11 @@ Swap in the real paths, skills, and done checks. Informal wording works.
 - `/fly open the pr. small ordered commits, evidence in the description.`
 - `/fly babysit this pr. get it green.` For status only: `/fly check on pr <number>. anything outstanding?`
 - `/fly land the stack.`
+- `/fly auto <task>. land it once checks pass.` Auto mode merges and deploys without asking. Plain `/fly` stops at the open PR.
 
 ## Away and back
 
-- `/fly im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. /loop until done. if you're truly stuck after a few hours, stop and write up why.`
+- `/fly im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. /loop until done. if you're truly stuck after a few hours, stop and write up why.`
 - `/show-me-your-work catch me up on what you did last night.` Read its Attention section first.
 - `/fly build these changes in small verifiable units. keep a decision log. leave the branch ready for my review.`
 - `/reflect capture what we learned so the next run doesn't repeat it.` Approve only edits that change a future decision.

@@ -43,8 +43,12 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 
 These override any autonomy wording in a skill or playbook, including "never block", "just do it", "full autonomy" and "run until done".
 
-- **Always ask first** for: Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs.
-- **Proceed without asking** on everything else: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts, commits, pushes to any branch (`main` and `development` included), force-pushes, opening and updating PRs, merges, auto-merge, and deploys. Commits, pushes, PR titles and bodies, merges, and deploys are not publishing content.
+fly has two modes. Normal mode is the default. Auto mode is on only for a task the user starts with `/fly auto <task>`, or by saying to run fly in auto mode. It lasts for that task. Every other run is normal, including a skill typed on its own.
+
+- **Always ask first, in both modes,** for: Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs.
+- **Ask first in normal mode** before: merging a PR, turning on auto-merge, pushing straight to a base branch such as `main` or `development`, and deploying. Leave the PR open and merge-ready, and say so. A request that names the action, such as "land the stack", "merge #12" or "deploy it", is the approval for what it names and nothing more. Auto mode does all of these without asking.
+- **Proceed without asking, in both modes,** on everything else: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts, commits, pushes and force-pushes to the working branch, and opening and updating PRs. Commits, pushes, and PR titles and bodies are not publishing content.
+- A skill may gate its own step, as `reflect` does before it applies skill edits and `correct` does before a new CI gate. Such a gate holds in both modes.
 - Branches stay clean and based on their intended base (usually `main`). Never merge unrelated branches in to resolve conflicts.
 - PRs are created with `gh`. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one.
 

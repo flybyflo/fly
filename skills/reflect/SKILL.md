@@ -59,7 +59,7 @@ Before applying any Accepted edit, present the synthesizer's full Accepted/Rejec
 
 Backlog items are listed in the same reply. File them to the team's devex or backlog tracker only when the user approves that in the current request; filing is outward-facing.
 
-Edits land at the skill's source. fly skills are symlinked into `~/.claude/skills/` and `~/.agents/skills/` from the fly repo, so resolve the link (`readlink -f`) and edit the file it points to, never a copy. A project-local skill (`.claude/skills/`, `.agents/skills/`) is edited in place. Skill edits are working-tree edits; committing them follows the approval gates.
+Edits land at the skill's source. fly skills are symlinked into `~/.claude/skills/` and `~/.agents/skills/` from the fly repo, so resolve the link (`readlink -f`) and edit the file it points to, never a copy. A project-local skill (`.claude/skills/`, `.agents/skills/`) is edited in place. Once the user approves an edit, commit it like any other change.
 
 For each approved Accepted item, follow the Routing field exactly:
 

@@ -61,7 +61,7 @@ The verification principles define what counts as proof:
 The delegation principles keep parallel work sane:
 
 - [Guard the Context Window](../../skills/principle-guard-the-context-window/SKILL.md) routes bulk reading to subagents and keeps findings in the main chat.
-- [Never Block on the Human](../../skills/principle-never-block-on-the-human/SKILL.md) proceeds on reversible local work and presents the result. Only the ask-first list waits for you: Next.js proxy or middleware, `next.config.*`, and outward-facing publishing.
+- [Never Block on the Human](../../skills/principle-never-block-on-the-human/SKILL.md) proceeds on reversible local work and presents the result. Two things wait for you. The first is the ask-first list: Next.js proxy or middleware, `next.config.*`, and outward-facing publishing. The second is a merge or a deploy, unless the task started with `/fly auto`.
 
 And one meta principle:
 

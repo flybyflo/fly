@@ -23,7 +23,7 @@ First, read recent commits, reverts, review comments, agent instruction files (`
 
 ## Fix and prove
 
-Then fix the most frequent classes now, one self-contained change each, so each could be its own commit. Prove each new check fails on a real past mistake. Run the same command locally that CI would run. Exceptions go on the offending line with a reason, an expiry date, and a human's approval. Commits happen only when the user approves them.
+Then fix the most frequent classes now, one self-contained change and one commit each. Prove each new check fails on a real past mistake. Run the same command locally that CI would run. Exceptions go on the offending line with a reason, an expiry date, and a human's approval.
 
 ## Keep the rule table
 

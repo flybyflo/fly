@@ -44,7 +44,7 @@ Never remove handling at a real boundary: user input, network, file I/O, parsing
 4. Run the repo's typecheck, lint and affected tests. Don't add tests.
 5. Report in 1–3 sentences, then list MEDIUM findings with `file:line`.
 
-Leave the edits in the working tree. Commit only when the user asks.
+Leave the edits in the working tree. This skill does not commit. The flow that called it does.
 
 ## Deep mode
 

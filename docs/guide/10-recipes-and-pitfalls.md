@@ -138,6 +138,7 @@ That's the whole prompt. [`/bro`](../../skills/bro/SKILL.md) restates the last m
 - **Accepting every review comment.** Bots and humans both file real catches and noise in one list. Build's parent judges each finding and rejects wrong ones with a reason.
 - **Treating `inherit-parent` as a model slug.** It means "run this role on the current thread's model." [Setup](./01-setup.md) covers the roles.
 - **Expecting a run to stay local.** Runs commit, push, and open PRs on their own. Say "keep it local" in the request to stop before the commit.
+- **Expecting plain `/fly` to merge.** It stops at the open PR and waits for you before a merge or a deploy. Say "land it", or start the task with `/fly auto`.
 - **Reporting success off a green build.** A build proves it compiles. Ask for the real command, flow, stored value, or profile, and expect the evidence in the reply.
 - **Writing a `SKILL.md` freehand.** Route it through the [Authoring or modifying a skill playbook](../../skills/fly/playbooks/authoring-a-skill.md) so validation and review happen.
 

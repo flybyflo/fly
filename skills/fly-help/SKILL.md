@@ -52,7 +52,7 @@ fly is built for T3 Code threads running Claude Code or Codex. One copy of each 
 
 `/fly` already uses `fly-agent` for the subagents its playbook steps spawn in Claude Code. To get the same style from a subagent of your own, spawn it with `subagent_type: "fly-agent"`. In Codex or through `delegate_task`, tell the child to read the `fly` SKILL.md in full before any work.
 
-`/fly` commits, pushes, opens and updates PRs, merges, and deploys without asking. It asks first only for Next.js proxy or middleware behaviour, `next.config.*`, and outward-facing publishing, such as posts, messages, and PR comments. A user who wants a run to stay local says so in the prompt, as in "don't commit".
+`/fly` commits, pushes, and opens and updates PRs without asking. It merges, pushes straight to a base branch, or deploys only when the user asks for that, as in "land the stack". `/fly auto <task>` starts the task in auto mode, where it does those without asking too. In both modes it asks first for Next.js proxy or middleware behaviour, `next.config.*`, and outward-facing publishing, such as posts, messages, and PR comments. A user who wants a run to stay local says so in the prompt, as in "don't commit".
 
 ## Pick a skill
 
@@ -126,6 +126,7 @@ Principles are one-rule skills that `/fly` reads and cites in its replies. The u
 | Runs cost more than expected | See the cost paragraph under Get set up. |
 | A skill didn't load on its own | Most fly skills load only when the user types them or when `/fly` runs them, and it doesn't run every skill. |
 | The run stopped and asked before a change | It hit the ask-first list: Next.js proxy or middleware, `next.config.*`, or outward-facing publishing. Answer in a message, or pre-approve it in the next prompt. |
+| The run opened a PR and didn't merge it | Normal mode waits for approval before a merge, a push straight to a base branch, or a deploy. Say "land it", or start the task with `/fly auto`. |
 | Parallel agents overwrote each other | Give each agent its own git worktree: `isolation: "worktree"` on the Claude Code `Agent` tool, or a T3 thread launched with a worktree strategy. |
 | An overnight run moved but finished nothing | `/loop` or a scheduled task needs a check that can pass or fail, not a duration. See [guide page 7](../../docs/guide/07-overnight.md). |
 | The reply claims success from a green build | Ask for the real command, flow, stored value, or profile. That's the prove-it-works principle. |

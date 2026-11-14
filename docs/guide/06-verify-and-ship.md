@@ -119,7 +119,7 @@ Babysit stops at merge-ready. It never merges, even with everything green, becau
 
 ## Land the stack with Shipping
 
-Green is not the same as safe. When you're ready to land, say so:
+Green is not the same as safe. Plain `/fly` never merges or deploys on its own, and a task started with `/fly auto` needs no request. When you're ready to land, say so. That request is the approval to merge:
 
 ```text
 /fly land the stack.

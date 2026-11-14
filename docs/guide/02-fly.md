@@ -104,6 +104,16 @@ Ask for the worktree up front when the base matters:
 
 Each task in its own branch and worktree means no agent stomps another's files. Worktrees cost disk and machine resources, so a laptop runs only a handful at once. The [Opening a PR playbook](../../skills/fly/playbooks/opening-a-pr.md) already works from a worktree for code changes, so mostly you only say this when a specific base or location matters.
 
+## Let it merge with `/fly auto`
+
+Plain `/fly` commits, pushes, and opens the PR, then stops. It merges or deploys only when you ask, as in "land the stack". Put `auto` first when the run should finish the job without you:
+
+```text
+/fly auto bump the sdk to the new minor and land it once checks pass.
+```
+
+Auto mode lasts for that task. In both modes the agent asks before it publishes content, such as a PR comment, and before it changes Next.js proxy, middleware, or `next.config.*`.
+
 ## Leave it running
 
 When you step away, say what done means and go:
