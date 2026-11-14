@@ -53,7 +53,7 @@ flowchart TD
     I -->|No| J[Report, commit, and PR]
 ```
 
-The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. Commits, pushes, and PRs proceed without asking. Merges and deploys wait for you, unless the run started with `/fly auto`.
+The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. Commits, pushes, and PRs proceed without asking. Merges, auto-merge, pushes straight to a base branch, and deploys wait for you, unless the prompt asked for them or the run started with `/fly auto`.
 
 ## The morning audit
 
@@ -74,7 +74,7 @@ An unattended Build run still waits for you to start it. A scheduled or event-dr
 - Every stage can stop the line. Triage can decide the report is expected behavior, repro can fail to reproduce it, and the fixer can judge the change too risky. Each of those outcomes is useful, because it keeps bad work from reaching the next stage, where it costs more to undo.
 - Every stage hands over evidence. Repro attaches screenshots and video of the broken state, and the fix attaches before-and-after proof. A human can then check that the agent fixed the right thing before reading a line of code.
 
-In T3 Code, `schedule_task` runs a prompt on an interval, at a fixed time, or when a webhook fires, so a triage thread can wake on each new report and a repro thread on each confirmed one. Each stage is its own thread with its own worktree, and a stage that prepares a fix opens the PR and stops there. A scheduled run merges only when its prompt starts with `/fly auto`.
+In T3 Code, `schedule_task` runs a prompt on an interval, at a fixed time, or when a webhook fires, so a triage thread can wake on each new report and a repro thread on each confirmed one. Each stage is its own thread with its own worktree, and a stage that prepares a fix opens the PR and stops there. A scheduled run merges only when its prompt asks for the merge, as in "land the stack", or starts with `/fly auto`.
 
 **Pitfall:** a duration is not a finish condition. "work on this for 4 hours" gives the agent nothing to check, and you'll wake up to four hours of motion instead of a result. Give `/loop` or `schedule_task` a predicate that can pass or fail.
 
