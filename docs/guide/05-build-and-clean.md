@@ -46,13 +46,13 @@ The report states what changed, what the loops found and fixed, what remains ope
 
 ## Write the failing test first with `/tdd`
 
-Nothing in fly adds a regression test on its own. When you want the fix to arrive with a failing test first, say so, and in context the whole prompt can be two words:
+fly treats end-to-end tests as the ones that count. It writes one on its own only before a hard problem such as a database migration, and it never writes a unit test unless you ask for one. When you want an ordinary fix to arrive with a failing test first, say so, and in context the whole prompt can be two words:
 
 ```text
 /tdd implement
 ```
 
-[`/tdd`](../../skills/tdd/SKILL.md) writes the smallest test that fails for the intended reason, then the fix, then reruns the test. If a test would need broad harness setup or brittle mocks, the skill says so and uses the closest executable check instead. Don't force a test where a real command is stronger evidence.
+[`/tdd`](../../skills/tdd/SKILL.md) writes the smallest end-to-end test that fails for the intended reason, then the fix, then reruns the test. If a test would need broad harness setup or brittle mocks, the skill says so and uses the closest executable check instead. Don't force a test where a real command is stronger evidence.
 
 ## Load the TypeScript rules by name
 

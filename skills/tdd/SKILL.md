@@ -1,21 +1,21 @@
 ---
 name: tdd
-description: "Use only when the user explicitly asks for TDD, a failing test, or a regression test in the current request. Never start it on your own, even when the bug has an obvious cheap test target. Skip when the test path is unclear, expensive, or integration-heavy, and say so."
+description: "Use when the user explicitly asks for TDD, a failing test, or a regression test in the current request, or when the change is a hard problem such as a database migration that needs an end-to-end test first. Never start it for an ordinary bug, even when the bug has an obvious cheap test target. Writes end-to-end tests, not unit tests. Skip when no end-to-end path is practical, and say so."
 disable-model-invocation: true
 ---
 
 # TDD Bug Fix
 
-Run this only when the user asked for TDD, a failing test, or a regression test in the current request. A cheap local test target is not a trigger on its own. Without that request, fix the bug and verify it with the closest executable check instead of adding a test.
+Run this when the user asked for TDD, a failing test, or a regression test in the current request. Also run it, without being asked, before a hard problem where a wrong result is costly or hard to undo, such as a database migration. A cheap local test target is not a trigger on its own. For any other change, fix it and verify it with the closest executable check instead of adding a test.
 
-When the user asks, make the broken behavior executable before changing production code. The goal is a focused regression test that fails before the fix and passes after it.
+Make the broken or required behavior executable before changing production code. The goal is a focused end-to-end test that fails before the change and passes after it. End-to-end tests are the ones that count. Do not write a unit test unless the user asks for a unit test.
 
-Do not force a test when it would be impractical. If the available test would require broad harness setup, brittle mocks, slow end-to-end infrastructure, production-only state, vague reproduction steps, or large unrelated fixture churn, skip adding a new test and use the closest useful verification instead.
+Do not force a test when it would be impractical. A hard problem such as a database migration is the exception: there the end-to-end test is the point, so build the path it needs or report why you cannot. If the available test would require broad harness setup, brittle mocks, slow end-to-end infrastructure, production-only state, vague reproduction steps, or large unrelated fixture churn, skip adding a new test and use the closest useful verification instead.
 
 ## Workflow
 
 1. **Understand the bug.** Identify the intended behavior, current behavior, affected path, and smallest observable reproduction.
-2. **Choose the narrowest executable check.** Prefer the closest unit, component, integration, or regression test already used for that codepath. If no practical test path is obvious, do not create one from scratch just to satisfy the workflow.
+2. **Choose the narrowest end-to-end check.** Prefer the closest end-to-end or integration test already used for that codepath, one that runs the real path a user or caller takes. For a migration, run it against a copy of real data and assert on the stored result. If no practical test path is obvious, do not create one from scratch just to satisfy the workflow.
 3. **Write the failing test first.** Add the smallest focused test that would have caught the bug. The test should encode intended behavior, not mirror the current implementation.
 4. **Run the new test before fixing.** Confirm it fails for the intended reason. If it passes or fails for an unrelated reason, correct the test or reproduction before editing the implementation.
 5. **Fix the bug.** Make the smallest production change that satisfies the intended behavior while preserving nearby contracts.

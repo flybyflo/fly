@@ -54,7 +54,7 @@ fly has two modes. Normal mode is the default. Auto mode is on only for a task t
 
 ## Repo rules that skills must respect
 
-- Tests: don't add regression tests unless the user asks for one in the current request. Behaviour tests for new code follow the repo's own rules.
+- Tests: end-to-end tests are the ones that count. Write one first, before the change, for a hard problem where a wrong result is costly or hard to undo, such as a database migration. Otherwise add a test only when the user asks for one in the current request, and never write a unit test unless the user asks for a unit test. Behaviour tests for new code follow the repo's own rules.
 - No regex for validation or content checks in code a skill writes; use typed parsers, schema libraries or structural checks. Shell `grep`/`rg` for searching is fine.
 - Repository instructions (`AGENTS.md`, `CLAUDE.md`) outrank skills. A skill never tells the agent to ignore them.
 

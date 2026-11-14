@@ -8,7 +8,7 @@ Framing runs on the `architecture` role. When the current thread is not on that 
 
 1. Write the done predicate: what is true when this is finished, and how you will prove it.
 2. Name the data shape the change works on.
-3. Bug: reproduce it on the real surface first. Perf: measure the baseline first (**benchmark-checklist**).
+3. Bug: reproduce it on the real surface first. Perf: measure the baseline first (**benchmark-checklist**). Hard problem where a wrong result is costly or hard to undo, such as a database migration: write the end-to-end test first and watch it fail (**tdd**).
 4. Large or long work: split it into units that each end in a verifiable state. Each unit runs sections 1 to 3: Implement, the review loop, and the verification loop. Keep a decision log through **show-me-your-work** and keep going until the predicate holds.
 5. A novel design or architectural decision with no precedent: the `architecture` agent runs **principle-exhaust-the-design-space** before any unit starts.
 

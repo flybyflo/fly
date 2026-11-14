@@ -56,7 +56,7 @@ The qualifiers do real work. "don't change anything yet" keeps it read-only, and
 /fly repro the duplicate write first. if there's a cheap test path, /tdd it. then fix and rerun.
 ```
 
-"/tdd it" matters, because nothing adds a regression test unless you ask. "if there's a cheap test path" matters too. Forcing a test through brittle mocks proves less than running the real command, and the playbook is allowed to say so.
+"/tdd it" matters, because an ordinary bug fix gets no regression test unless you ask. "if there's a cheap test path" matters too. Forcing a test through brittle mocks proves less than running the real command, and the playbook is allowed to say so.
 
 ## Repro and fix a report with proof
 
