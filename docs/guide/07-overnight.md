@@ -29,7 +29,7 @@ Walk through what each line buys you:
 - "im going to bed" is a session override. The agent stops asking about reversible work and keeps going. It does not turn on auto mode, so you wake up to an open PR. Start the prompt with `/fly auto` when the run should also merge and deploy.
 - "done means..." turns the goal into checks every iteration can run.
 - "fresh worktree off `<base>`" keeps the run from colliding with anything else you have open.
-- `/loop` is Claude Code's built-in recurring prompt, not an fly skill. In T3 Code, `schedule_task` re-runs a prompt on an interval, at a fixed time, or on a webhook, and works for Codex threads too. Each run keeps the same finish condition and respects the ask-first list.
+- `/loop` is Claude Code's built-in recurring prompt, not a fly skill. In T3 Code, `schedule_task` re-runs a prompt on an interval, at a fixed time, or on a webhook, and works for Codex threads too. Each run keeps the same finish condition and respects the ask-first list.
 - The escape hatch lets it stop at a genuine dead end and write up why, which beats eight hours of creative goal reinterpretation.
 
 Long code work uses [Build](../../skills/fly/playbooks/build.md). It frames the task, splits it into verifiable units, and keeps a decision log. Each unit runs the implementation, review, and verification steps. Each loop stops after three rounds if findings remain open.

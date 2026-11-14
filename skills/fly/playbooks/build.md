@@ -4,12 +4,12 @@ Any change to code: a feature, bug fix, refactor, perf fix, UI work, migration, 
 
 ## 0. Frame
 
-Framing runs on the `architecture` role. When the current thread is not on that model, hand steps 1, 2 and 4 to a fresh `architecture` agent, check its answer, and adopt it.
+Framing runs on the `architecture` role. When the current thread is not on that model, hand items 1, 2 and 4 below to a fresh `architecture` agent, check its answer, and adopt it.
 
 1. Write the done predicate: what is true when this is finished, and how you will prove it.
 2. Name the data shape the change works on.
 3. Bug: reproduce it on the real surface first. Perf: measure the baseline first (**benchmark-checklist**).
-4. Large or long work: split it into units that each end in a verifiable state. Each unit runs steps 1 to 3. Keep a decision log through **show-me-your-work** and keep going until the predicate holds.
+4. Large or long work: split it into units that each end in a verifiable state. Each unit runs sections 1 to 3: Implement, the review loop, and the verification loop. Keep a decision log through **show-me-your-work** and keep going until the predicate holds.
 5. A novel design or architectural decision with no precedent: the `architecture` agent runs **principle-exhaust-the-design-space** before any unit starts.
 
 ## 1. Implement

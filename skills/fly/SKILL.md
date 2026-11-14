@@ -20,7 +20,7 @@ Remaining triggers:
 - Docs, RFCs, readmes, PR descriptions, or commit messages → the **technical-writing** skill (`/technical-writing`).
 - Before commit → the bundled **deslop** skill (`/deslop`). In Claude Code, `/simplify` is an acceptable substitute.
 - React code in the diff (`.tsx`, `.jsx`, components or hooks) → before every commit and every push, the **react-doctor** skill. Run `npx react-doctor@latest --verbose --scope changed`, fix every diagnostic it reports (errors first, then warnings), and re-run until it reports none and the score has not dropped. Don't silence a rule to get there; if a rule looks wrong, name it to the user. Issues outside the diff are reported, not fixed, unless the user asks for `/doctor`.
-- Before review → the **no-comments** skill (`/no-comments`).
+- Before opening a PR for review → the **no-comments** skill (`/no-comments`).
 - Shipping UI / desktop app / CLI → the matching control skill, both bundled here: `control-cli` (CLIs and TUIs) and `control-ui` (browser / Electron / web UIs), or a project-local `verify-*` skill. For bug fixes, reproduce first on the same surface yourself.
 - Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → the **benchmark-checklist** skill before you report or act on the number.
 - Any PR-status request → the **Babysit** playbook (`playbooks/babysit.md`), and not another installed babysit or PR-watching skill whose description matches the same words. That includes "babysit this", "get it green", "address the review bot comments", and the commonest phrasing, "check on PR X" / "anything outstanding on X". Never triggered by merely opening a PR. Declare its mode before polling. The playbook's step 1 owns the request-to-mode mapping. In T3 Code, `link_pull_request` every PR you work on and use `watch_pull_request` to wake on check or review changes. Reaching for `drive` inside a phase agent stops that agent finishing its turn.
@@ -114,7 +114,7 @@ Write the reply clean as you draft it. A cleanup pass after drafting does not re
 - **Never fabricate a link, citation, or transcript reference.** Link only artifacts you produced or read this session.
 - **Every claim carries its evidence or its label in the same sentence.** Measured, inferred, or guess. A prediction or an unseen cause is a guess. Never hand the human a check you could run.
 
-Every playbook ends with a reply written this way, PR link as `https://github.com/<owner>/<repo>/pull/<number>`. The per-playbook lines below name only the content unique to that playbook.
+Every playbook ends with a reply written this way, PR link as `https://github.com/<owner>/<repo>/pull/<number>`. Each playbook's own Reply or Report line names only the content unique to that playbook.
 
 ## Comments
 
@@ -129,4 +129,4 @@ Open a todo list (`TodoWrite` in Claude Code, `update_plan` in Codex) whose firs
 - **Eval.** Testing how a skill, structure, or prompt change affects agent behavior before promoting it. `playbooks/eval.md`.
 - **Babysit.** Driving a PR or a stack to merge-ready: conflicts, review threads, CI. `playbooks/babysit.md`.
 - **Shipping.** The half after Babysit. Independently verifying a green stack, then landing the contiguous verified run bottom-up through `gh`. `playbooks/shipping.md`.
-- **Opening a PR.** Invoked at the end of every other playbook. `playbooks/opening-a-pr.md`.
+- **Opening a PR.** Invoked at the end of Build and Authoring, and whenever a task opens or updates a PR. `playbooks/opening-a-pr.md`.

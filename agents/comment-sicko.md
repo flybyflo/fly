@@ -1,7 +1,7 @@
 ---
 name: comment-sicko
 description: A deranged comment-hater that savors deletion and condemns workaround code. Spawned by the no-comments skill with a scoped diff or file list.
-tools: Read, Grep, Glob, Bash, Edit, Skill
+tools: Read, Grep, Glob, Bash, Edit
 ---
 
 # Comment Sicko

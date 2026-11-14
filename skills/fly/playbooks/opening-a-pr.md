@@ -8,9 +8,9 @@ Use after the Build review and verification loops pass, and when other playbooks
 
 **Commits.** Commit liberally. Rebase into small, ordered commits before opening PRs. Each commit is a future PR: landable, ordered to tell the story. Amend when the fix belongs in a just-made commit. New commit when separable.
 
-**PRs.** Run the `deslop` skill (`/deslop`, or `/simplify` in Claude Code) over the diff before commit. When the diff touches React code, run the **react-doctor** skill before each commit and push until `--scope changed` reports nothing (see the React rule in SKILL.md). Run `/no-comments` before review. Write every PR title, PR description, and commit body with `/technical-writing`, then apply `/unslop`. Apply every technical-writing layer except Diátaxis. Use one word for each action, keep articles, and avoid `-ing` when a plain verb works.
+**PRs.** Run the `deslop` skill (`/deslop`, or `/simplify` in Claude Code) over the diff before commit. When the diff touches React code, run the **react-doctor** skill before each commit and push until `--scope changed` reports nothing (see the React rule in SKILL.md). Run `/no-comments` before you open the PR for review. Write every PR title, PR description, and commit body with `/technical-writing`, then apply `/unslop`. Apply every technical-writing layer except Diátaxis. Use one word for each action, keep articles, and avoid `-ing` when a plain verb works.
 
-**Titles.** Use Conventional Commits in the form `type(scope): subject`. Use `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, or `perf` as the type. Use the changed area, such as `fly` or `fly`, as the scope. Keep the subject short and imperative. Name a real symbol when one carries the change. For example, `fix(fly): retarget opening-a-pr babysit trigger`. Do not add a trailing period.
+**Titles.** Use Conventional Commits in the form `type(scope): subject`. Use `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, or `perf` as the type. Use the changed area, such as `fly` or `docs`, as the scope. Keep the subject short and imperative. Name a real symbol when one carries the change. For example, `fix(fly): retarget opening-a-pr babysit trigger`. Do not add a trailing period.
 
 **Descriptions.** The PR body is a briefing, not the lab notebook. A reviewer who has the diff should learn why the change exists, what it leaves out, what it could break, and how you proved it works, in under a minute. Write short, simple sentences with few identifiers. Do not write walls of text. The squash commit body is the PR body. If the body would make the squash commit longer than about 40 lines, cut the body.
 
@@ -35,4 +35,4 @@ After these sections, attach videos or screenshots when they prove a claim. Do n
 
 **Babysit.** Opening a PR does not start a babysit. Post the URL and keep building. Finish the phase or stack first. Run a separate babysit pass only when the user asks for one after the whole stack exists. A babysit for each new PR stalls the build and spends checks on commits that later waves restart. Push back when feedback drifts from intent.
 
-A subagent that opens a PR first completes Build's review and verification loops and runs `/no-comments` before review. It posts the URL and returns to the parent. Babysitting starts only when the user asks for it.
+A subagent that opens a PR first completes Build's review and verification loops and runs `/no-comments` before it opens the PR. It posts the URL and returns to the parent. Babysitting starts only when the user asks for it.

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # fly help
 
-Answer the user's question about fly, hand them a prompt they can send, and link the file the answer came from. For a help question, don't start the work. The user asked how, and an fly run spends real tokens, so let them send the prompt.
+Answer the user's question about fly, hand them a prompt they can send, and link the file the answer came from. For a help question, don't start the work. The user asked how, and a fly run spends real tokens, so let them send the prompt.
 
 A message that asks for work, such as "use fly to fix this bug", is not a help question. Read [`fly`](../fly/SKILL.md), do the work under it, and mention once that `/fly` applies to the task it starts, so the next task needs it again.
 
@@ -71,6 +71,8 @@ The default answer is `/fly`, which runs most of the others when its steps need 
 | Apply TypeScript rules to `.ts` or `.tsx` work | [`/typescript-best-practices`](../typescript-best-practices/SKILL.md) |
 | Clean AI-generated slop out of a diff before commit | [`/deslop`](../deslop/SKILL.md) |
 | Strip comments before review, using a reviewer that didn't write them | [`/no-comments`](../no-comments/SKILL.md) |
+| Scan React code for diagnostics before a commit | [`react-doctor`](../react-doctor/SKILL.md) |
+| Get the same review from three models on three providers | [`council`](../council/SKILL.md) |
 | Clean AI tells out of prose | [`/unslop`](../unslop/SKILL.md) |
 | Write docs, an RFC, a README, a PR description, or a commit message to a standard | [`/technical-writing`](../technical-writing/SKILL.md) |
 | Hear the last reply again in plain words | [`/bro`](../bro/SKILL.md) |

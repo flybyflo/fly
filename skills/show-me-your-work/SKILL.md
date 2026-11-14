@@ -12,7 +12,7 @@ Keep one canonical log.
 
 A single TSV file, one row per decision. Cells stay single-line. Evidence is a pointer, not prose.
 
-Copy `references/decision-log-template.tsv` (the header row) to start a clean log. Columns:
+`scripts/log.sh` writes the header row on first use, so a clean log needs no template. Columns:
 
 - **ts.** ISO8601 timestamp.
 - **phase.** The phase or workstream.
