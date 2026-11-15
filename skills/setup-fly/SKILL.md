@@ -11,7 +11,7 @@ Write `~/.agents/fly-models.md`, the file every fly skill reads when it picks a 
 
 ### 1. Detect available models
 
-Call the T3 Code tool `orchestrator_capabilities`. That is the dependable source, because `delegate_task` runs from the same catalog. Keep each provider whose `canRunChildTask` is true and whose `constraints` list is empty. For each kept provider, record its `providerInstanceId`, each model `id`, and the model's reasoning option: the select option whose label is `Reasoning` or `Effort` (its `id` varies by provider, such as `effort`, `reasoningEffort`, `reasoning`, or `reasoning_effort`) with the value ids it offers. A model with no reasoning option is written without `@<effort>`. Drop every Fable and Astra model.
+Call the T3 Code tool `orchestrator_capabilities`. That is the dependable source, because `delegate_task` runs from the same catalog. Keep each provider whose `canRunChildTask` is true and whose `constraints` list is empty. For each kept provider, record its `providerInstanceId`, each model `id`, and the model's reasoning option: the select option whose label is `Reasoning` or `Effort` (its `id` varies by provider, such as `effort`, `reasoningEffort`, `reasoning`, or `reasoning_effort`) with the value ids it offers. A model with no reasoning option is written without `@<effort>`. Drop every Astra model, and offer Fable models only for `prose`.
 
 If `orchestrator_capabilities` is not available, the thread is not running in T3 Code. Fall back to the models the host's native subagent tool accepts, and ask the user to paste any others they want with their provider instance ids. Never write a model you have not confirmed is available. The alias `inherit-parent` is always valid even though it is not a detected model.
 

@@ -2,15 +2,15 @@
 
 The single source for fly's roles, their defaults, and how a role turns into a subagent. Skills name a role and point here. They don't restate these rules.
 
-Opus builds, Sol checks, Haiku or Luna fetches. Architecture, design, implementation, and anything the user reads run on `claudeAgent/claude-opus-5-5`. Every double-check runs on `codex/gpt-6.1-sol`, so code is always checked by a different model family than the one that wrote it. Simple lookups run on `claudeAgent/claude-haiku-5-5` or `codex/gpt-6-luna`. Never use a Fable or Astra model. The one exception is the `council` skill, which picks the latest flagship model of each provider and may land on one.
+Opus builds, Fable writes, Sol checks and fetches. Architecture, design, and implementation run on `claudeAgent/claude-opus-5-5`. Anything the user reads runs on `claudeAgent/claude-fable-5-2`. Every double-check runs on `codex/gpt-6.1-sol`, so code is always checked by a different model family than the one that wrote it. Simple lookups also run on `codex/gpt-6.1-sol`. Use Fable only for `prose`, and never use an Astra model. The one exception is the `council` skill, which picks the latest flagship model of each provider and may land on either.
 
 ```
 architecture: claudeAgent/claude-opus-5-5@xhigh
 design: claudeAgent/claude-opus-5-5@xhigh
 implement: claudeAgent/claude-opus-5-5@xhigh
 check: codex/gpt-6.1-sol@xhigh
-prose: claudeAgent/claude-opus-5-5@xhigh
-search: claudeAgent/claude-haiku-5-5@medium, codex/gpt-6-luna@medium
+prose: claudeAgent/claude-fable-5-2@xhigh
+search: codex/gpt-6.1-sol@medium
 ```
 
 ## Roles
@@ -27,6 +27,6 @@ search: claudeAgent/claude-haiku-5-5@medium, codex/gpt-6-luna@medium
 1. Read the role's line in `~/.agents/fly-models.md`. If the file or the line is missing, use the default above and say so.
 2. A line is `role: <providerInstanceId>/<model>@<effort>`. Run at that effort. `search` lists one entry per provider: use the entry on the current thread's provider, else the first one.
 3. `inherit-parent` runs the role on the current thread's model. Omit `model` on `Agent`, or omit `target` on `delegate_task`.
-4. If the entry's provider is the current thread's provider and the host's native subagent tool can run that model at that effort, use the native tool. In Claude Code that is `Agent` with `model` set to the family alias (`opus`, `haiku`), and `subagent_type: "Explore"` for `search`. In Codex it is its native subagent tool.
+4. If the entry's provider is the current thread's provider and the host's native subagent tool can run that model at that effort, use the native tool. In Claude Code that is `Agent` with `model` set to the family alias (`opus`, `fable`, `haiku`), and `subagent_type: "Explore"` for `search`. In Codex it is its native subagent tool.
 5. Otherwise use T3 `delegate_task` with `target.providerInstanceId`, `target.model` and the effort option, all as listed by `orchestrator_capabilities`, plus `mode: "async"` and a distinct `clientRequestId` per spawn. A read-only spawn, such as an explorer, an investigator, or a source reader, also passes `role: "research"`. That is a `delegate_task` parameter, not a seventh fly role. Track each `taskId` with `task_status`.
 6. If `orchestrator_capabilities` does not list the model, use the default and say so. If it lacks the default too, use the closest model from the same provider and say so.
