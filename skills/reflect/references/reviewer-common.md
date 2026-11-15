@@ -6,7 +6,7 @@ Read the active transcript at <TRANSCRIPT_POINTER> (a T3 thread id to read with 
 
 ## Scope to skills and tools the session actually used
 
-Findings must point to skills, tools, or MCPs invoked in this transcript. Speculative routings to skills the parent never opened do not count. To check whether a skill was used, scan the transcript for:
+Findings must point to skills, tools, or MCPs invoked in this transcript. The one exception is a recurring workflow that the transcript shows and no skill covers, which takes the `new skill` route below. Speculative routings to skills the parent never opened do not count. To check whether a skill was used, scan the transcript for:
 
 - `Read` tool calls or `Skill` invocations against any `SKILL.md` (user-level `~/.claude/skills/` or `~/.agents/skills/`, project-level `.claude/skills/` or `.agents/skills/`, or plugin-installed paths)
 - `Agent` or `delegate_task` prompts that name a skill or skill path
