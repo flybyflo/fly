@@ -26,15 +26,15 @@ keep a decision log.
 
 Walk through what each line buys you:
 
-- "im going to bed" is a session override. The agent stops asking about reversible work and keeps going.
+- "im going to bed" is a session override. The agent stops asking about reversible work and keeps going. It does not turn on auto mode, so you wake up to an open PR. Start the prompt with `/fly auto` when the run should also merge and deploy.
 - "done means..." turns the goal into checks every iteration can run.
 - "fresh worktree off `<base>`" keeps the run from colliding with anything else you have open.
-- `/loop` is Claude Code's built-in recurring prompt, not an fly skill. In T3 Code, `schedule_task` re-runs a prompt on an interval, at a fixed time, or on a webhook, and works for Codex threads too. Each run keeps the same finish condition and respects the ask-first list.
+- `/loop` is Claude Code's built-in recurring prompt, not a fly skill. In T3 Code, `schedule_task` re-runs a prompt on an interval, at a fixed time, or on a webhook, and works for Codex threads too. Each run keeps the same finish condition and respects the ask-first list.
 - The escape hatch lets it stop at a genuine dead end and write up why, which beats eight hours of creative goal reinterpretation.
 
 Long code work uses [Build](../../skills/fly/playbooks/build.md). It frames the task, splits it into verifiable units, and keeps a decision log. Each unit runs the implementation, review, and verification steps. Each loop stops after three rounds if findings remain open.
 
-To stop a run, tell the agent to pause and record the current state and open work. A fresh thread can read that note and the decision log, then frame the next unit. A checkpoint commit still needs approval.
+To stop a run, tell the agent to pause and record the current state and open work. A fresh thread can read that note and the decision log, then frame the next unit. A checkpoint commit needs no approval.
 
 ## What the loop does all night
 
@@ -53,7 +53,7 @@ flowchart TD
     I -->|No| J[Report, commit, and PR]
 ```
 
-The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. Commits, pushes, PRs, merges, and deploys proceed without asking.
+The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. The run commits, pushes, and opens PRs on its own. Anything behind a gate in the Autonomy section of [`fly`](../../skills/fly/SKILL.md) waits for you.
 
 ## The morning audit
 
@@ -74,7 +74,7 @@ An unattended Build run still waits for you to start it. A scheduled or event-dr
 - Every stage can stop the line. Triage can decide the report is expected behavior, repro can fail to reproduce it, and the fixer can judge the change too risky. Each of those outcomes is useful, because it keeps bad work from reaching the next stage, where it costs more to undo.
 - Every stage hands over evidence. Repro attaches screenshots and video of the broken state, and the fix attaches before-and-after proof. A human can then check that the agent fixed the right thing before reading a line of code.
 
-In T3 Code, `schedule_task` runs a prompt on an interval, at a fixed time, or when a webhook fires, so a triage thread can wake on each new report and a repro thread on each confirmed one. Each stage is its own thread with its own worktree, and a stage that prepares a fix stops at the PR gate, because a scheduled run carries no approval to push or open a PR.
+In T3 Code, `schedule_task` runs a prompt on an interval, at a fixed time, or when a webhook fires, so a triage thread can wake on each new report and a repro thread on each confirmed one. Each stage is its own thread with its own worktree, and a stage that prepares a fix opens the PR and stops there. A scheduled run merges only when its prompt asks for the merge, as in "land the stack", or starts with `/fly auto`.
 
 **Pitfall:** a duration is not a finish condition. "work on this for 4 hours" gives the agent nothing to check, and you'll wake up to four hours of motion instead of a result. Give `/loop` or `schedule_task` a predicate that can pass or fail.
 

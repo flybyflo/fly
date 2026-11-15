@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # fly help
 
-Answer the user's question about fly, hand them a prompt they can send, and link the file the answer came from. For a help question, don't start the work. The user asked how, and an fly run spends real tokens, so let them send the prompt.
+Answer the user's question about fly, hand them a prompt they can send, and link the file the answer came from. For a help question, don't start the work. The user asked how, and a fly run spends real tokens, so let them send the prompt.
 
 A message that asks for work, such as "use fly to fix this bug", is not a help question. Read [`fly`](../fly/SKILL.md), do the work under it, and mention once that `/fly` applies to the task it starts, so the next task needs it again.
 
@@ -52,7 +52,7 @@ fly is built for T3 Code threads running Claude Code or Codex. One copy of each 
 
 `/fly` already uses `fly-agent` for the subagents its playbook steps spawn in Claude Code. To get the same style from a subagent of your own, spawn it with `subagent_type: "fly-agent"`. In Codex or through `delegate_task`, tell the child to read the `fly` SKILL.md in full before any work.
 
-`/fly` commits, pushes, opens and updates PRs, merges, and deploys without asking. It asks first only for Next.js proxy or middleware behaviour, `next.config.*`, and outward-facing publishing, such as posts, messages, and PR comments. A user who wants a run to stay local says so in the prompt, as in "don't commit".
+`/fly` opens PRs on its own and waits for the user before a merge or a deploy. `/fly auto <task>` does those without asking too. The Autonomy section of [`fly`](../fly/SKILL.md) holds the exact gates, so read it before you answer a question about them. A user who wants a run to stay local says so in the prompt, as in "don't commit".
 
 ## Pick a skill
 
@@ -67,10 +67,12 @@ The default answer is `/fly`, which runs most of the others when its steps need 
 | Catch up on their own recent work on a topic | [`/recall`](../recall/SKILL.md) |
 | Know what a small diff could break outside itself | [`/blast-radius`](../blast-radius/SKILL.md) |
 | Frame, implement, review, and verify a code change | [Build](../fly/playbooks/build.md) through `/fly` |
-| Fix a bug test-first when a cheap local test exists | [`/tdd`](../tdd/SKILL.md) |
+| Write a failing end-to-end test first, for a bug or a hard change such as a migration | [`/tdd`](../tdd/SKILL.md) |
 | Apply TypeScript rules to `.ts` or `.tsx` work | [`/typescript-best-practices`](../typescript-best-practices/SKILL.md) |
 | Clean AI-generated slop out of a diff before commit | [`/deslop`](../deslop/SKILL.md) |
 | Strip comments before review, using a reviewer that didn't write them | [`/no-comments`](../no-comments/SKILL.md) |
+| Scan React code for diagnostics before a commit | [`react-doctor`](../react-doctor/SKILL.md) |
+| Get the same review from three models on three providers | [`council`](../council/SKILL.md) |
 | Clean AI tells out of prose | [`/unslop`](../unslop/SKILL.md) |
 | Write docs, an RFC, a README, a PR description, or a commit message to a standard | [`/technical-writing`](../technical-writing/SKILL.md) |
 | Hear the last reply again in plain words | [`/bro`](../bro/SKILL.md) |
@@ -114,7 +116,7 @@ Without `/fly`, a phrase such as "babysit this pr" can start another installed s
 
 fly has no planning skill. The host's plan mode works alongside it. Build frames the done predicate and data shape, then splits large work into units that each end in a verifiable state. Ask for a plan or prototype explicitly when that is the deliverable.
 
-Principles are one-rule skills that `/fly` reads and cites in its replies. The user rarely invokes one. They steer with the names instead, as in "apply prove it works. show me the real output." Typing `/principle-<name>` still loads one on demand. [Guide page 8](../../docs/guide/08-principles.md) lists them.
+Principles are one-rule skills that `/fly` reads and cites in its replies. The user rarely invokes one. They steer with the names instead, as in "apply prove it works. show me the real output." Typing `/principle-<name>` still loads one that has its own skill. Five short ones live inline in the `fly` skill's index. [Guide page 8](../../docs/guide/08-principles.md) lists them.
 
 ## Fix a run that went wrong
 
@@ -125,7 +127,8 @@ Principles are one-rule skills that `/fly` reads and cites in its replies. The u
 | A new model choice had no effect | Skills read `~/.agents/fly-models.md` when they pick a model. Check that the role's line exists and names a model `orchestrator_capabilities` lists, or rerun `/setup-fly`. |
 | Runs cost more than expected | See the cost paragraph under Get set up. |
 | A skill didn't load on its own | Most fly skills load only when the user types them or when `/fly` runs them, and it doesn't run every skill. |
-| The run stopped and asked before a change | It hit the ask-first list: Next.js proxy or middleware, `next.config.*`, or outward-facing publishing. Answer in a message, or pre-approve it in the next prompt. |
+| The run stopped and asked before a change | It hit a gate in the Autonomy section of `fly`. Answer in a message, or pre-approve it in the next prompt. |
+| The run opened a PR and didn't merge it | Normal mode waits for the user. Say "land it", or start the task with `/fly auto`. |
 | Parallel agents overwrote each other | Give each agent its own git worktree: `isolation: "worktree"` on the Claude Code `Agent` tool, or a T3 thread launched with a worktree strategy. |
 | An overnight run moved but finished nothing | `/loop` or a scheduled task needs a check that can pass or fail, not a duration. See [guide page 7](../../docs/guide/07-overnight.md). |
 | The reply claims success from a green build | Ask for the real command, flow, stored value, or profile. That's the prove-it-works principle. |

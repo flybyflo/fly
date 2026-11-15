@@ -40,7 +40,7 @@ A prompt states the intent and the check for done. The playbook supplies the ste
 - Say "im going to bed" or "im stepping away" so the agent stops asking.
 - Write done as checks every iteration can run, and give `/loop` that predicate.
 - Ask for a fresh worktree off a named base.
-- Pre-answer what the agent would stop for, such as "don't ask me before committing". Commit, push, PR, merge, and deploy each wait for approval the prompt names, so name every one you grant.
+- Pre-answer what the agent would stop for, as in "merge it once checks pass". Starting with `/fly auto` lifts the merge and deploy gates only, so pre-approve anything on the ask-first list as well. The Autonomy section of the `fly` skill lists the gates.
 - Ask for a decision log to audit later.
 - Give an exit: "if you're truly stuck after a few hours, stop and write up why".
 

@@ -56,7 +56,7 @@ The qualifiers do real work. "don't change anything yet" keeps it read-only, and
 /fly repro the duplicate write first. if there's a cheap test path, /tdd it. then fix and rerun.
 ```
 
-"/tdd it" matters, because nothing adds a regression test unless you ask. "if there's a cheap test path" matters too. Forcing a test through brittle mocks proves less than running the real command, and the playbook is allowed to say so.
+"/tdd it" matters, because an ordinary bug fix gets no regression test unless you ask. "if there's a cheap test path" matters too. Forcing a test through brittle mocks proves less than running the real command, and the playbook is allowed to say so.
 
 ## Repro and fix a report with proof
 
@@ -138,6 +138,7 @@ That's the whole prompt. [`/bro`](../../skills/bro/SKILL.md) restates the last m
 - **Accepting every review comment.** Bots and humans both file real catches and noise in one list. Build's parent judges each finding and rejects wrong ones with a reason.
 - **Treating `inherit-parent` as a model slug.** It means "run this role on the current thread's model." [Setup](./01-setup.md) covers the roles.
 - **Expecting a run to stay local.** Runs commit, push, and open PRs on their own. Say "keep it local" in the request to stop before the commit.
+- **Expecting plain `/fly` to merge.** It stops at the open PR and waits for you before a merge or a deploy. Say "land it", or start the task with `/fly auto`.
 - **Reporting success off a green build.** A build proves it compiles. Ask for the real command, flow, stored value, or profile, and expect the evidence in the reply.
 - **Writing a `SKILL.md` freehand.** Route it through the [Authoring or modifying a skill playbook](../../skills/fly/playbooks/authoring-a-skill.md) so validation and review happen.
 

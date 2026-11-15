@@ -18,12 +18,12 @@ First, read recent commits, reverts, review comments, agent instruction files (`
 
 1. **Eliminate it with architecture.** Give each piece of state one owner and each task one supported way. Hide internals so the wrong import fails. Replace hand-synced lists with one source of truth. Delete old ways and dead code an agent would copy.
 2. **Enforce it with types so the bad state can't be written.** If bad code still compiles, add a lint or build-time check whose error names the file, type, or function to use instead. The check is structural: a typed parser, a schema, an AST rule, an import boundary. Never a regex over source or content. If the pattern is already common, fail only when a change adds more. A check that would run as a new CI gate needs the user's approval first; until then it runs locally.
-3. **Test the behavior,** only when the user asked for a test in this request. Fix or delete any test that would still pass if every function it calls returned nothing. Regression tests are never added on your own initiative.
+3. **Test the behavior end to end,** only when the test rule in the Autonomy section of the `fly` skill allows a test. Fix or delete any test that would still pass if every function it calls returned nothing.
 4. **Write docs or agent rules last, only for judgment calls.** Nothing fails when an agent skips them.
 
 ## Fix and prove
 
-Then fix the most frequent classes now, one self-contained change each, so each could be its own commit. Prove each new check fails on a real past mistake. Run the same command locally that CI would run. Exceptions go on the offending line with a reason, an expiry date, and a human's approval. Commits happen only when the user approves them.
+Then fix the most frequent classes now, one self-contained change and one commit each. Prove each new check fails on a real past mistake. Run the same command locally that CI would run. Exceptions go on the offending line with a reason, an expiry date, and a human's approval.
 
 ## Keep the rule table
 

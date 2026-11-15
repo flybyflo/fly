@@ -12,7 +12,7 @@ Keep one canonical log.
 
 A single TSV file, one row per decision. Cells stay single-line. Evidence is a pointer, not prose.
 
-Copy `references/decision-log-template.tsv` (the header row) to start a clean log. Columns:
+`scripts/log.sh` writes the header row on first use, so a clean log needs no template. Columns:
 
 - **ts.** ISO8601 timestamp.
 - **phase.** The phase or workstream.
@@ -45,7 +45,7 @@ A run is one agent conversation, including its later turns and any summary of it
 
 By default the log is a working artifact, not committed. Keep it at `decisions.tsv` in the work dir, or `.audit/<task-slug>.tsv` when several efforts run at once, and leave it out of git.
 
-Commit it only when the work is ambitious enough that a reviewer needs the trail to trust the result, and only once the user has approved that commit.
+Commit it only when the work is ambitious enough that a reviewer needs the trail to trust the result.
 
 ## Rules
 

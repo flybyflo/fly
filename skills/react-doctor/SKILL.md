@@ -1,7 +1,6 @@
 ---
 name: react-doctor
-description: Use when finishing a feature, fixing a bug, before committing React code, or when the user types `/doctor`, asks to scan, triage, or clean up React diagnostics. Covers lint, accessibility, bundle size, architecture. Includes a regression check and a full local-triage workflow that fetches the canonical playbook.
-version: "1.2.0"
+description: Use when finishing a feature, fixing a bug, before committing React code, or when the user asks for a full triage (`/react-doctor full triage`) or asks to scan, triage, or clean up React diagnostics. Covers lint, accessibility, bundle size, architecture. Includes a regression check and a full local-triage workflow that fetches the canonical playbook.
 ---
 
 # React Doctor
@@ -12,19 +11,19 @@ Scans React codebases for security, performance, correctness, and architecture i
 
 Run `npx react-doctor@latest --verbose --scope changed` and check the score did not regress.
 
-Before every commit and push, fix every issue it reports for the changed code (errors first, then warnings) and re-run until it reports none and the score has not dropped. Don't disable or ignore a rule to get a clean run; if a rule looks wrong, tell the user which one.
+Before the commit, fix every issue it reports for the changed code (errors first, then warnings) and re-run until it reports none and the score has not dropped. Don't disable or ignore a rule to get a clean run; if a rule looks wrong, tell the user which one.
 
 ## For general cleanup or code improvement:
 
-Run `npx react-doctor@latest --verbose` (the default `--scope full`) to scan the full codebase. Fix issues by severity — errors first, then warnings.
+Run `npx react-doctor@latest --verbose` (the default `--scope full`) to scan the full codebase. Fix issues by severity, errors first, then warnings.
 
 ## For a focused UI design audit:
 
 Run `npx react-doctor@latest design --verbose`. This selects only design-tagged UI composition, typography, interaction, accessibility, and motion rules, including focused rules that remain opt-in during a general health scan.
 
-## /doctor — full local triage workflow
+## Full local triage workflow
 
-When the user types `/doctor`, says "run react doctor", or asks for a full triage / cleanup pass (not just a regression check), fetch the canonical local-triage playbook and follow every step in it:
+When the user types `/react-doctor full triage`, says "run react doctor", or asks for a full triage / cleanup pass (not just a regression check), fetch the canonical local-triage playbook and follow every step in it:
 
 ```bash
 curl --fail --silent --show-error \
@@ -32,7 +31,7 @@ curl --fail --silent --show-error \
   https://www.react.doctor/prompts/react-doctor-agent.md
 ```
 
-The playbook is the single source of truth — a scan → filter → triage → fix → validate loop that edits the working tree directly (never commits, never opens PRs). Updating the prompt at its source updates every agent on its next fetch — no skill reinstall needed.
+The playbook is the single source of truth. It is a scan → filter → triage → fix → validate loop that edits the working tree directly (never commits, never opens PRs). Updating the prompt at its source updates every agent on its next fetch, with no skill reinstall needed.
 
 Pair it with the matching per-rule prompts at `https://www.react.doctor/prompts/rules/<plugin>/<rule>.md` (fetched on demand inside the playbook) so each fix uses the canonical, reviewer-tested recipe.
 

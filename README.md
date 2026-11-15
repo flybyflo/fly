@@ -3,7 +3,7 @@
 A personal agent skill stack for T3 Code. One copy of each skill serves both Claude Code and Codex threads.
 
 > [!WARNING]
-> fly lets the agent commit, push to any branch including `main`, force-push, merge, turn on auto-merge, and deploy without asking you. It asks first only before it publishes content, such as posts, messages, and PR comments, and before it changes Next.js proxy, middleware, or `next.config.*`. To keep approval gates, edit the Autonomy section of `skills/fly/SKILL.md` before you install. Its ask-first list overrides the playbooks.
+> fly lets the agent commit, push, and open PRs without asking you, and `/fly auto` also lets it merge and deploy. The Autonomy section of `skills/fly/SKILL.md` holds the exact gates and overrides the playbooks. If you want different ones, edit that section and the matching Approval gates section of `CONVENTIONS.md` together before you install.
 
 ## Install
 
@@ -16,7 +16,8 @@ Existing entries that don't point at this repo are skipped and reported. Start a
 
 ## Start here
 
-- `/fly <task>`: the working style. Uses Build for code changes and the authoring, eval, babysit, shipping, and opening-a-PR playbooks for their tasks. Applies the principles.
+- `/fly <task>`: the working style. Uses Build for code changes and the authoring, eval, babysit, shipping, and opening-a-PR playbooks for their tasks. Applies the principles. It opens PRs and waits for you before it merges or deploys.
+- `/fly auto <task>`: the same working style in auto mode. It also merges and deploys without asking.
 - `/fly-help <question>`: which skill, playbook or principle fits a task.
 - `docs/guide/`: the long-form guide.
 
@@ -30,13 +31,13 @@ Existing entries that don't point at this repo are skipped and reported. Start a
 | Verify | `control-ui`, `control-cli`, `create-verification-skill`, `maintain-verification-skill`, `tdd` |
 | Long-running work | `show-me-your-work`, `correct`, `reflect` |
 | Writing | `unslop`, `technical-writing`, `typescript-best-practices` |
-| Principles | `principle-*` (24) |
+| Principles | `principle-*` (17), plus 5 short ones inline in the `fly` skill's index |
 
 Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used by `no-comments`).
 
 ## Rules
 
-`CONVENTIONS.md` is the spec every skill follows: host tool mapping for Claude Code, Codex and T3, the model config format and defaults, and the approval gates. Commits, pushes, PRs, merges and deploys need no approval. The agent asks first only for Next.js proxy or middleware behaviour, `next.config.*`, and outward-facing publishing.
+`CONVENTIONS.md` is the spec every skill follows: host tool mapping for Claude Code, Codex and T3, the model config format and defaults, the approval gates, and the test rule. The agent reads the gates and the test rule from the Autonomy section of `skills/fly/SKILL.md`. No other file restates them.
 
 ## Credits
 

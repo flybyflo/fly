@@ -97,7 +97,7 @@ Apps change and feature maps rot. Run this at least once a day, ideally on a sch
 /fly commit, push, and open the pr. small ordered commits, evidence in the description.
 ```
 
-The [Opening a PR playbook](../../skills/fly/playbooks/opening-a-pr.md) works from a worktree, rebases the work into small ordered commits, cleans the diff, unslops the prose, creates the PR with `gh`, and returns the PR link. Five narrow PRs beat one fat one, and stacked follow-ups beat a growing branch.
+The [Opening a PR playbook](../../skills/fly/playbooks/opening-a-pr.md) works from a worktree, rebases the work into small ordered commits, unslops the prose, creates the PR with `gh`, and returns the PR link. Five narrow PRs beat one fat one, and stacked follow-ups beat a growing branch.
 
 The playbook commits, pushes, and opens the PR without asking. Say "keep it local" in the request to stop before the commit.
 
@@ -119,7 +119,7 @@ Babysit stops at merge-ready. It never merges, even with everything green, becau
 
 ## Land the stack with Shipping
 
-Green is not the same as safe. When you're ready to land, say so:
+Green is not the same as safe. Plain `/fly` never merges or deploys on its own, and a task started with `/fly auto` needs no request. When you're ready to land, say so. That request is the approval to merge:
 
 ```text
 /fly land the stack.

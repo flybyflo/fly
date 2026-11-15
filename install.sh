@@ -10,6 +10,25 @@ skill_targets=("$HOME/.agents/skills" "$HOME/.claude/skills")
 agent_target="$HOME/.claude/agents"
 mode="${1:-install}"
 
+if [[ $# -gt 1 ]]; then
+  echo "too many arguments: $*" >&2
+  echo "usage: ./install.sh [--uninstall]" >&2
+  exit 2
+fi
+
+case "$mode" in
+  install | --uninstall) ;;
+  -h | --help)
+    echo "usage: ./install.sh [--uninstall]"
+    exit 0
+    ;;
+  *)
+    echo "unknown argument: $mode" >&2
+    echo "usage: ./install.sh [--uninstall]" >&2
+    exit 2
+    ;;
+esac
+
 points_into_repo() {
   [[ -L "$1" ]] && [[ "$(readlink "$1")" == "$repo/"* ]]
 }
@@ -45,7 +64,7 @@ prune_stale() {
 }
 
 for target in "${skill_targets[@]}"; do
-  mkdir -p "$target"
+  [[ "$mode" == "--uninstall" ]] || mkdir -p "$target"
   prune_stale "$target"
   for skill in "$repo"/skills/*/; do
     name="$(basename "$skill")"
@@ -64,7 +83,7 @@ else
   link "$repo/fly-models.md" "$models_link"
 fi
 
-mkdir -p "$agent_target"
+[[ "$mode" == "--uninstall" ]] || mkdir -p "$agent_target"
 prune_stale "$agent_target"
 for agent in "$repo"/agents/*.md; do
   name="$(basename "$agent")"

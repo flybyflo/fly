@@ -10,7 +10,7 @@ Every skill in this repo follows the rules below. When a rule and a skill disagr
 - Skill text uses fly's own names. It doesn't name the upstream stacks, such as pstack and `cursor-team-kit`, or Cursor-only products such as Cursor plugins, Bugbot, Composer, and Grok-by-default. Credit for the upstream sources lives in `README.md` and `LICENSE`.
 - Skill names are lowercase-hyphen and match their directory. Frontmatter keys are limited to `name`, `description` and, where the skill should only run when the user invokes it, `disable-model-invocation: true`. Drop Cursor-only keys (`mode`, `icon`, `color`, `reminder`, `alwaysApply`, `is_background`).
 - Skills refer to each other by name (`the how skill`, `/how`). They never assume an install path; a skill locates its own bundled files relative to its own `SKILL.md`.
-- Most skills set `disable-model-invocation: true`, which stops Claude Code's Skill tool from loading them (Codex ignores the key). `fly` itself does not: the model may start it for any nontrivial coding task, and the global AGENTS.md/CLAUDE.md tells it to. A skill that uses another fly skill reads `../<name>/SKILL.md` beside its own directory; `fly`, `fly-agent`, `teach` and `comment-sicko` say so explicitly.
+- Most skills set `disable-model-invocation: true`, which stops Claude Code's Skill tool from loading them (Codex ignores the key). The skills an agent should load from context leave the key out, such as `deslop`, `unslop`, `control-ui`, `control-cli`, and `fly` itself. The model may start `fly` for any nontrivial coding task, and the global AGENTS.md/CLAUDE.md tells it to. A skill that uses another fly skill reads `../<name>/SKILL.md` beside its own directory; `fly`, `fly-agent`, `teach` and `comment-sicko` say so explicitly.
 
 ## Hosts
 
@@ -35,22 +35,28 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 
 ## Models
 
-- fly has six roles: `architecture`, `design`, `implement`, `check`, `prose`, `search`. Opus 5.5 builds, GPT-6.1-Sol checks, Haiku 5.5 or GPT-6-Luna fetches. Never use a Fable or Astra model.
-- The roles, their defaults, and how a role resolves to a model and a tool live once, in `skills/setup-fly/references/default-models.md`. Skills name a role and point there. They never repeat a model id or the resolution rules.
+- fly has six roles: `architecture`, `design`, `implement`, `check`, `prose`, `search`.
+- The roles, their defaults, and how a role resolves to a model and a tool live once, in `skills/setup-fly/references/default-models.md`. Skills name a role and point there. They never repeat a model id or the resolution rules. `council` is the one exception: it is vendored unchanged and picks its own models.
 - The user's choices live in `~/.agents/fly-models.md`, written by `setup-fly`. It is a link to `fly-models.md` in this repo, so the choices are versioned.
 
 ## Approval gates
 
+The gates and the test rule below have two homes: this file, for skill authors, and the Autonomy section of `skills/fly/SKILL.md`, which the agent reads. Change both together. Every other file points at the Autonomy section in one sentence and restates nothing.
+
 These override any autonomy wording in a skill or playbook, including "never block", "just do it", "full autonomy" and "run until done".
 
-- **Always ask first** for: Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs.
-- **Proceed without asking** on everything else: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts, commits, pushes to any branch (`main` and `development` included), force-pushes, opening and updating PRs, merges, auto-merge, and deploys. Commits, pushes, PR titles and bodies, merges, and deploys are not publishing content.
+fly has two modes. Normal mode is the default. Auto mode is on only for a task the user starts with `/fly auto <task>`, or by saying to run fly in auto mode. It lasts for that task. Every other run is normal, including a skill typed on its own.
+
+- **Always ask first, in both modes,** for: Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs.
+- **Ask first in normal mode** before: merging a PR, turning on auto-merge, pushing straight to a base branch such as `main` or `development`, and deploying. Leave the PR open and merge-ready, and say so. A request that names the action, such as "land the stack", "merge #12" or "deploy it", is the approval for what it names and nothing more. Auto mode does all of these without asking.
+- **Proceed without asking, in both modes,** on everything else: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts, commits, pushes and force-pushes to the working branch, and opening and updating PRs. Commits, pushes, PR titles and bodies, merges, and deploys are not publishing content. A deploy stays a deploy even when it ships a public docs site or other public pages, so the mode decides it and the ask-first list does not.
+- A skill may gate its own step, as `reflect` does before it applies skill edits and `correct` does before a new CI gate. Such a gate holds in both modes.
 - Branches stay clean and based on their intended base (usually `main`). Never merge unrelated branches in to resolve conflicts.
 - PRs are created with `gh`. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one.
 
 ## Repo rules that skills must respect
 
-- Tests: don't add regression tests unless the user asks for one in the current request. Behaviour tests for new code follow the repo's own rules.
+- Tests: end-to-end tests are the ones that count. Write one first, before the change, for a hard problem where a wrong result is costly or hard to undo, such as a database migration. Otherwise add a test only when the user asks for one in the current request, and never write a unit test unless the user asks for a unit test. Behaviour tests for new code follow the repo's own rules.
 - No regex for validation or content checks in code a skill writes; use typed parsers, schema libraries or structural checks. Shell `grep`/`rg` for searching is fine.
 - Repository instructions (`AGENTS.md`, `CLAUDE.md`) outrank skills. A skill never tells the agent to ignore them.
 

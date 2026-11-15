@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 A test calls the code the way its users do and asserts the result they observe against a literal expected value. A test that asserts which calls the code made, or restates a constant the code contains, does neither.
 
-This principle governs the tests you write, change, or keep. It is not a reason to add tests. Whether a change gets a new test follows the repository's rules and the user's request; regression tests are added only when the user asks for one.
+This principle governs the tests you write, change, or keep. It is not a reason to add tests. Whether a change gets a new test follows the repository's rules, the user's request, and the test rule in the Autonomy section of the `fly` skill.
 
 The check: before you keep a test, ask whether it would still pass if every function it imports returned `undefined`. If yes, it observes no behavior and cannot fail for a defect. Rewrite the assertion or delete the test.
 

@@ -43,7 +43,7 @@ Every reviewer runs on the `check` role and the synthesizer on `prose`. Resolve 
 | Tooling | `references/tooling-reviewer.md` |
 | Divergent | `references/divergent-reviewer.md` |
 
-Pass each template verbatim, substituting the transcript pointer (thread id, file path, or digest) where marked. Reviewers return findings in their response body.
+Build each reviewer's prompt from its lens file followed by `references/reviewer-common.md`, both verbatim. The common file holds the rules every reviewer shares. Substitute the transcript pointer (thread id, file path, or digest) where marked. Reviewers return findings in their response body.
 
 ### 3. Synthesize
 
@@ -59,7 +59,7 @@ Before applying any Accepted edit, present the synthesizer's full Accepted/Rejec
 
 Backlog items are listed in the same reply. File them to the team's devex or backlog tracker only when the user approves that in the current request; filing is outward-facing.
 
-Edits land at the skill's source. fly skills are symlinked into `~/.claude/skills/` and `~/.agents/skills/` from the fly repo, so resolve the link (`readlink -f`) and edit the file it points to, never a copy. A project-local skill (`.claude/skills/`, `.agents/skills/`) is edited in place. Skill edits are working-tree edits; committing them follows the approval gates.
+Edits land at the skill's source. fly skills are symlinked into `~/.claude/skills/` and `~/.agents/skills/` from the fly repo, so resolve the link (`readlink -f`) and edit the file it points to, never a copy. A project-local skill (`.claude/skills/`, `.agents/skills/`) is edited in place. Once the user approves an edit, commit it like any other change.
 
 For each approved Accepted item, follow the Routing field exactly:
 

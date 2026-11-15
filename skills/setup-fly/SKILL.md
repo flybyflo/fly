@@ -17,7 +17,7 @@ If `orchestrator_capabilities` is not available, the thread is not running in T3
 
 ### 2. Load current state
 
-If `~/.agents/fly-models.md` already exists, read it and treat its `# preset` line and its role values as the current choices. Otherwise start from the defaults. A line whose role is not in the defaults, such as `review panel` or `how explorer`, is from a retired role. Drop it.
+If `~/.agents/fly-models.md` already exists, read it and treat its `# preset` line and its role values as the current choices. A role with no line is on its default. Otherwise start from the defaults. A line whose role is not in the defaults, such as `review panel` or `how explorer`, is from a retired role. Drop it.
 
 ### 3. Preset, map, and confirm
 
@@ -33,10 +33,10 @@ Every entry written must name a provider kept in step 1, a model that provider l
 
 ### 5. Write the file
 
-`~/.agents/fly-models.md` is normally a link that `install.sh` points at `fly-models.md` in the fly repo. Resolve it (`readlink`) and write the file it points to, so the change lands in the repo; never replace the link with a plain file. If it is missing or already a plain file, create `~/.agents/` if needed and write it in place. Write plain text with no frontmatter: this header, then one line per role in the order of the defaults table. Overwrite the whole file so re-runs stay idempotent.
+`~/.agents/fly-models.md` is normally a link that `install.sh` points at `fly-models.md` in the fly repo. Resolve it (`readlink`) and write the file it points to, so the change lands in the repo; never replace the link with a plain file. If it is missing or already a plain file, create `~/.agents/` if needed and write it in place. Write plain text with no frontmatter: this header, then one line for each role whose value differs from its default, in the order of the defaults table. A role that matches its default gets no line, so a later change to the default still reaches it. Overwrite the whole file so re-runs stay idempotent.
 
 ```
-# fly model configuration. One line per role. Delete a line to fall back to the skill default.
+# fly model configuration. One line per role. A role with no line uses the skill default.
 # Format: role: <providerInstanceId>/<model>@<effort>. `search` lists one entry per provider; the current thread's provider wins.
 # `inherit-parent` as a value: the role runs on the current thread's model.
 # preset: <preset>

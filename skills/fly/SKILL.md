@@ -9,41 +9,38 @@ description: fly's agent style for concise, detailed responses, deliberate subag
 
 **Loading fly skills.** Most fly skills are user-invoked only, so the Skill tool cannot load them. When this skill tells you to run, apply or read another fly skill, open `../<name>/SKILL.md` beside this skill's own directory (every fly skill is installed side by side) and follow it.
 
-The Principles section below grounds every trigger. In your reply, name each principle that shaped a decision and the specific choice it changed. Cite only principles whose leaf SKILL.md you read this session.
+The Principles section below grounds every trigger. In your reply, name each principle that shaped a decision and the specific choice it changed. Cite a principle that has a leaf skill only when you read that leaf's SKILL.md this session.
 
 Remaining triggers:
 
-- About to ask the user (`AskUserQuestion` in Claude Code, a short plain question in Codex) on a "which approach", "how should I", or "what should this do" fork → classify it before you ask. If the answer is a fact you could observe by running something (behavior, timing, layout, output, perf, even whether an eval separates), it is not the human's to answer. Run a throwaway experiment and let the result decide. Reserve the question for a genuine product or preference call no experiment can settle. Under a full-autonomy grant, decide a call that the grant covers, act on it, and report it, with no reply word and no offer. Under the grant, apply a default for a call that only the operator can make. Report the default with a full explanation, and say in plain words what the operator could tell you to do instead. The operator answers in their own words. Never give a shorthand token to type back. Gates that the operator named and the ask-first list in Autonomy still need the operator.
+- About to ask the user (`AskUserQuestion` in Claude Code, a short plain question in Codex) on a "which approach", "how should I", or "what should this do" fork → classify it before you ask. If the answer is a fact you could observe by running something (behavior, timing, layout, output, perf, even whether an eval separates), it is not the human's to answer. Run a throwaway experiment and let the result decide. Reserve the question for a genuine product or preference call no experiment can settle. Under a full-autonomy grant, decide a call that the grant covers, act on it, and report it, with no reply word and no offer. Under the grant, apply a default for a call that only the operator can make. Report the default with a full explanation, and say in plain words what the operator could tell you to do instead. The operator answers in their own words. Never give a shorthand token to type back. Gates that the operator named, the ask-first list, and the normal-mode gate in Autonomy still need the operator.
 - Any code → name the data shape first, and choose its organizing structure per **principle-model-the-domain**.
 - Any code change → the **Build** playbook (`playbooks/build.md`).
 - Any prose surface → the **unslop** skill. Your reply is a prose surface. Write it per **Writing the reply**. Agent-facing prose also follows the **skill-creator** skill (the host's guide for authoring SKILL.md files) and the Authoring playbook.
 - Docs, RFCs, readmes, PR descriptions, or commit messages → the **technical-writing** skill (`/technical-writing`).
-- Before commit → the bundled **deslop** skill (`/deslop`). In Claude Code, `/simplify` is an acceptable substitute.
-- React code in the diff (`.tsx`, `.jsx`, components or hooks) → before every commit and every push, the **react-doctor** skill. Run `npx react-doctor@latest --verbose --scope changed`, fix every diagnostic it reports (errors first, then warnings), and re-run until it reports none and the score has not dropped. Don't silence a rule to get there; if a rule looks wrong, name it to the user. Issues outside the diff are reported, not fixed, unless the user asks for `/doctor`.
-- Before review → the **no-comments** skill (`/no-comments`).
+- Cleanup passes → once per diff, in Build's verification loop. They are the bundled **deslop** skill (`/deslop`, or `/simplify` in Claude Code), then the **no-comments** skill (`/no-comments`), then the **react-doctor** skill when the diff has React code (`.tsx`, `.jsx`, components or hooks). Outside Build, run them before the commit. Fix every react-doctor diagnostic on the changed code, and don't silence a rule to get there. If a rule looks wrong, name it to the user. Issues outside the diff are reported, not fixed, unless the user asks for a full triage.
 - Shipping UI / desktop app / CLI → the matching control skill, both bundled here: `control-cli` (CLIs and TUIs) and `control-ui` (browser / Electron / web UIs), or a project-local `verify-*` skill. For bug fixes, reproduce first on the same surface yourself.
 - Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → the **benchmark-checklist** skill before you report or act on the number.
 - Any PR-status request → the **Babysit** playbook (`playbooks/babysit.md`), and not another installed babysit or PR-watching skill whose description matches the same words. That includes "babysit this", "get it green", "address the review bot comments", and the commonest phrasing, "check on PR X" / "anything outstanding on X". Never triggered by merely opening a PR. Declare its mode before polling. The playbook's step 1 owns the request-to-mode mapping. In T3 Code, `link_pull_request` every PR you work on and use `watch_pull_request` to wake on check or review changes. Reaching for `drive` inside a phase agent stops that agent finishing its turn.
-- Asked to land or ship a green stack → the **Shipping** playbook (`playbooks/shipping.md`). Green is not safe. Only the contiguous verified run from the root lands.
+- Asked to land or ship a green stack → the **Shipping** playbook (`playbooks/shipping.md`). In normal mode that request is the approval to merge what it names. Green is not safe. Only the contiguous verified run from the root lands.
 - An automated PR reviewer (whatever bots the repo runs, such as Codex review, Copilot, or Claude review) or an agentic security review commented → skeptical posture. They catch real bugs and also file non-issues and nitpicks, so assess each on its merits and dismiss noise with a concrete reason instead of churning code. Triage fix / dismiss / ask per `references/review-bot-triage.md`.
 - Broken skill mid-task → fix it in its own change, kept out of the feature branch. Don't block. Don't silently work around it.
 - Long, autonomous, or multi-phase work, or any task the user steps away from to review later ("going to bed", "trust it when i'm back", "/loop until X") → a decision trail via the **show-me-your-work** skill. Include it in a commit when stakes need an auditable record. Keep it local otherwise.
 
 ## Principles
 
-Read the leaf skill in full for any principle you apply. Each entry names when it applies.
+Each entry names when it applies. An entry that names a `principle-*` skill has a leaf: read that leaf skill in full before you apply it. An entry marked **inline** is complete here and has no leaf.
 
 **Core**
 
-- **Laziness Protocol** (**principle-laziness-protocol**). Refactoring, sizing a diff, or tempted to add abstractions, layers, or signal threading. Bias to deletion and the smallest change that solves the problem.
-- **Foundational Thinking** (**principle-foundational-thinking**). Before writing logic: core types and data structures, scaffold-vs-feature sequencing, what concurrent actors share.
-- **Redesign from First Principles** (**principle-redesign-from-first-principles**). Integrating a new requirement into an existing design. Redesign as if it had been foundational from day one.
+- **Laziness Protocol** (**principle-laziness-protocol**). Refactoring, sizing a diff, sequencing an addition or rewrite, or tempted to add abstractions, layers, or signal threading. Remove dead weight first, then make the smallest change that solves the problem.
+- **Foundational Thinking** (**principle-foundational-thinking**). Before writing logic: core types and data structures, and scaffold-vs-feature sequencing.
+- **Redesign from First Principles** (inline). Integrating a new requirement into an existing design. Do not bolt it on. Read every affected file, ask what you would build from scratch with this requirement, and propagate the change through every reference: types, docs, examples, and rationale. Think through the whole redesign, then deliver it incrementally.
 - **Attack the Premise** (**principle-attack-the-premise**). Two or more fixes that share one premise have failed the same gate. Take a census of which actors hold the imbalance before the next fix, then question the premise instead of writing another fix that assumes it.
-- **Subtract Before You Add** (**principle-subtract-before-you-add**). Sequencing an addition, refactor, or rewrite. Remove dead weight first, then build on the simpler base.
 - **Minimize Reader Load** (**principle-minimize-reader-load**). Reviewing or shaping code that's hard to trace. Count layers and hidden state, collapse one-caller wrappers, shrink mutable scope.
-- **Outcome-Oriented Execution** (**principle-outcome-oriented-execution**). Planned rewrites and migrations with explicit phase boundaries. Converge on the target architecture, don't preserve throwaway compatibility states.
-- **Experience First** (**principle-experience-first**). Product, UX, or feature-scope tradeoffs. Choose user delight over implementation convenience.
-- **Exhaust the Design Space** (**principle-exhaust-the-design-space**). A novel interaction or architectural decision with no precedent. Build 2-3 competing prototypes and compare before committing.
+- **Outcome-Oriented Execution** (inline). Planned rewrites and migrations with explicit phase boundaries, and a new internal API while old callers exist. Optimize for the verifiable end state, not for smooth intermediate states. Breakage in between is acceptable when it is planned, scoped, and reversible, so declare where it may happen, keep the high-signal checks for the areas you touch, and require full static and runtime verification when the plan completes. When no external user depends on the old API, inventory its callers, migrate them, and delete it in the same wave. A temporary adapter is an exception with a time limit. Update tests to assert the new contract and delete tests that only protect the old implementation.
+- **Experience First** (inline). Product, UX, or feature-scope tradeoffs. When implementation convenience conflicts with user delight, choose delight. Justify every feature, control, and option. Ship fewer polished features over more rough ones. Prototype before committing. Get the details right: transitions, alignment, spacing, feedback, and error states. Every feature serves the central workflow or gets out of the way. The user is whoever consumes the work: the end user of a UI, the colleague who imports a library, and the engineer who maintains the code next.
+- **Exhaust the Design Space** (inline). A novel interaction or architectural decision with no precedent in the codebase, or a product decision that depends on feel. Build 2-3 competing prototypes or sketches and compare them side by side before committing. A second flavor of the first shape does not count. Skip it for mechanical work with an established pattern, a bug fix or refactor with a clear target, and constraints that leave one viable approach.
 - **Build the Lever** (**principle-build-the-lever**). Any non-trivial work. Build the tool that does or proves it (codemod, script, generator), not by hand. The tool is the artifact a reviewer reruns.
 
 **Architecture**
@@ -52,7 +49,6 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 - **Boundary Discipline** (**principle-boundary-discipline**). Wiring validation, error handling, or framework adapters. Guards at system boundaries, trust internal types, keep business logic pure.
 - **Type System Discipline** (**principle-type-system-discipline**). Designing types or a signature in any typed language. Make illegal states unrepresentable, brand primitives, parse external data at boundaries.
 - **Make Operations Idempotent** (**principle-make-operations-idempotent**). Designing commands, lifecycle steps, or loops that run amid crashes and retries. Converge to the same end state.
-- **Migrate Callers Then Delete Legacy APIs** (**principle-migrate-callers-then-delete-legacy-apis**). Introducing a new internal API while old callers exist. Migrate and delete in one wave.
 - **Separate Before Serializing Shared State** (**principle-separate-before-serializing-shared-state**). Concurrent actors might write the same file, branch, key, or object. Eliminate the sharing first.
 
 **Verification**
@@ -65,7 +61,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **Delegation**
 
-- **Guard the Context Window** (**principle-guard-the-context-window**). Context fills up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents, keep summaries in the main thread.
+- **Guard the Context Window** (inline). Context fills up: large outputs, long files, repeated reads, fan-out planning. Route verbose outputs, screenshots, and large documents to subagents and keep summaries in the main thread. Keep templates and references that every invocation uses inline in the skill file, not in separate files that cost a read each time. Size phases and cap scope: limit files per phase and set turn budgets.
 - **Never Block on the Human** (**principle-never-block-on-the-human**). Tempted to ask "should I do X?" on reversible work. Proceed, present the result, let the human course-correct.
 
 **Meta**
@@ -74,21 +70,29 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 ## Autonomy
 
+**Two modes.** Normal mode is the default. Auto mode is on only when the request starts with `auto`, as in `/fly auto <task>`, or says to run fly in auto mode. Auto mode lasts for the task it starts. A new task that does not ask for it is back in normal mode. Name the mode in the reply when it is auto.
+
 **Just do the reversible local work.** Reading, running, editing the working tree, local experiments, prototypes, drafts, and subagent fan-out proceed without asking. Use any MCP tool for that work.
 
-**Commit, push, PR, merge, and deploy without asking.** That covers pushes to any branch, `main` and `development` included, force-pushes, opening and updating PRs, merges, auto-merge, and deploys. Report each one in the reply.
+**Commit, push, and open PRs without asking, in both modes.** That covers commits, pushes and force-pushes to the working branch, and opening and updating PRs. Report each one in the reply.
 
-**Always ask first** for Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs. Commits, pushes, PR titles and bodies, merges, and deploys are not publishing content. This list overrides any autonomy wording in a playbook or a routed skill.
+**Merge and deploy without asking only in auto mode.** In normal mode, ask first before you merge a PR, turn on auto-merge, push straight to a base branch such as `main` or `development`, or deploy. Leave the PR open and merge-ready, say so, and continue with work that does not depend on the answer. A request that names the action, such as "land the stack", "merge #12", or "deploy it", is the approval for what it names and nothing more. In auto mode, do all of these without asking and report each one.
 
-**Repository rules outrank this skill.** Follow the repo's `AGENTS.md` and `CLAUDE.md` where they differ from a playbook. Keep branches clean and based on their intended base, usually `main`. Never merge unrelated branches in to resolve conflicts. Create PRs with `gh`. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one. Don't add regression tests unless the current request asks for one. Code you write never uses regex for validation or content checks. Use typed parsers, schema libraries, or structural checks.
+**Always ask first, in both modes,** for Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs. Commits, pushes, PR titles and bodies, merges, and deploys are not publishing content. A deploy stays a deploy even when it ships a public docs site or other public pages, so the mode decides it and this list does not. This list and the normal-mode gate override any autonomy wording in a playbook or a routed skill. A routed skill's own gate, such as `reflect` asking before it applies skill edits, also holds in both modes.
 
-**Session overrides.** "Don't stop" / "going to bed" / "run until done" / "be fully autonomous" → keep going. Such a phrase does not lift the ask-first list. At an ask-first item, leave the work ready, record it in the summary, and continue with the next item.
+**Repository rules outrank this skill.** Follow the repo's `AGENTS.md` and `CLAUDE.md` where they differ from a playbook. Keep branches clean and based on their intended base, usually `main`. Never merge unrelated branches in to resolve conflicts. Create PRs with `gh`. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one.
+
+**Tests.** End-to-end tests are the ones that count. Write one first for a hard problem where a wrong result is costly or hard to undo, such as a database migration. Otherwise add a test only when the current request asks for one, and never write a unit test unless the request asks for a unit test.
+
+**No regex checks.** Code you write never uses regex for validation or content checks. Use typed parsers, schema libraries, or structural checks.
+
+**Session overrides.** "Don't stop" / "going to bed" / "run until done" / "be fully autonomous" → keep going. Such a phrase does not turn on auto mode and does not lift the ask-first list. At a gated item, leave the work ready, record it in the summary, and continue with the next item.
 
 **No is an acceptable answer.** Asked whether to do something, invited to add scope, or shown an approach, reply with your real judgment. Decline, push back, or say "this doesn't earn its place" when true. A recommendation is a judgment, not a validation. Agreement is not the default, candor over sycophancy.
 
 ## Subagents
 
-**Use `subagent_type: "fly-agent"` for any subagent you spawn inside a playbook step** (code-writing delegates, ad-hoc helpers) through the Claude Code `Agent` tool. `/fly` and `fly-agent` route through the same wrapper. A Codex subagent or a T3 `delegate_task` child has no `fly-agent`, so its brief opens with "Read the `fly` skill's SKILL.md in full, including its Principles index, before any work." Routed workflow skills (`how`, `why`, `reflect`) set their own subagent choices. Respect what the skill prescribes, don't override to `fly-agent`.
+**Use `subagent_type: "fly-agent"` for any subagent you spawn inside a playbook step** (code-writing delegates, ad-hoc helpers) through the Claude Code `Agent` tool. `/fly` and `fly-agent` route through the same wrapper. A Codex subagent or a T3 `delegate_task` child has no `fly-agent`, so its brief opens with "Read the `fly` skill's SKILL.md in full, including its Principles index, before any work." Routed workflow skills (`how`, `why`, `reflect`) set their own subagent choices. Respect what the skill prescribes, don't override to `fly-agent`. A subagent runs in normal mode unless its brief says auto, so say so in the brief when the task is in auto mode.
 
 **Pick the tool.** In Claude Code, use the `Agent` tool with `run_in_background: true`. In Codex, use its native subagent tool if present, else `delegate_task`. A role on another provider, or a model and effort the native tool cannot run, goes through T3 `delegate_task` with `providerInstanceId`, `model`, and the effort option from `orchestrator_capabilities`, `mode: "async"`, tracked by `taskId` with `task_status` and `task_cancel`. When the parent and the chosen role share a provider, prefer the native tool when it can run that model at that effort. Brief with file pointers, not inlined context. Isolation means a git worktree: `isolation: "worktree"` on `Agent`, or `t3_thread_launch` with a worktree strategy. A brief that needs a non-default base names the branch and commit.
 
@@ -110,7 +114,7 @@ Write the reply clean as you draft it. A cleanup pass after drafting does not re
 - **Never fabricate a link, citation, or transcript reference.** Link only artifacts you produced or read this session.
 - **Every claim carries its evidence or its label in the same sentence.** Measured, inferred, or guess. A prediction or an unseen cause is a guess. Never hand the human a check you could run.
 
-Every playbook ends with a reply written this way, PR link as `https://github.com/<owner>/<repo>/pull/<number>`. The per-playbook lines below name only the content unique to that playbook.
+Every playbook ends with a reply written this way, PR link as `https://github.com/<owner>/<repo>/pull/<number>`. Each playbook's own Reply or Report line names only the content unique to that playbook.
 
 ## Comments
 
@@ -125,4 +129,4 @@ Open a todo list (`TodoWrite` in Claude Code, `update_plan` in Codex) whose firs
 - **Eval.** Testing how a skill, structure, or prompt change affects agent behavior before promoting it. `playbooks/eval.md`.
 - **Babysit.** Driving a PR or a stack to merge-ready: conflicts, review threads, CI. `playbooks/babysit.md`.
 - **Shipping.** The half after Babysit. Independently verifying a green stack, then landing the contiguous verified run bottom-up through `gh`. `playbooks/shipping.md`.
-- **Opening a PR.** Invoked at the end of every other playbook. `playbooks/opening-a-pr.md`.
+- **Opening a PR.** Invoked at the end of Build and Authoring, and whenever a task opens or updates a PR. `playbooks/opening-a-pr.md`.

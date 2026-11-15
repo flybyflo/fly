@@ -1,6 +1,6 @@
 # Steer with principle names
 
-fly ships 24 principles as individual skills. `/fly` reads their index at the start of every multi-step task, applies the ones the task triggers, and names each applied principle in its reply along with the decision it changed.
+fly has 22 principles. Seventeen are individual skills, and five short ones live inline in the index of the [`fly`](../../skills/fly/SKILL.md) skill. `/fly` reads that index at the start of every multi-step task, applies the ones the task triggers, and names each applied principle in its reply along with the decision it changed.
 
 You don't invoke principles. You use their names to steer. Each name points at a complete rule the agent has already read, so one phrase redirects the work more precisely than a paragraph of instructions.
 
@@ -26,19 +26,18 @@ separate before serializing shared state. give each attempt its own worktree, no
 
 Each phrase lands because the rule behind it is specific. The agent still has to say, in its reply, which decision the rule changed. A principle citation with no decision behind it is the tell that it name-dropped instead of applying.
 
-## The 24, briefly
+## The 22, briefly
 
 The core principles decide how much to build and when to rethink the design:
 
-- [Laziness Protocol](../../skills/principle-laziness-protocol/SKILL.md) prefers deletion and the smallest change that solves the problem.
+- [Laziness Protocol](../../skills/principle-laziness-protocol/SKILL.md) removes dead weight first, then makes the smallest change that solves the problem. "Subtract before you add" is part of it.
 - [Foundational Thinking](../../skills/principle-foundational-thinking/SKILL.md) chooses the core data structures before writing logic.
-- [Redesign from First Principles](../../skills/principle-redesign-from-first-principles/SKILL.md) integrates a new requirement as if it had been there from day one.
+- Redesign from First Principles (inline) integrates a new requirement as if it had been there from day one.
 - [Attack the Premise](../../skills/principle-attack-the-premise/SKILL.md) questions the premise that two or more failed fixes shared, after a census of which actors hold the imbalance.
-- [Subtract Before You Add](../../skills/principle-subtract-before-you-add/SKILL.md) removes dead weight before building on top of it.
 - [Minimize Reader Load](../../skills/principle-minimize-reader-load/SKILL.md) collapses layers and hidden state a reader must hold in their head.
-- [Outcome-Oriented Execution](../../skills/principle-outcome-oriented-execution/SKILL.md) converges rewrites on the target design instead of preserving throwaway compatibility states.
-- [Experience First](../../skills/principle-experience-first/SKILL.md) chooses the user's result over implementation convenience.
-- [Exhaust the Design Space](../../skills/principle-exhaust-the-design-space/SKILL.md) builds two or three competing prototypes when there's no precedent.
+- Outcome-Oriented Execution (inline) converges rewrites on the target design instead of preserving throwaway compatibility states. It migrates callers and deletes a legacy API in one wave.
+- Experience First (inline) chooses the user's result over implementation convenience.
+- Exhaust the Design Space (inline) builds two or three competing prototypes when there's no precedent.
 - [Build the Lever](../../skills/principle-build-the-lever/SKILL.md) builds the script that does or proves the work, so a reviewer can rerun it. When an agent keeps doing the same thing by hand, have it write the tool or skill it wishes it had. If a script can do a step the same way every time, use the script, and save agents for the judgment calls.
 
 The architecture principles decide where state, validation, and compatibility live:
@@ -47,7 +46,6 @@ The architecture principles decide where state, validation, and compatibility li
 - [Boundary Discipline](../../skills/principle-boundary-discipline/SKILL.md) validates at the boundary and trusts internal types.
 - [Type System Discipline](../../skills/principle-type-system-discipline/SKILL.md) makes illegal states unrepresentable.
 - [Make Operations Idempotent](../../skills/principle-make-operations-idempotent/SKILL.md) converges retries on the same end state.
-- [Migrate Callers Then Delete Legacy APIs](../../skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md) migrates and deletes in one wave.
 - [Separate Before Serializing Shared State](../../skills/principle-separate-before-serializing-shared-state/SKILL.md) removes the sharing before adding coordination.
 
 The verification principles define what counts as proof:
@@ -60,8 +58,8 @@ The verification principles define what counts as proof:
 
 The delegation principles keep parallel work sane:
 
-- [Guard the Context Window](../../skills/principle-guard-the-context-window/SKILL.md) routes bulk reading to subagents and keeps findings in the main chat.
-- [Never Block on the Human](../../skills/principle-never-block-on-the-human/SKILL.md) proceeds on reversible local work and presents the result. Only the ask-first list waits for you: Next.js proxy or middleware, `next.config.*`, and outward-facing publishing.
+- Guard the Context Window (inline) routes bulk reading to subagents and keeps findings in the main chat.
+- [Never Block on the Human](../../skills/principle-never-block-on-the-human/SKILL.md) proceeds on reversible local work and presents the result. The gates in the Autonomy section of [`fly`](../../skills/fly/SKILL.md) still wait for you.
 
 And one meta principle:
 

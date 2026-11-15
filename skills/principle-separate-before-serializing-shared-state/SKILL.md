@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 When concurrent actors might share mutable state, first ask whether they need the same mutable object. If not, eliminate the sharing. When sharing is real, enforce serialization structurally: lockfiles, sequential phases, exclusive ownership. Instructions and conventions are not concurrency control.
 
+Before actors share any state, ask what happens if another actor modifies it concurrently. If the answer is not "nothing", isolate.
+
 **Why:** Concurrent writes to shared state create race conditions that are intermittent, hard to reproduce, and expensive to debug.
 
 **Pattern:**

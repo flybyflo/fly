@@ -4,13 +4,13 @@ Any change to code: a feature, bug fix, refactor, perf fix, UI work, migration, 
 
 ## 0. Frame
 
-Framing runs on the `architecture` role. When the current thread is not on that model, hand steps 1, 2 and 4 to a fresh `architecture` agent, check its answer, and adopt it.
+Framing runs on the `architecture` role. When the current thread is not on that model, hand items 1, 2 and 4 below to a fresh `architecture` agent, check its answer, and adopt it.
 
 1. Write the done predicate: what is true when this is finished, and how you will prove it.
 2. Name the data shape the change works on.
-3. Bug: reproduce it on the real surface first. Perf: measure the baseline first (**benchmark-checklist**).
-4. Large or long work: split it into units that each end in a verifiable state. Each unit runs steps 1 to 3. Keep a decision log through **show-me-your-work** and keep going until the predicate holds.
-5. A novel design or architectural decision with no precedent: the `architecture` agent runs **principle-exhaust-the-design-space** before any unit starts.
+3. Bug: reproduce it on the real surface first. Perf: measure the baseline first (**benchmark-checklist**). Hard problem where a wrong result is costly or hard to undo, such as a database migration: write the end-to-end test first and watch it fail (**tdd**).
+4. Large or long work: split it into units that each end in a verifiable state. Each unit runs sections 1 to 3: Implement, the review loop, and the verification loop. Keep a decision log through **show-me-your-work** and keep going until the predicate holds.
+5. A novel design or architectural decision with no precedent: the `architecture` agent applies **Exhaust the Design Space** (in the Principles index of `SKILL.md`) before any unit starts.
 
 ## 1. Implement
 
@@ -25,11 +25,11 @@ Delegate each unit to a fresh agent. UI changes (components, styling, layout, br
 
 ## 3. Verification loop
 
-1. Run **deslop** on the diff, and **react-doctor** when React code changed.
+1. Run the cleanup passes once on the diff: **deslop**, then **no-comments**, then **react-doctor** when React code changed. Their edits become part of the diff that the next steps check.
 2. Rules review. A `check` agent checks the diff against every applicable instruction file (the repo's root and nested `AGENTS.md` / `CLAUDE.md`, plus the global `~/.codex/AGENTS.md` and `~/.claude/CLAUDE.md`) and lists each violation with the rule it breaks.
 3. Team review. A second `check` agent runs the repo's own review workflow over the branch, such as its `team-review` skill or `code-reviewer` agent, and returns findings with `file:line`. With no such workflow, it reviews against the repo's documented review rules. Steps 2 and 3 run in parallel.
 4. Run the typecheck, lint, and affected tests. Prove the done predicate on the real surface (**control-ui** or **control-cli**), not with a proxy.
-5. Judge every finding, send the accepted ones to a fresh agent on the role that wrote the code, then rerun the whole block. Repeat until it is clean. After 3 rounds, stop and report what is still open.
+5. Judge every finding, send the accepted ones to a fresh agent on the role that wrote the code, then rerun steps 2 to 4, and step 1 only on the lines the fix changed. Repeat until it is clean. After 3 rounds, stop and report what is still open.
 
 ## 4. Report
 
