@@ -10,6 +10,12 @@ skill_targets=("$HOME/.agents/skills" "$HOME/.claude/skills")
 agent_target="$HOME/.claude/agents"
 mode="${1:-install}"
 
+if [[ $# -gt 1 ]]; then
+  echo "too many arguments: $*" >&2
+  echo "usage: ./install.sh [--uninstall]" >&2
+  exit 2
+fi
+
 case "$mode" in
   install | --uninstall) ;;
   -h | --help)

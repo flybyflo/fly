@@ -3,7 +3,7 @@
 A personal agent skill stack for T3 Code. One copy of each skill serves both Claude Code and Codex threads.
 
 > [!WARNING]
-> fly lets the agent commit, push, and open PRs without asking you, and `/fly auto` also lets it merge and deploy. The Autonomy section of `skills/fly/SKILL.md` holds the exact gates and overrides the playbooks. Edit it before you install if you want different ones.
+> fly lets the agent commit, push, and open PRs without asking you, and `/fly auto` also lets it merge and deploy. The Autonomy section of `skills/fly/SKILL.md` holds the exact gates and overrides the playbooks. If you want different ones, edit that section and the matching Approval gates section of `CONVENTIONS.md` together before you install.
 
 ## Install
 

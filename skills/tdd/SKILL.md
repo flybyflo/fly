@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: "Use when the user explicitly asks for TDD, a failing test, or a regression test in the current request, or when the change is a hard problem such as a database migration that needs an end-to-end test first. Never start it for an ordinary bug, even when the bug has an obvious cheap test target. Writes end-to-end tests, not unit tests. Skip when no end-to-end path is practical, and say so."
+description: "Use when the user explicitly asks for TDD, a failing test, or a regression test in the current request, or when fly's Build playbook opens this skill before a hard problem such as a database migration. Never start it for an ordinary bug, even when the bug has an obvious cheap test target. Writes end-to-end tests, not unit tests. Skip when no end-to-end path is practical, and say so."
 disable-model-invocation: true
 ---
 
@@ -15,7 +15,7 @@ Do not force a test when it would be impractical. A hard problem such as a datab
 ## Workflow
 
 1. **Understand the bug.** Identify the intended behavior, current behavior, affected path, and smallest observable reproduction.
-2. **Choose the narrowest end-to-end check.** Prefer the closest end-to-end or integration test already used for that codepath, one that runs the real path a user or caller takes. For a migration, run it against a copy of real data and assert on the stored result. If no practical test path is obvious, do not create one from scratch just to satisfy the workflow.
+2. **Choose the narrowest end-to-end check.** Prefer the closest end-to-end or integration test already used for that codepath, one that runs the real path a user or caller takes. For a migration, run it against a copy of real data and assert on the stored result. If no practical test path is obvious for an ordinary change, do not create one from scratch just to satisfy the workflow. For a hard problem such as a migration, build the path it needs or report why you cannot.
 3. **Write the failing test first.** Add the smallest focused test that would have caught the bug. The test should encode intended behavior, not mirror the current implementation.
 4. **Run the new test before fixing.** Confirm it fails for the intended reason. If it passes or fails for an unrelated reason, correct the test or reproduction before editing the implementation.
 5. **Fix the bug.** Make the smallest production change that satisfies the intended behavior while preserving nearby contracts.

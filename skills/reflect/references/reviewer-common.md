@@ -12,12 +12,13 @@ Findings must point to skills, tools, or MCPs invoked in this transcript. Specul
 - `Agent` or `delegate_task` prompts that name a skill or skill path
 - Tool calls (Bash, Grep, MCP, etc.) that match a skill's documented commands
 
-Two valid finding shapes:
+Three valid finding shapes:
 
 - The parent invoked the skill and you found a real gap in its body. Route to the skill's relevant section.
 - The skill was visible in the catalog but did not trigger when it would have helped. Tune the skill's description so future agents pick it up. Route as `tune description: <skill path>`.
+- The session shows a recurring workflow that no existing skill is a real home for. Route as `new skill: <kebab-name>`.
 
-If a skill was neither invoked nor a missed-trigger candidate, drop it.
+If a finding fits none of these shapes, drop it.
 
 Return as a numbered list. No exposition.
 
