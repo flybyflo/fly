@@ -20,4 +20,4 @@ When two or more fixes that share one premise have failed the same gate, suspect
 - Do not start the next fix before the premise is written down and the census exists.
 - If the census is even across actors, the premise is not the cause. Look for the cause elsewhere and keep the census as evidence.
 
-This principle is distinct from [Redesign from First Principles](../principle-redesign-from-first-principles/SKILL.md), which rebuilds a design around a new requirement. It questions a fact the current design assumes.
+This principle is distinct from Redesign from First Principles (in the `fly` skill's Principles index), which rebuilds a design around a new requirement. It questions a fact the current design assumes.

@@ -35,11 +35,13 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 
 ## Models
 
-- fly has six roles: `architecture`, `design`, `implement`, `check`, `prose`, `search`. Opus 5.5 builds, GPT-6.1-Sol checks, Haiku 5.5 or GPT-6-Luna fetches. Never use a Fable or Astra model.
-- The roles, their defaults, and how a role resolves to a model and a tool live once, in `skills/setup-fly/references/default-models.md`. Skills name a role and point there. They never repeat a model id or the resolution rules.
+- fly has six roles: `architecture`, `design`, `implement`, `check`, `prose`, `search`.
+- The roles, their defaults, and how a role resolves to a model and a tool live once, in `skills/setup-fly/references/default-models.md`. Skills name a role and point there. They never repeat a model id or the resolution rules. `council` is the one exception: it is vendored unchanged and picks its own models.
 - The user's choices live in `~/.agents/fly-models.md`, written by `setup-fly`. It is a link to `fly-models.md` in this repo, so the choices are versioned.
 
 ## Approval gates
+
+The gates and the test rule below have two homes: this file, for skill authors, and the Autonomy section of `skills/fly/SKILL.md`, which the agent reads. Change both together. Every other file points at the Autonomy section in one sentence and restates nothing.
 
 These override any autonomy wording in a skill or playbook, including "never block", "just do it", "full autonomy" and "run until done".
 

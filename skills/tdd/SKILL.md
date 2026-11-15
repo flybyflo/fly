@@ -6,9 +6,9 @@ disable-model-invocation: true
 
 # TDD Bug Fix
 
-Run this when the user asked for TDD, a failing test, or a regression test in the current request. Also run it, without being asked, before a hard problem where a wrong result is costly or hard to undo, such as a database migration. A cheap local test target is not a trigger on its own. For any other change, fix it and verify it with the closest executable check instead of adding a test.
+Run this when the user asked for TDD, a failing test, or a regression test in the current request, or when the test rule in the Autonomy section of the `fly` skill calls for a test first. A cheap local test target is not a trigger on its own. For any other change, fix it and verify it with the closest executable check instead of adding a test.
 
-Make the broken or required behavior executable before changing production code. The goal is a focused end-to-end test that fails before the change and passes after it. End-to-end tests are the ones that count. Do not write a unit test unless the user asks for a unit test.
+Make the broken or required behavior executable before changing production code. The goal is a focused end-to-end test that fails before the change and passes after it. Do not write a unit test unless the user asks for a unit test.
 
 Do not force a test when it would be impractical. A hard problem such as a database migration is the exception: there the end-to-end test is the point, so build the path it needs or report why you cannot. If the available test would require broad harness setup, brittle mocks, slow end-to-end infrastructure, production-only state, vague reproduction steps, or large unrelated fixture churn, skip adding a new test and use the closest useful verification instead.
 

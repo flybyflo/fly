@@ -9,7 +9,7 @@ description: fly's agent style for concise, detailed responses, deliberate subag
 
 **Loading fly skills.** Most fly skills are user-invoked only, so the Skill tool cannot load them. When this skill tells you to run, apply or read another fly skill, open `../<name>/SKILL.md` beside this skill's own directory (every fly skill is installed side by side) and follow it.
 
-The Principles section below grounds every trigger. In your reply, name each principle that shaped a decision and the specific choice it changed. Cite only principles whose leaf SKILL.md you read this session.
+The Principles section below grounds every trigger. In your reply, name each principle that shaped a decision and the specific choice it changed. Cite a principle that has a leaf skill only when you read that leaf's SKILL.md this session.
 
 Remaining triggers:
 
@@ -18,9 +18,7 @@ Remaining triggers:
 - Any code change → the **Build** playbook (`playbooks/build.md`).
 - Any prose surface → the **unslop** skill. Your reply is a prose surface. Write it per **Writing the reply**. Agent-facing prose also follows the **skill-creator** skill (the host's guide for authoring SKILL.md files) and the Authoring playbook.
 - Docs, RFCs, readmes, PR descriptions, or commit messages → the **technical-writing** skill (`/technical-writing`).
-- Before commit → the bundled **deslop** skill (`/deslop`). In Claude Code, `/simplify` is an acceptable substitute.
-- React code in the diff (`.tsx`, `.jsx`, components or hooks) → before every commit and every push, the **react-doctor** skill. Run `npx react-doctor@latest --verbose --scope changed`, fix every diagnostic it reports (errors first, then warnings), and re-run until it reports none and the score has not dropped. Don't silence a rule to get there; if a rule looks wrong, name it to the user. Issues outside the diff are reported, not fixed, unless the user asks for `/doctor`.
-- Before opening a PR for review → the **no-comments** skill (`/no-comments`).
+- Cleanup passes → once per diff, in Build's verification loop. They are the bundled **deslop** skill (`/deslop`, or `/simplify` in Claude Code), then the **no-comments** skill (`/no-comments`), then the **react-doctor** skill when the diff has React code (`.tsx`, `.jsx`, components or hooks). Outside Build, run them before the commit. Fix every react-doctor diagnostic on the changed code, and don't silence a rule to get there. If a rule looks wrong, name it to the user. Issues outside the diff are reported, not fixed, unless the user asks for a full triage.
 - Shipping UI / desktop app / CLI → the matching control skill, both bundled here: `control-cli` (CLIs and TUIs) and `control-ui` (browser / Electron / web UIs), or a project-local `verify-*` skill. For bug fixes, reproduce first on the same surface yourself.
 - Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → the **benchmark-checklist** skill before you report or act on the number.
 - Any PR-status request → the **Babysit** playbook (`playbooks/babysit.md`), and not another installed babysit or PR-watching skill whose description matches the same words. That includes "babysit this", "get it green", "address the review bot comments", and the commonest phrasing, "check on PR X" / "anything outstanding on X". Never triggered by merely opening a PR. Declare its mode before polling. The playbook's step 1 owns the request-to-mode mapping. In T3 Code, `link_pull_request` every PR you work on and use `watch_pull_request` to wake on check or review changes. Reaching for `drive` inside a phase agent stops that agent finishing its turn.
@@ -31,19 +29,18 @@ Remaining triggers:
 
 ## Principles
 
-Read the leaf skill in full for any principle you apply. Each entry names when it applies.
+Each entry names when it applies. An entry that names a `principle-*` skill has a leaf: read that leaf skill in full before you apply it. An entry marked **inline** is complete here and has no leaf.
 
 **Core**
 
-- **Laziness Protocol** (**principle-laziness-protocol**). Refactoring, sizing a diff, or tempted to add abstractions, layers, or signal threading. Bias to deletion and the smallest change that solves the problem.
-- **Foundational Thinking** (**principle-foundational-thinking**). Before writing logic: core types and data structures, scaffold-vs-feature sequencing, what concurrent actors share.
-- **Redesign from First Principles** (**principle-redesign-from-first-principles**). Integrating a new requirement into an existing design. Redesign as if it had been foundational from day one.
+- **Laziness Protocol** (**principle-laziness-protocol**). Refactoring, sizing a diff, sequencing an addition or rewrite, or tempted to add abstractions, layers, or signal threading. Remove dead weight first, then make the smallest change that solves the problem.
+- **Foundational Thinking** (**principle-foundational-thinking**). Before writing logic: core types and data structures, and scaffold-vs-feature sequencing.
+- **Redesign from First Principles** (inline). Integrating a new requirement into an existing design. Do not bolt it on. Read every affected file, ask what you would build from scratch with this requirement, and propagate the change through every reference: types, docs, examples, and rationale. Think through the whole redesign, then deliver it incrementally.
 - **Attack the Premise** (**principle-attack-the-premise**). Two or more fixes that share one premise have failed the same gate. Take a census of which actors hold the imbalance before the next fix, then question the premise instead of writing another fix that assumes it.
-- **Subtract Before You Add** (**principle-subtract-before-you-add**). Sequencing an addition, refactor, or rewrite. Remove dead weight first, then build on the simpler base.
 - **Minimize Reader Load** (**principle-minimize-reader-load**). Reviewing or shaping code that's hard to trace. Count layers and hidden state, collapse one-caller wrappers, shrink mutable scope.
-- **Outcome-Oriented Execution** (**principle-outcome-oriented-execution**). Planned rewrites and migrations with explicit phase boundaries. Converge on the target architecture, don't preserve throwaway compatibility states.
-- **Experience First** (**principle-experience-first**). Product, UX, or feature-scope tradeoffs. Choose user delight over implementation convenience.
-- **Exhaust the Design Space** (**principle-exhaust-the-design-space**). A novel interaction or architectural decision with no precedent. Build 2-3 competing prototypes and compare before committing.
+- **Outcome-Oriented Execution** (inline). Planned rewrites and migrations with explicit phase boundaries, and a new internal API while old callers exist. Optimize for the verifiable end state, not for smooth intermediate states. Breakage in between is acceptable when it is planned, scoped, and reversible, so declare where it may happen, keep the high-signal checks for the areas you touch, and require full static and runtime verification when the plan completes. When no external user depends on the old API, inventory its callers, migrate them, and delete it in the same wave. A temporary adapter is an exception with a time limit. Update tests to assert the new contract and delete tests that only protect the old implementation.
+- **Experience First** (inline). Product, UX, or feature-scope tradeoffs. When implementation convenience conflicts with user delight, choose delight. Justify every feature, control, and option. Ship fewer polished features over more rough ones. Prototype before committing. Get the details right: transitions, alignment, spacing, feedback, and error states. Every feature serves the central workflow or gets out of the way. The user is whoever consumes the work: the end user of a UI, the colleague who imports a library, and the engineer who maintains the code next.
+- **Exhaust the Design Space** (inline). A novel interaction or architectural decision with no precedent in the codebase, or a product decision that depends on feel. Build 2-3 competing prototypes or sketches and compare them side by side before committing. A second flavor of the first shape does not count. Skip it for mechanical work with an established pattern, a bug fix or refactor with a clear target, and constraints that leave one viable approach.
 - **Build the Lever** (**principle-build-the-lever**). Any non-trivial work. Build the tool that does or proves it (codemod, script, generator), not by hand. The tool is the artifact a reviewer reruns.
 
 **Architecture**
@@ -52,7 +49,6 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 - **Boundary Discipline** (**principle-boundary-discipline**). Wiring validation, error handling, or framework adapters. Guards at system boundaries, trust internal types, keep business logic pure.
 - **Type System Discipline** (**principle-type-system-discipline**). Designing types or a signature in any typed language. Make illegal states unrepresentable, brand primitives, parse external data at boundaries.
 - **Make Operations Idempotent** (**principle-make-operations-idempotent**). Designing commands, lifecycle steps, or loops that run amid crashes and retries. Converge to the same end state.
-- **Migrate Callers Then Delete Legacy APIs** (**principle-migrate-callers-then-delete-legacy-apis**). Introducing a new internal API while old callers exist. Migrate and delete in one wave.
 - **Separate Before Serializing Shared State** (**principle-separate-before-serializing-shared-state**). Concurrent actors might write the same file, branch, key, or object. Eliminate the sharing first.
 
 **Verification**
@@ -65,7 +61,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **Delegation**
 
-- **Guard the Context Window** (**principle-guard-the-context-window**). Context fills up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents, keep summaries in the main thread.
+- **Guard the Context Window** (inline). Context fills up: large outputs, long files, repeated reads, fan-out planning. Route verbose outputs, screenshots, and large documents to subagents and keep summaries in the main thread. Keep templates and references that every invocation uses inline in the skill file, not in separate files that cost a read each time. Size phases and cap scope: limit files per phase and set turn budgets.
 - **Never Block on the Human** (**principle-never-block-on-the-human**). Tempted to ask "should I do X?" on reversible work. Proceed, present the result, let the human course-correct.
 
 **Meta**
@@ -84,7 +80,11 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **Always ask first, in both modes,** for Next.js proxy or middleware behaviour, `next.config.*`, and anything outward-facing that publishes content, such as posts, chat or email messages, review replies, PR or issue comments, releases, and public docs. Commits, pushes, PR titles and bodies, merges, and deploys are not publishing content. A deploy stays a deploy even when it ships a public docs site or other public pages, so the mode decides it and this list does not. This list and the normal-mode gate override any autonomy wording in a playbook or a routed skill. A routed skill's own gate, such as `reflect` asking before it applies skill edits, also holds in both modes.
 
-**Repository rules outrank this skill.** Follow the repo's `AGENTS.md` and `CLAUDE.md` where they differ from a playbook. Keep branches clean and based on their intended base, usually `main`. Never merge unrelated branches in to resolve conflicts. Create PRs with `gh`. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one. End-to-end tests are the ones that count. Write one first for a hard problem where a wrong result is costly or hard to undo, such as a database migration. Otherwise add a test only when the current request asks for one, and never write a unit test unless the request asks for a unit test. Code you write never uses regex for validation or content checks. Use typed parsers, schema libraries, or structural checks.
+**Repository rules outrank this skill.** Follow the repo's `AGENTS.md` and `CLAUDE.md` where they differ from a playbook. Keep branches clean and based on their intended base, usually `main`. Never merge unrelated branches in to resolve conflicts. Create PRs with `gh`. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one.
+
+**Tests.** End-to-end tests are the ones that count. Write one first for a hard problem where a wrong result is costly or hard to undo, such as a database migration. Otherwise add a test only when the current request asks for one, and never write a unit test unless the request asks for a unit test.
+
+**No regex checks.** Code you write never uses regex for validation or content checks. Use typed parsers, schema libraries, or structural checks.
 
 **Session overrides.** "Don't stop" / "going to bed" / "run until done" / "be fully autonomous" → keep going. Such a phrase does not turn on auto mode and does not lift the ask-first list. At a gated item, leave the work ready, record it in the summary, and continue with the next item.
 

@@ -53,7 +53,7 @@ flowchart TD
     I -->|No| J[Report, commit, and PR]
 ```
 
-The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. Commits, pushes, and PRs proceed without asking. Merges, auto-merge, pushes straight to a base branch, and deploys wait for you, unless the prompt asked for them or the run started with `/fly auto`.
+The finish condition stays fixed. A unit ends with evidence, and the log records decisions that changed the work. The run commits, pushes, and opens PRs on its own. Anything behind a gate in the Autonomy section of [`fly`](../../skills/fly/SKILL.md) waits for you.
 
 ## The morning audit
 

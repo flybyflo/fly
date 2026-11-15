@@ -3,7 +3,7 @@
 A personal agent skill stack for T3 Code. One copy of each skill serves both Claude Code and Codex threads.
 
 > [!WARNING]
-> fly lets the agent commit, push and force-push to its working branch, and open PRs without asking you. `/fly auto` goes further: the agent also merges, turns on auto-merge, pushes to `main`, and deploys without asking. In both modes it asks first before it publishes content, such as posts, messages, and PR comments, and before it changes Next.js proxy, middleware, or `next.config.*`. To change the gates, edit the Autonomy section of `skills/fly/SKILL.md` before you install. Its gates override the playbooks.
+> fly lets the agent commit, push, and open PRs without asking you, and `/fly auto` also lets it merge and deploy. The Autonomy section of `skills/fly/SKILL.md` holds the exact gates and overrides the playbooks. Edit it before you install if you want different ones.
 
 ## Install
 
@@ -31,13 +31,13 @@ Existing entries that don't point at this repo are skipped and reported. Start a
 | Verify | `control-ui`, `control-cli`, `create-verification-skill`, `maintain-verification-skill`, `tdd` |
 | Long-running work | `show-me-your-work`, `correct`, `reflect` |
 | Writing | `unslop`, `technical-writing`, `typescript-best-practices` |
-| Principles | `principle-*` (24) |
+| Principles | `principle-*` (17), plus 5 short ones inline in the `fly` skill's index |
 
 Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used by `no-comments`).
 
 ## Rules
 
-`CONVENTIONS.md` is the spec every skill follows: host tool mapping for Claude Code, Codex and T3, the model config format and defaults, and the approval gates. Commits, pushes and PRs need no approval. Merges, pushes straight to a base branch, and deploys need approval unless the task started with `/fly auto`. In both modes the agent asks first for Next.js proxy or middleware behaviour, `next.config.*`, and outward-facing publishing.
+`CONVENTIONS.md` is the spec every skill follows: host tool mapping for Claude Code, Codex and T3, the model config format and defaults, the approval gates, and the test rule. The agent reads the gates and the test rule from the Autonomy section of `skills/fly/SKILL.md`. No other file restates them.
 
 ## Credits
 

@@ -26,13 +26,15 @@ Run:
 
 [`/setup-fly`](../../skills/setup-fly/SKILL.md) detects the providers and models you have access to, asks for an effort preset, shows you each role, and asks what you want. Answer the questions. It writes `~/.agents/fly-models.md`, a small file every fly skill reads when it picks a model.
 
-fly has six roles. By default Opus 5.5 builds, GPT-6.1-Sol checks, and Haiku 5.5 or GPT-6-Luna fetches:
+fly has six roles:
 
-- `architecture`, `design`, `implement` and `prose` run on `claudeAgent/claude-opus-5-5`. They cover planning and design decisions, UI code, other code, and text you read.
-- `check` runs on `codex/gpt-6.1-sol`. It covers every review, verifier and live check, so code is always checked by a different model family than the one that wrote it.
-- `search` runs on `claudeAgent/claude-haiku-5-5` in Claude Code threads and `codex/gpt-6-luna` in Codex threads. It covers file searches and other simple lookups.
+- `architecture`, `design`, `implement` and `prose` cover planning and design decisions, UI code, other code, and text you read.
+- `check` covers every review, verifier and live check. By default it runs on a different model family than the one that wrote the code.
+- `search` covers file searches and other simple lookups, on a small fast model.
 
-Each line is `role: <providerInstanceId>/<model>@<effort>`, for example `check: codex/gpt-6.1-sol@xhigh`. `search` lists one entry per provider, and the entry on the current thread's provider wins. The preset sets the effort of every role except `search`. The default preset is `xhigh`. [`default-models.md`](../../skills/setup-fly/references/default-models.md) holds the defaults and what each role covers.
+[`default-models.md`](../../skills/setup-fly/references/default-models.md) lists the default model for each role and what each role covers.
+
+Each line is `role: <providerInstanceId>/<model>@<effort>`, for example `check: <provider>/<model>@xhigh`. `search` lists one entry per provider, and the entry on the current thread's provider wins. The preset sets the effort of every role except `search`. The default preset is `xhigh`.
 
 You only override what you care about. A role with no line in the file keeps the skill's default, and a skill that falls back to a default says so in its reply. To restore a default, delete that role's line. When a default changes, a file written before the change still pins the old default, so delete those role lines, or delete the file, then run `/setup-fly` again.
 
@@ -46,7 +48,7 @@ Say yes and it writes a project-local `verify-<app>` skill that teaches agents t
 
 If you're new to fly, say yes. An agent that can check its own work keeps going until the check passes. An agent that can't hands every result back to you to check by hand. Of everything in this guide, the verification skill pays off the most.
 
-After setup, start a new thread. The model file applies to new sessions.
+The model file applies from the next subagent spawn, so you do not need a new thread.
 
 ## Keep the cost in check
 

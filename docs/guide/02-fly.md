@@ -112,7 +112,7 @@ Plain `/fly` commits, pushes, and opens the PR, then stops. It merges or deploys
 /fly auto bump the sdk to the new minor and land it once checks pass.
 ```
 
-Auto mode lasts for that task. In both modes the agent asks before it publishes content, such as a PR comment, and before it changes Next.js proxy, middleware, or `next.config.*`.
+Auto mode lasts for that task. A few actions wait for you in both modes. The Autonomy section of [`fly`](../../skills/fly/SKILL.md) lists every gate.
 
 ## Leave it running
 

@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
-Each spawn below names a fly role. Resolve it to a model and a tool as `../setup-fly/references/default-models.md` says. A `delegate_task` spawn adds `role: "research"`.
+Each spawn below names a fly role. Resolve it to a model and a tool as `../setup-fly/references/default-models.md` says, including the `delegate_task` parameter it names for read-only spawns.
 
 Every spawn is read-only. Its brief says it writes nothing.
 

@@ -10,7 +10,7 @@ Investigate the motivation and intent behind code.
 
 Companion to the `how` skill. `how` answers what the code does and how it works. `why` answers what forces led to its shape.
 
-Each spawn below names a fly role. Resolve it to a model and a tool as `../setup-fly/references/default-models.md` says. A `delegate_task` spawn adds `role: "research"`. In Claude Code, use `subagent_type: "general-purpose"` so the spawn keeps MCP access.
+Each spawn below names a fly role. Resolve it to a model and a tool as `../setup-fly/references/default-models.md` says, including the `delegate_task` parameter it names for read-only spawns. In Claude Code, use `subagent_type: "general-purpose"` so the spawn keeps MCP access.
 
 ## Operating Posture
 
@@ -86,7 +86,7 @@ Subagent config (each):
 
 Each investigator gets:
 1. The base prompt from `references/investigator-prompt.md`
-2. The category playbook `references/sources/<source>.md` for the selected MCP, adapted from the examples in `references/source-playbook.md`
+2. For the source control investigator, the playbook `references/sources/code-archaeology.md`. No other category has a bundled playbook, so those investigators work from the base prompt and their MCP's own tool descriptions
 3. The cross-cutting `references/sources/incident-postmortem.md` **if the target code looks defensive** (null checks, retry logic, timeout handling, rate limiting, feature flags, egress guards, OOM handlers)
 4. The code anchor from Step 2 (file paths, symbols, commit hashes, PR numbers, ticket IDs)
 5. The user's original question
@@ -152,6 +152,7 @@ After the Sources Consulted block, if the user's `why` question comes before act
 
 - `references/epistemics.md`. Confidence tiers and phrasing guide. The synthesizer must follow it.
 - `references/investigator-prompt.md`. Base prompt template for investigator subagents.
-- `references/source-playbook.md`. Index pointing at the category playbooks below.
-- `references/sources/*.md`. One self-contained example playbook per category, plus cross-cutting `incident-postmortem.md`. Give an investigator the single file that matches its category and adapt it to the available MCP.
+- `references/source-playbook.md`. Index of the bundled playbooks.
+- `references/sources/code-archaeology.md`. The source control playbook.
+- `references/sources/incident-postmortem.md`. Cross-cutting incident queries for defensive code.
 - `references/synthesizer-prompt.md`. Prompt template for the synthesizer subagent, including the output format.

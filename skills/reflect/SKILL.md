@@ -43,7 +43,7 @@ Every reviewer runs on the `check` role and the synthesizer on `prose`. Resolve 
 | Tooling | `references/tooling-reviewer.md` |
 | Divergent | `references/divergent-reviewer.md` |
 
-Pass each template verbatim, substituting the transcript pointer (thread id, file path, or digest) where marked. Reviewers return findings in their response body.
+Build each reviewer's prompt from its lens file followed by `references/reviewer-common.md`, both verbatim. The common file holds the rules every reviewer shares. Substitute the transcript pointer (thread id, file path, or digest) where marked. Reviewers return findings in their response body.
 
 ### 3. Synthesize
 

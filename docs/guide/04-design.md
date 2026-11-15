@@ -26,7 +26,7 @@ Never take the first design. Ask for a few, and pick from evidence you can see:
 /fly prototype a few options for the new dropdown menu. take screenshots or videos for me to compare.
 ```
 
-The [Exhaust the Design Space principle](../../skills/principle-exhaust-the-design-space/SKILL.md) asks for two or three concrete alternatives when an interaction or design has no precedent. Run them and compare screenshots, behavior, or timings. Prototypes let the agent answer observable questions before asking you to choose.
+The [Exhaust the Design Space principle](../../skills/fly/SKILL.md) asks for two or three concrete alternatives when an interaction or design has no precedent. Run them and compare screenshots, behavior, or timings. Prototypes let the agent answer observable questions before asking you to choose.
 
 The same idea scales up to a real design. Ask for prototypes and keep a review gate:
 
