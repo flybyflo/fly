@@ -5,13 +5,13 @@ description: Configure which models fly uses per role and at what reasoning effo
 
 # Setup fly
 
-Write `~/.agents/fly-models.md`, the file every fly skill reads when it picks a model for a role. The roles, their defaults and their meanings live in `references/default-models.md`.
+Write `~/.agents/fly-models.md` to save model choices for fly's roles. For role defaults or a [per-task Astra check](references/default-models.md#opt-in-to-astra-for-a-check), see the model reference.
 
 ## Steps
 
 ### 1. Detect available models
 
-Call the T3 Code tool `orchestrator_capabilities`. That is the dependable source, because `delegate_task` runs from the same catalog. Keep each provider whose `canRunChildTask` is true and whose `constraints` list is empty. For each kept provider, record its `providerInstanceId`, each model `id`, and the model's reasoning option: the select option whose label is `Reasoning` or `Effort` (its `id` varies by provider, such as `effort`, `reasoningEffort`, `reasoning`, or `reasoning_effort`) with the value ids it offers. A model with no reasoning option is written without `@<effort>`. Drop every Astra model, and offer Fable models only for `prose`.
+Call the T3 Code tool `orchestrator_capabilities`. That is the dependable source, because `delegate_task` runs from the same catalog. Keep each provider whose `canRunChildTask` is true and whose `constraints` list is empty. For each kept provider, record its `providerInstanceId`, each model `id`, and the model's reasoning option: the select option whose label is `Reasoning` or `Effort` (its `id` varies by provider, such as `effort`, `reasoningEffort`, `reasoning`, or `reasoning_effort`) with the value ids it offers. A model with no reasoning option is written without `@<effort>`. Exclude Astra from the list of models users can save. Offer Fable models only for `prose`.
 
 If `orchestrator_capabilities` is not available, the thread is not running in T3 Code. Fall back to the models the host's native subagent tool accepts, and ask the user to paste any others they want with their provider instance ids. Never write a model you have not confirmed is available. The alias `inherit-parent` is always valid even though it is not a detected model.
 
@@ -29,7 +29,7 @@ If `~/.agents/fly-models.md` already exists, read it and treat its `# preset` li
 
 ### 4. Validate
 
-Every entry written must name a provider kept in step 1, a model that provider lists, and an effort that model's reasoning option offers. `inherit-parent` always passes. If a chosen entry is not available, stop and ask again.
+Every entry written must name a provider kept in step 1 and a model offered for that role. Use an effort the model supports if it has a reasoning option. `inherit-parent` always passes. If a chosen entry is not available, stop and ask again.
 
 ### 5. Write the file
 
