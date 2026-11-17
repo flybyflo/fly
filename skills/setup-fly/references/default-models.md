@@ -2,15 +2,15 @@
 
 The single source for fly's roles, their defaults, and how a role turns into a subagent. Skills name a role and point here. They don't restate these rules.
 
-Opus builds, Fable writes, Sol checks and fetches. Architecture, design, and implementation run on `claudeAgent/claude-opus-5-5`. Anything the user reads runs on `claudeAgent/claude-fable-5-2`. Every double-check runs on `codex/gpt-6.1-sol`, so code is always checked by a different model family than the one that wrote it. Simple lookups also run on `codex/gpt-6.1-sol`. Use Fable only for `prose`, and never use an Astra model. The one exception is the `council` skill, which picks the latest flagship model of each provider and may land on either.
+Opus builds, Fable writes, Sol checks and fetches. Architecture, design, and implementation run on `claudeAgent/claude-opus-5-5`. Anything the user reads runs on `claudeAgent/claude-fable-5-2`. Every double-check runs on `codex/gpt-6.2-sol`, so code is always checked by a different model family than the one that wrote it. Simple lookups also run on `codex/gpt-6.2-sol`. Use Fable only for `prose`, and never use an Astra model. The one exception is the `council` skill, which picks the latest flagship model of each provider and may land on either.
 
 ```
 architecture: claudeAgent/claude-opus-5-5@xhigh
 design: claudeAgent/claude-opus-5-5@xhigh
 implement: claudeAgent/claude-opus-5-5@xhigh
-check: codex/gpt-6.1-sol@xhigh
+check: codex/gpt-6.2-sol@xhigh
 prose: claudeAgent/claude-fable-5-2@xhigh
-search: codex/gpt-6.1-sol@medium
+search: codex/gpt-6.2-sol@medium
 ```
 
 ## Roles
