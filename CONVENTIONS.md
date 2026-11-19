@@ -36,7 +36,7 @@ There are no cloud workers. Isolation means a git worktree (`isolation: "worktre
 ## Models
 
 - fly has six roles: `architecture`, `design`, `implement`, `check`, `prose`, `search`.
-- The roles, their defaults, and how a role resolves to a model and a tool live once, in `skills/setup-fly/references/default-models.md`. Skills name a role and point there. They never repeat a model id or the resolution rules. `council` is the one exception: it is vendored unchanged and picks its own models.
+- The roles, their defaults, and how a role resolves to a model and a tool live once, in `skills/setup-fly/references/default-models.md`. Skills name a role and point there. They never repeat a model id or the resolution rules. `council` is the one exception: it is vendored from tstack and picks its own models.
 - The user's choices live in `~/.agents/fly-models.md`, written by `setup-fly`. It is a link to `fly-models.md` in this repo, so the choices are versioned.
 
 ## Approval gates

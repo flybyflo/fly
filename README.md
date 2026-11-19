@@ -41,7 +41,7 @@ Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used
 
 ## Credits
 
-Both agents, the principles, and most skills come from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack). `deslop`, `control-ui`, and `control-cli` come from Cursor's [cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit). `react-doctor` comes from Million Software's [react-doctor](https://github.com/millionco/react-doctor). fly adapts them for Claude Code and Codex in T3 Code. `council` comes unchanged from Theo Browne's [tstack](https://github.com/t3dotgg/tstack).
+Both agents, the principles, and most skills come from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack). `deslop`, `control-ui`, and `control-cli` come from Cursor's [cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit). `react-doctor` comes from Million Software's [react-doctor](https://github.com/millionco/react-doctor). fly adapts them for Claude Code and Codex in T3 Code. `council` comes from Theo Browne's [tstack](https://github.com/t3dotgg/tstack), with its Gemini example changed to Gemini 4 Neon.
 
 ## License
 
