@@ -31,6 +31,7 @@ Existing entries that don't point at this repo are skipped and reported. Start a
 | Verify | `control-ui`, `control-cli`, `create-verification-skill`, `maintain-verification-skill`, `tdd` |
 | Long-running work | `show-me-your-work`, `correct`, `reflect` |
 | Writing | `unslop`, `technical-writing`, `typescript-best-practices` |
+| CLI workflows | `gh-stack`, `cf-cli` |
 | Principles | `principle-*` (17), plus 5 short ones inline in the `fly` skill's index |
 
 Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used by `no-comments`).
@@ -42,6 +43,8 @@ Agents: `fly-agent` (routing target for fly subagents) and `comment-sicko` (used
 ## Credits
 
 Both agents, the principles, and most skills come from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack). `deslop`, `control-ui`, and `control-cli` come from Cursor's [cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit). `react-doctor` comes from Million Software's [react-doctor](https://github.com/millionco/react-doctor). fly adapts them for Claude Code and Codex in T3 Code. `council` comes from Theo Browne's [tstack](https://github.com/t3dotgg/tstack), with its Gemini example changed to Gemini 4 Neon.
+
+`gh-stack` comes from GitHub's official skill. fly adapts the submission examples to open PRs ready for review. [Upstream skill in gh-stack v0.3.0](https://github.com/github/gh-stack/tree/v0.3.0/skills/gh-stack)
 
 ## License
 
