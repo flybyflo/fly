@@ -52,7 +52,7 @@ fly has two modes. Normal mode is the default. Auto mode is on only for a task t
 - **Proceed without asking, in both modes,** on everything else: reading, running, editing the working tree, local experiments, prototypes, subagent fan-out, drafts, commits, pushes and force-pushes to the working branch, and opening and updating PRs. Commits, pushes, PR titles and bodies, merges, and deploys are not publishing content. A deploy stays a deploy even when it ships a public docs site or other public pages, so the mode decides it and the ask-first list does not.
 - A skill may gate its own step, as `reflect` does before it applies skill edits and `correct` does before a new CI gate. Such a gate holds in both modes.
 - Branches stay clean and based on their intended base (usually `main`). Never merge unrelated branches in to resolve conflicts.
-- PRs are created with `gh`. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one.
+- PRs are created with `gh`. When the repo has its own PR skill (for example `create-dev-prod-prs`), follow it in preference to fly's Opening a PR playbook. Run the repo's review skill (for example `team-review`) on the branch before opening or updating a PR when the repo provides one.
 
 ## Repo rules that skills must respect
 

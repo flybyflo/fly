@@ -2,6 +2,8 @@
 
 Use after the Build review and verification loops pass, and when other playbooks prepare a PR.
 
+**Repo PR skills first.** Before you open or update a PR, check the repo for its own PR skills. Look in `.agents/skills/` and `.claude/skills/`, and follow any PR skill that `AGENTS.md` or `CLAUDE.md` names, such as `create-dev-prod-prs`. When one covers the PR, follow it, and its rules win wherever they differ from this playbook: branches and bases, draft or ready, titles, descriptions, steps after creation, and CI monitoring. Use this playbook only for what the repo skill leaves open. The ask-first list in the fly skill's Autonomy section still holds.
+
 **Review first.** Work that came through Build already had the repo's review skill and the cleanup passes (`deslop`, `no-comments`, and `react-doctor` for React code) in its verification loop. Do not run them again. For a PR that did not come through Build, run the cleanup passes here first, then the repo's review skill (for example `team-review`) when the repo provides one, so the review covers the final diff. Then commit, push, and open the PR without asking.
 
 **Worktree.** Work from a git worktree off main. Subagents get their own with `Agent` `isolation: "worktree"`. Multiple subagents on the same branch each get their own worktree, or `git fetch && git reset --hard origin/<branch>` between them. Dirty branch with unrelated work: patch out, fresh worktree, apply. Snarled worktree: reset from main, redo minimally.
